@@ -1,0 +1,10 @@
+.title {
+    size: 4rem;
+}
+
+.spacer {
+    display: inline-block;
+    height: 3rem;
+    width: 3rem;
+    background-color: aquamarine;
+}
