@@ -10,9 +10,9 @@ export default function NavBar() {
       <div className='conteinerMerch'> 
       </div>
       <div className='navContent'>
-      <Link className='navLink' to='/home'>INICIO</Link>
-      <Link className='navLink' to='/productos'>CATALOGO</Link>
-      <Link className='navLink' to='/cuenta'>CUENTA</Link>
+      <Link className='navLink' to='/home'>HOME</Link>
+      <Link className='navLink' to='/products'>CART</Link>
+      <Link className='navLink' to='/account'>ACCOUNT</Link>
       <SearchBar className='navSearchBar'/>
     </div>
       </div>
