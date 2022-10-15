@@ -1,0 +1,7 @@
+.nav__searchBar {
+  width: max-content;
+  display: inline-block;
+  color: var(--color-white);
+  padding: 0.25rem 1.2rem;
+  margin-left: auto;
+}
