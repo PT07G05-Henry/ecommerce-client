@@ -1,13 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+:root {
+  --color-primary: #0c7489;
+  --color-primary-rgb: 12, 116, 137;
+  --color-bg: #d7d9ce;
+  --color-bg-rgb: 215, 217, 206;
+  --color-attention-primary: #d6a229;
+  --color-attention-primary-rgb: 214, 162, 41;
+  --color-attention-secondary: #8a6206;
+  --color-attention-secondary-rgb: 138, 98, 6;
+  --color-warning-primary: #d64629;
+  --color-warning-primary-rgb: 214, 70, 41;
+  --color-warning-secondary: #8a2713;
+  --color-warning-secondary-rgb: 138, 39, 19;
+  --color-black: #010d0f;
+  --color-black-rgb: 1, 13, 15;
+  --color-white: #f0fcfc;
+  --color-white-rgb: 240, 252, 252;
+
+  --transition: all 250ms ease-in-out;
+
+  --container-width-lg: 75%;
+  --container-width-md: 86%;
+  --container-width-sm: 90%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  line-height: 1.7;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 500;
+}
+
+a {
+  color: var(--color-primary);
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--color-white);
+}
+
+.btn {
+  width: max-content;
+  display: inline-block;
+  color: var(--color-white);
+  background: var(--color-primary);
+  padding: 0.25rem 1.2rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.btn:hover {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  border: 1px solid var(--color-primary);
+}
+
+.btn-primary {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+}
+
+.btn-attention {
+  background-color: var(--color-attention-primary);
+  color: var(--color-white);
+}
+
+.btn-warning {
+  background-color: var(--color-warning-primary);
+  color: var(--color-white);
+}
+
+img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Media Queries (medium devices) */
+
+@media (max-width: 1024px) {
+  .container {
+    width: var(--container-width-md);
+  }
+}
+
+/* Media Queries (small devices) */
+
+@media (max-width: 600px) {
+  .container {
+    width: var(--container-width-sm);
+  }
 }
