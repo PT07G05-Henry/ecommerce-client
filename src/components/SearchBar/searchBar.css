@@ -1,0 +1,12 @@
+.nav__searchBar {
+  width: max-content;
+  display: inline-block;
+  background: transparent;
+  color: var(--color-white);
+  padding: 0.25rem 1.2rem;
+  margin-left: auto;
+}
+
+.nav__searchBar-textInput {
+  background: transparent;
+}
