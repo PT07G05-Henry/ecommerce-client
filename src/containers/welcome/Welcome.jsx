@@ -4,7 +4,7 @@ import "./welcome.css";
 
 const Welcome = () => {
   return (
-    <>
+    <section className="container welcome__container">
       <h1 className="title">Wellcome!</h1>
       <div className="spacer" />
       <Button
@@ -15,7 +15,28 @@ const Welcome = () => {
         {" "}
         Press me!{" "}
       </Button>
-    </>
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+      <div className="spacer" />
+    </section>
   );
 };
 
