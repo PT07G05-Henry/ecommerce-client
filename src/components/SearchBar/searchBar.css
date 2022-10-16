@@ -9,4 +9,5 @@
 
 .nav__searchBar-textInput {
   background: transparent;
+  border-bottom: 2px solid rgba(var(--color-primary-rgb), .5);
 }

@@ -1,0 +1,8 @@
+.nav__user-image{
+    display: flex;
+    background-color: var(--color-bg);
+    border-radius: 9999px;
+    overflow: hidden;
+    height: 2.25rem;
+    margin-right: 1rem;
+}

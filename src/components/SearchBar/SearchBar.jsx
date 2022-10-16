@@ -8,7 +8,7 @@ export default function SearchBar() {
       <input
         className="nav__searchBar-textInput"
         type="text"
-        placeholder="Colocar producto..."
+        placeholder="Buscar productos..."
       />
       <button type="submit" className="btn btn-primary"><GoSearch/></button>
     </form>
