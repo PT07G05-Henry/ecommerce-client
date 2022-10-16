@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import Welcome from "./containers/welcome/Welcome";
+import ProductDetail from "./components/ProductDetail/ProductDetail";
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <NavBar/>
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route exact path="/product/:id" element={<ProductDetail />} />
       </Routes>
     </>
   );
