@@ -2,13 +2,26 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 let initialState = {
-    hi: "nothing",
+    products: [{ toBeField: true }],
+    product: { noProduct: true },
+    productsDisplay: [{ toBeField: true }]
 };
 
-export const test = createAsyncThunk("api/test", async () => {
+export const getProducts = createAsyncThunk("api/getProducts", async () => {
     try {
         const response = await axios.get(
-            `http://${document.domain}/test`
+            `http://${process.env.REACT_APP_DEV_API || document.domain}/product`
+        );
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+export const getProductById = createAsyncThunk("api/getProductById", async (id) => {
+    try {
+        const response = await axios.get(
+            `http://${process.env.REACT_APP_DEV_API || document.domain}/product/${id}`
         );
         return response.data;
     } catch (error) {
@@ -21,24 +34,42 @@ export const apiSlice = createSlice({
     initialState,
     reducers: {
         start: (state) => {
-            state.hi = "nothing";
+            state.products = [{ toBeField: true }];
+            state.product = { noProduct: true };
+            state.productsDisplay = [{ toBeField: true }];
         },
+        display: (state) => {
+            let products = state.products;
+            //espacio para aplicar filtros y ordenamientos
+            state.productsDisplay=products;
+        }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(test.pending, (state) => {
-                state.hi = "loading";
+            .addCase(getProducts.pending, (state) => {
+                state.products=[{ idle: true }];
             })
-            .addCase(test.rejected, (state) => {
-                state.hi = "Something went wrong";
+            .addCase(getProducts.rejected, (state) => {
+                state.products = [{ error: "Something went wrong" }]; 
             })
-            .addCase(test.fulfilled, (state, action) => {
-                state.hi = action.payload;
+            .addCase(getProducts.fulfilled, (state, action) => {
+                state.products = action.payload;
+            })
+            .addCase(getProductById.pending, (state) => {
+                state.product={ idle: true };
+            })
+            .addCase(getProductById.rejected, (state) => {
+                state.product = { error: "Something went wrong" }; 
+            })
+            .addCase(getProductById.fulfilled, (state, action) => {
+                state.product = action.payload;
             });
     },
 });
 
-export const selectHi = (state) => state.api.hi;
+export const selectProducts = (state) => state.api.products;
+export const selectProduct = (state) => state.api.product;
+export const selectProductsDisplay = (state) => state.api.productsDisplay;
 
 export const {
     start
