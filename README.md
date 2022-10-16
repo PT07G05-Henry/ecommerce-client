@@ -11,8 +11,14 @@ Supongamos que vas a trabajar dentro de una capeta PF ( porque también en un fu
 3) Una vez haya terminado el proceso y te aparezca el típico mensaje "Happy Hacking" borra todo menos la carpeta "node_modules" de dentro de "ecommerce-client".
 4) Volves a PF nuevamente y desde ahi ahora si hacer el clon con git ejecutando "git clone https://github.com/PT07G05-Henry/ecommerce-client.git".
 5) Entras a "ecommerce-client" y ahora si haces un "npm i" o "pnpm i" para instalar las dependencias faltantes.
+6) Crear archivo .env con las siguientes variables
+```bash
+REACT_APP_DOMAIN=DOMAIN #Dominio de Auth0
+REACT_APP_CLIENT_ID=ClientId #ClientId de Auth0
+```
 
 __Aclaración:__ Esto es solamente para la 1ra clonación, una vez hecho podes moverte entre ramas que no deberías tener que volver a hacerlo.
+
 
 ## El template ya integra...
 
