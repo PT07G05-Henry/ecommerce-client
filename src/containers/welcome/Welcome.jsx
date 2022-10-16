@@ -5,7 +5,7 @@ import "./welcome.css";
 const Welcome = () => {
   return (
     <section className="container welcome__container">
-      <h1 className="title">Wellcome!</h1>
+      <h1 className="title">Welcome!</h1>
       <div className="spacer" />
       <Button
         onClick={() => {

@@ -2,7 +2,14 @@
     display: flex;
     background-color: var(--color-bg);
     border-radius: 9999px;
+    border: 2px solid transparent;
     overflow: hidden;
     height: 2.25rem;
     margin-right: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.nav__user-image:hover{
+    border: 2px solid var(--color-primary);
 }
