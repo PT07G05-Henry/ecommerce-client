@@ -1,0 +1,28 @@
+.cointainerM{
+    width: 100%;
+    height: 120px;
+    background-color: #323232;
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    position: fixed;
+    margin-top: 8rem;
+    text-align: center;
+    bottom: 0;
+    
+}
+.centerVertically{
+ margin-top: 15px;
+}
+
+.centerVertically1 {
+  margin-top: 50px;
+    
+}
+.centerVertically2{
+    margin-top: 20px;
+}
+.imagesContainer {
+    display: flex;
+    gap: 0.5rem;
+}

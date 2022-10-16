@@ -7,7 +7,7 @@ export default function Home() {
     <div className = 'homeContainer'>
       <div className = 'navBar'>
       <NavBar/>
-     </div>
-     </div>
+    </div>
+    </div>
   );
 }
