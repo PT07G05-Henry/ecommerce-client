@@ -9,7 +9,7 @@ let initialState = {
     payments: [{ toBeField: true }],
     products: [{ toBeField: true }],
     product: { noProduct: true },
-    users: [{ toBeField: true }],
+    user: { toBeField: true },
     productsDisplay: [{ toBeField: true }]
 };
 
@@ -90,16 +90,29 @@ export const getProductById = createAsyncThunk("api/getProductById", async (id) 
     }
 });
 
-export const getUsers = createAsyncThunk("api/getUsers", async () => {
+export const getUsers = createAsyncThunk("api/getUsers", async (email) => {
     try {
         const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/users`
+            `http://${process.env.REACT_APP_DEV_API || document.domain}/users?email=${email}`
         );
         return response.data;
     } catch (error) {
         console.error(error);
     }
 });
+
+export const getUsersById = createAsyncThunk("api/getUsersById", async (id) => {
+    try {
+        const response = await axios.get(
+            `http://${process.env.REACT_APP_DEV_API || document.domain}/users/${id}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
 
 export const apiSlice = createSlice({
     name: "api",
@@ -113,7 +126,7 @@ export const apiSlice = createSlice({
             state.payments = [{ toBeField: true }];
             state.products = [{ toBeField: true }];
             state.product = { noProduct: true };
-            state.users = [{ toBeField: true }];
+            state.user = [{ toBeField: true }];
             state.productsDisplay = [{ toBeField: true }];
         },
         display: (state) => {
@@ -188,13 +201,22 @@ export const apiSlice = createSlice({
                 state.product = action.payload;
             })
             .addCase(getUsers.pending, (state) => {
-                state.users = [{ idle: true }];
+                state.user = { idle: true };
             })
             .addCase(getUsers.rejected, (state) => {
-                state.users = [{ error: "Something went wrong" }];
+                state.user = [{ error: "Something went wrong" }];
             })
             .addCase(getUsers.fulfilled, (state, action) => {
-                state.users = action.payload;
+                state.user = action.payload;
+            })
+            .addCase(getUsersById.pending, (state) => {
+                state.user = { idle: true };
+            })
+            .addCase(getUsersById.rejected, (state) => {
+                state.user = [{ error: "Something went wrong" }];
+            })
+            .addCase(getUsersById.fulfilled, (state, action) => {
+                state.user = action.payload;
             });
     },
 });
@@ -206,7 +228,7 @@ export const selectOrders = (state) => state.api.orders;
 export const selectPayments = (state) => state.api.payments;
 export const selectProducts = (state) => state.api.products;
 export const selectProduct = (state) => state.api.product;
-export const selectUsers = (state) => state.api.users;
+export const selectUser = (state) => state.api.user;
 export const selectProductsDisplay = (state) => state.api.productsDisplay;
 
 export const {
