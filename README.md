@@ -15,6 +15,7 @@ Supongamos que vas a trabajar dentro de una capeta PF ( porque también en un fu
 ```bash
 REACT_APP_DOMAIN=DOMAIN #Dominio de Auth0
 REACT_APP_CLIENT_ID=ClientId #ClientId de Auth0
+REACT_APP_DEV_API=API_DIRECTION #lugar donde esta corriendo la API, posibles valores localhost, localhost:3000 (en caso de usar otro puerto), 192.168.88.5:3000, dominio.com:4000
 ```
 
 __Aclaración:__ Esto es solamente para la 1ra clonación, una vez hecho podes moverte entre ramas que no deberías tener que volver a hacerlo.
