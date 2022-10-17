@@ -7,7 +7,7 @@ import Cards from "../../components/Cards/Cards";
 export default function Home() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
-  const product = products.slice(0, 9);
+  const product = products.results
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
