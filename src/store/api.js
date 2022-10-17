@@ -1,16 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const NAME = "name";
+export const PAGE = "page";
+export const QUANTITY = "quantity";
+export const CATEGORY = "category";
+export const TYPE_ORDER = "typeOrder";
+export const ASC = "ASC";
+export const DESC = "DESC";
+export const ORDERBY = "orderBy";
+export const NEXT = "NEXT";
+export const PREV = "PREV";
+
+
 let initialState = {
     categories: [{ toBeField: true }],
     comments: [{ toBeField: true }],
     deliveries: [{ toBeField: true }],
     orders: [{ toBeField: true }],
     payments: [{ toBeField: true }],
-    products: [{ toBeField: true }],
+    products: { toBeField: true },
     product: { noProduct: true },
     user: { toBeField: true },
-    productsDisplay: [{ toBeField: true }]
 };
 
 export const getCategories = createAsyncThunk("api/getCategories", async () => {
@@ -68,10 +79,12 @@ export const getPayments = createAsyncThunk("api/getPayments", async () => {
     }
 });
 
-export const getProducts = createAsyncThunk("api/getProducts", async () => {
+export const getProducts = createAsyncThunk("api/getProducts", async (flags, { getState }) => {
+    let queries = '';
+    typeof flags !== "string" && (Object.keys(flags).forEach((e) => { queries = queries + `?${e}=${flags[e]}` }))
     try {
         const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/products`
+            typeof flags !== "string" ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries}` : flags === NEXT ? getState().products.next : getState().products.prev
         );
         return response.data;
     } catch (error) {
@@ -124,16 +137,10 @@ export const apiSlice = createSlice({
             state.deliveries = [{ toBeField: true }];
             state.orders = [{ toBeField: true }];
             state.payments = [{ toBeField: true }];
-            state.products = [{ toBeField: true }];
+            state.products = { toBeField: true };
             state.product = { noProduct: true };
             state.user = [{ toBeField: true }];
-            state.productsDisplay = [{ toBeField: true }];
         },
-        display: (state) => {
-            let products = state.products;
-            //espacio para aplicar filtros y ordenamientos
-            state.productsDisplay = products;
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -229,7 +236,6 @@ export const selectPayments = (state) => state.api.payments;
 export const selectProducts = (state) => state.api.products;
 export const selectProduct = (state) => state.api.product;
 export const selectUser = (state) => state.api.user;
-export const selectProductsDisplay = (state) => state.api.productsDisplay;
 
 export const {
     start
