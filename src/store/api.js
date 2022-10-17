@@ -79,13 +79,16 @@ export const getPayments = createAsyncThunk("api/getPayments", async () => {
     }
 });
 
-export const getProducts = createAsyncThunk("api/getProducts", async (flags, { getState }) => {
+export const getProducts = createAsyncThunk("api/getProducts", async (flags) => {
+    console.log("entre!")
     let queries = '';
-    typeof flags !== "string" && (Object.keys(flags).forEach((e) => { queries = queries + `?${e}=${flags[e]}` }))
+    flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `?${e}=${flags[e]}` }));
     try {
+        console.log("Trying to get " + (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries}` : flags));
         const response = await axios.get(
-            typeof flags !== "string" ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries}` : flags === NEXT ? getState().products.next : getState().products.prev
+            (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries}` : flags)
         );
+        console.log(response);
         return response.data;
     } catch (error) {
         console.error(error);
@@ -145,7 +148,7 @@ export const apiSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getCategories.pending, (state) => {
-                state.categories = [{ idle: true }];
+                state.categories = [{ idle: true }]; //categories[0].toBeField 
             })
             .addCase(getCategories.rejected, (state) => {
                 state.categories = [{ error: "Something went wrong" }];
@@ -234,6 +237,8 @@ export const selectDeliveries = (state) => state.api.deliveries;
 export const selectOrders = (state) => state.api.orders;
 export const selectPayments = (state) => state.api.payments;
 export const selectProducts = (state) => state.api.products;
+export const selectNext = (state) => state.api.products.next;
+export const selectPrev = (state) => state.api.products.prev;
 export const selectProduct = (state) => state.api.product;
 export const selectUser = (state) => state.api.user;
 
