@@ -92,8 +92,8 @@ const CreateProduct = () => {
           onChange={handleInputChange}
         />
         <div>
-            <select name="select categories" onSubmit={handleCategories}>
-                { categories.length > 1 ? categories.map(e => <option value={e.name}>{e.name}</option>): <p>Loading</p> }
+            <select name="select categories" onChange={handleCategories}>
+                { categories.length > 1 ? categories.map(e => <option key={e.id} value={e.name}>{e.name}</option>): <p>Loading</p> }
             </select>
         </div>
         <input type="submit" value="Create" />
