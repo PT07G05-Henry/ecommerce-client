@@ -80,15 +80,12 @@ export const getPayments = createAsyncThunk("api/getPayments", async () => {
 });
 
 export const getProducts = createAsyncThunk("api/getProducts", async (flags) => {
-    console.log("entre!")
     let queries = '';
     flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `?${e}=${flags[e]}` }));
     try {
-        console.log("Trying to get " + (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries}` : flags));
         const response = await axios.get(
             (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries}` : flags)
         );
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error(error);
