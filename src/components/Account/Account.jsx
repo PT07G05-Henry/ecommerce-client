@@ -9,7 +9,6 @@ const Account = () => {
   const navigate = useNavigate();
   const { user } = useAuth0();
   const [show, setShow] = useState(false);
-  console.log(user);
   return (
     <>
       <div className="nav__user-image">
