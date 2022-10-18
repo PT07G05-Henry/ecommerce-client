@@ -1,0 +1,10 @@
+.loading {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  min-height: inherit;
+  width: 100%;
+}

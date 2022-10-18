@@ -15,8 +15,8 @@ export default function NavBar() {
         <Link className="btn btn-primary" to="/">
           Home
         </Link>
-        <Link className="btn btn-primary" to="/products">
-          Cart
+        <Link className="btn btn-primary" to="/catalog">
+          Catalog
         </Link>
         <SearchBar />
         {isAuthenticated ? <Account /> : <ButtonLogin />}

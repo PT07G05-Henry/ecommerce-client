@@ -6,7 +6,7 @@ import "./account.css";
 import { useNavigate } from "react-router-dom";
 
 const Account = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user } = useAuth0();
   const [show, setShow] = useState(false);
   console.log(user);
@@ -21,8 +21,12 @@ const Account = () => {
           }}
         />
       </div>
-      <ButtonLogOut style={show ? {} : { display: "none" }} />
-      <h3 style={show ? {} : { display: "none" }} onClick={()=> navigate("/createProduct")}>Create Product</h3>
+      <div className="nav__user-menu" style={show ? {} : { display: "none" }}>
+        <button className="btn btn-primary" onClick={() => navigate("/createProduct")}>
+          Create Product
+        </button>
+        <ButtonLogOut />
+      </div>
     </>
   );
 };
