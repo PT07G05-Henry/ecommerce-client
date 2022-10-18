@@ -15,7 +15,13 @@ const Cards = ({ products, dispatch }) => {
   const [controller, setController] = useState(products.query);
   const [change, setChange] = useState(false);
   let buttons = [];
-  const changeController = (flag) => {
+  const removeOfController = (flag) => {
+    let newController = controller;
+    delete controller[flag];
+    setController(newController);
+    setChange(!change);
+  };
+  const addToController = (flag) => {
     setController({ ...controller, ...flag });
     setChange(!change);
   };
@@ -25,7 +31,7 @@ const Cards = ({ products, dispatch }) => {
         className="btn"
         onClick={() => {
           const flag = { [PAGE]: i.toString() };
-          changeController(flag);
+          addToController(flag);
         }}
       >
         {" "}
@@ -39,25 +45,30 @@ const Cards = ({ products, dispatch }) => {
     <>
       <p className="btn">page: {products.page}</p>
       <div className="cards__controller">
-        <button
-          className="btn"
-          onClick={() => {
-            dispatch(products.prev);
-          }}
-          style={!products.prev ? { display: "none" } : undefined}
-        >
-          {"<"}
-        </button>
-        {buttons}
-        <button
-          className="btn"
-          onClick={() => {
-            dispatch(products.next);
-          }}
-          style={!products.next ? { display: "none" } : undefined}
-        >
-          {">"}
-        </button>
+        <div className="cards__controller-filters">
+          
+        </div>
+        <div className="cards__controller-pager">
+          <button
+            className="btn"
+            onClick={() => {
+              dispatch(products.prev);
+            }}
+            style={!products.prev ? { display: "none" } : undefined}
+          >
+            {"<"}
+          </button>
+          {buttons}
+          <button
+            className="btn"
+            onClick={() => {
+              dispatch(products.next);
+            }}
+            style={!products.next ? { display: "none" } : undefined}
+          >
+            {">"}
+          </button>
+        </div>
       </div>
       <div className="cards__grid">
         {products.results?.map((el) => (
