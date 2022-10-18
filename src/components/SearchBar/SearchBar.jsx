@@ -13,7 +13,7 @@ export default function SearchBar() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        navigate(`/products/${product}`);
+        navigate(`/productsByName/${product}`);
         setProduct("");
       }}
       className="nav__searchBar"
