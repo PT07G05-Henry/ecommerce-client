@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { GoSearch } from "react-icons/go";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./searchBar.css";
 
 export default function SearchBar() {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [product, setProduct] = useState("");
   function handleSubmit(e) {
     setProduct(e.target.value);
@@ -13,7 +13,7 @@ export default function SearchBar() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        dispatch();
+        navigate(`/products/${product}`);
         setProduct("");
       }}
       className="nav__searchBar"
