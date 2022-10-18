@@ -22,7 +22,7 @@ const Account = () => {
         />
       </div>
       <div className="nav__user-menu" style={show ? {} : { display: "none" }}>
-        <button className="btn btn-primary" onClick={() => navigate("/createProduct")}>
+        <button className="btn btn-primary" onClick={() => navigate("/create/product")}>
           Create Product
         </button>
         <ButtonLogOut />
