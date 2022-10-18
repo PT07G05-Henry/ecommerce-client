@@ -25,6 +25,7 @@ let initialState = {
     orders: [{ toBeField: true }],
     payments: [{ toBeField: true }],
     products: { toBeField: true },
+    productsByName: { toBeField: true },
     product: { noProduct: true },
     user: { toBeField: true },
 };
@@ -97,6 +98,19 @@ export const getProducts = createAsyncThunk("api/getProducts", async (flags) => 
     }
 });
 
+export const getProductsByName = createAsyncThunk("api/getProductsByName", async (flags) => {
+    let queries = '?';
+    flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `${e}=${flags[e]}&` }));
+    try {
+        const response = await axios.get(
+            (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries.length > 1 ? queries : ''}` : flags)
+        );
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 export const getProductById = createAsyncThunk("api/getProductById", async (id) => {
     try {
         const response = await axios.get(
@@ -143,6 +157,7 @@ export const apiSlice = createSlice({
             state.orders = [{ toBeField: true }];
             state.payments = [{ toBeField: true }];
             state.products = { toBeField: true };
+            state.productsByName = { toBeField: true };
             state.product = { noProduct: true };
             state.user = [{ toBeField: true }];
         },
@@ -203,6 +218,15 @@ export const apiSlice = createSlice({
             .addCase(getProducts.fulfilled, (state, action) => {
                 state.products = action.payload;
             })
+            .addCase(getProductsByName.pending, (state) => {
+                state.productsByName = { idle: true };
+            })
+            .addCase(getProductsByName.rejected, (state) => {
+                state.productsByName = { error: "Something went wrong" };
+            })
+            .addCase(getProductsByName.fulfilled, (state, action) => {
+                state.productsByName = action.payload;
+            })
             .addCase(getProductById.pending, (state) => {
                 state.product = { idle: true };
             })
@@ -241,6 +265,9 @@ export const selectPayments = (state) => state.api.payments;
 export const selectProducts = (state) => state.api.products;
 export const selectNext = (state) => state.api.products.next;
 export const selectPrev = (state) => state.api.products.prev;
+export const selectProductsByName = (state) => state.api.productsByName;
+export const selectNextByName = (state) => state.api.productsByName.next;
+export const selectPrevByName = (state) => state.api.productsByName.prev;
 export const selectProduct = (state) => state.api.product;
 export const selectUser = (state) => state.api.user;
 
