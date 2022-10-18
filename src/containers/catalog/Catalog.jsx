@@ -13,10 +13,18 @@ const Catalog = () => {
       (products.toBeField || products.error) &&
       dispatch(getProducts());
   }, [products]);
-  console.log(products);
   return (
     <section className="container catalog__container">
-      {products.results ? <Cards products={products} /> : <Loading />}
+      {products.results ? (
+        <Cards
+          products={products}
+          dispatch={(flags) => {
+            dispatch(getProducts(flags));
+          }}
+        />
+      ) : (
+        <Loading />
+      )}
     </section>
   );
 };

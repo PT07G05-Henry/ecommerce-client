@@ -9,8 +9,13 @@ export const TYPE_ORDER = "typeOrder";
 export const ASC = "ASC";
 export const DESC = "DESC";
 export const ORDERBY = "orderBy";
-export const NEXT = "NEXT";
-export const PREV = "PREV";
+export const ID = "id";
+export const PRICE = "price";
+export const DESCRIPTION = "description";
+export const STOCK = "stock";
+export const RATING = "rating";
+export const USER_ROL_ID = "usersRolId";
+
 
 
 let initialState = {
@@ -80,11 +85,11 @@ export const getPayments = createAsyncThunk("api/getPayments", async () => {
 });
 
 export const getProducts = createAsyncThunk("api/getProducts", async (flags) => {
-    let queries = '';
-    flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `?${e}=${flags[e]}` }));
+    let queries = '?';
+    flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `${e}=${flags[e]}&` }));
     try {
         const response = await axios.get(
-            (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries}` : flags)
+            (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries.length > 1 ? queries : ''}` : flags)
         );
         return response.data;
     } catch (error) {
