@@ -1,6 +1,6 @@
 export default function Validate(input) {
     const error = {};
-    const regexName = /^[a-zA-Zñáéíóúü]*$/;
+    const regexName = /^[A-Z]+[^\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]*$/; //^[a-zA-Zñáéíóúü]*$ 
     const regexNumber = /^[0-9]+$/ 
 
     if(!input.name) error.name = 'need a product name';

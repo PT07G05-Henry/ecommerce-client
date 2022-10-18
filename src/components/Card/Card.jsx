@@ -2,7 +2,18 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./card.css";
 
-const Card = ({ id, images, name, price }) => {
+const Card = ({
+  id,
+  images,
+  name,
+  price,
+  description,
+  stock,
+  categoriesId,
+  categoriesName,
+  isCreated = false,
+  handleDelete
+}) => {
   const navigate = useNavigate();
   const [imgIndex, setImgIndex] = useState(0);
   const image = images
@@ -41,10 +52,22 @@ const Card = ({ id, images, name, price }) => {
           </div>
         </>
       )}
-      <Link to={`/products/${id}`}>
-        <h3>{name}</h3>
-      </Link>
-      <h3>${price}</h3>
+      {!isCreated && (
+        <Link to={`/products/${id}`}>
+          <h3>{name}</h3>
+        </Link>
+      )}
+      {isCreated && <h3>{name}</h3>}
+      <h3>
+        {isCreated && "Price: "}${price}
+      </h3>
+      {isCreated && <h3>Stock: {stock}</h3>}
+      {isCreated && categoriesName.length>0&& categoriesName.map((e)=>{
+        return (
+        <button className="btn" value={e} onClick={(e) => {handleDelete(e)}}>{e}</button>
+        )
+      })}
+      {isCreated && <p>Description: {description}</p>}
       <button className="btn" onClick={() => {}}>
         Add to cart
       </button>
