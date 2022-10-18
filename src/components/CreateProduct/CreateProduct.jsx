@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories, selectCategories } from "../../store/api";
 import validate from "./validate";
 import validateImage from "./validateImage";
+import Card from "../Card/Card";
+import "./createProduct.css";
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
@@ -33,15 +35,21 @@ const CreateProduct = () => {
   };
 
   const handleDelete = (e) => {
-    const category = parseInt(e.target.value.split("_"));
-    const category2 = e.target.value;
-    console.log(cat);
-    if (input.categories)
-      setInput({
-        ...input,
-        categories: input.categories.filter((e) => e !== `${category}`),
-      });
-    setCat(cat.filter((e) => e !== category2));
+    const nombre = e.target.value;
+    const id = cat.indexOf(nombre);
+    if(input.categories){
+      setCat(cat.filter((e)=>e !== nombre));
+      setInput({...input, categories: input.categories.filter((e)=>e !== id)})
+    }
+    // const category = parseInt(e.target.value.split("_"));
+    // const category2 = e.target.value;
+    // console.log(category);
+    // if (input.categories)
+    //   setInput({
+    //     ...input,
+    //     categories: input.categories.filter((e) => e !== `${category}`),
+    //   });
+    // setCat(cat.filter((e) => e !== category2));
   };
 
   const handleCategories = (e) => {
@@ -67,7 +75,22 @@ const CreateProduct = () => {
   };
   const handleImageChange = (e) => {
     setValue(e.target.value);
-    setError(validateImage(e.target.value));
+    function testImage(URL) {
+      var tester=new Image();
+      tester.onload=imageFound;
+      tester.onerror=imageNotFound;
+      tester.src=URL;
+    }
+    function imageFound() {
+        alert('That image is found and loaded');
+        return setError((err)=>({...err, images:""}))
+    }
+    function imageNotFound() {
+        alert('That image was not found.');
+        return setError((err)=>({...err, images:"That image was not found."}))
+    }
+    testImage(e.target.value);
+    // setError(validateImage(e.target.value));
   };
 
   const handleSubmit = (e) => {
@@ -88,8 +111,10 @@ const CreateProduct = () => {
     setCat([]);
   };
   return (
-    <div>
+    <>
+    <div className="formControled__centeredForm">
       <form onSubmit={handleSubmit}>
+        <h1>Create Product</h1>
         <label htmlFor="images"> Images: </label>
         <input
           type="text"
@@ -99,10 +124,11 @@ const CreateProduct = () => {
           value={value}
           onChange={handleImageChange}
         />
-        <p>{error.images}</p>
         <button onClick={handleImageSubmit} type="button">
           add image
         </button>
+        <p className="errorAlert__errorMessage">{error.images}</p>
+
 
         <label htmlFor="name"> Name: </label>
         <input
@@ -112,7 +138,7 @@ const CreateProduct = () => {
           value={input.name}
           onChange={handleInputChange}
         />
-        <p>{error.name}</p>
+        <p className="errorAlert__errorMessage">{error.name}</p>
         <label htmlFor="price"> Price: </label>
         <input
           type="number"
@@ -122,15 +148,7 @@ const CreateProduct = () => {
           onChange={handleInputChange}
           min="0"
         />
-        <p>{error.price}</p>
-        <label htmlFor="description"> Description: </label>
-        <input
-          type="text"
-          name="description"
-          id="description"
-          value={input.description}
-          onChange={handleInputChange}
-        />
+        <p className="errorAlert__errorMessage">{error.price}</p>
         <label htmlFor="stock"> Stock: </label>
         <input
           type="number"
@@ -140,16 +158,27 @@ const CreateProduct = () => {
           onChange={handleInputChange}
           min="0"
         />
-        <p>{error.stock}</p>
+        <p className="errorAlert__errorMessage">{error.stock}</p>
+        <label htmlFor="description"> Description: </label>
+        <input
+          type="text"
+          name="description"
+          id="description"
+          value={input.description}
+          onChange={handleInputChange}
+        />
+        <p className="errorAlert__errorMessage">{error.description}</p>
         <div>
+          <label htmlFor="select_categories"> Category: </label>
           <select
             id="selectId"
-            name="select categories"
+            name="select_categories"
             onChange={handleCategories}
           >
+            <option value="" disabled selected></option>
             {categories.length > 1 ? (
               categories.map((e) => (
-                <option key={e.id} id={e.id} value={e.id + "_" + e.name}>
+                <option key={e.id} id={e.id} value={e.name}>
                   {e.name}
                 </option>
               ))
@@ -159,22 +188,18 @@ const CreateProduct = () => {
           </select>
         </div>
         {Object.keys(error).length === 0 &&
-        input.categories.length > 1 &&
+        input.categories.length >= 1 &&
         input.images.length ? (
           <input type="submit" value="Create" />
         ) : (
           <input type="submit" value="Create" disabled={true} />
         )}
       </form>
-      {cat?.map((e, i) => (
-        <div key={i}>
-          <p>{e}</p>
-          <button value={e} onClick={(e) => handleDelete(e)}>
-            x
-          </button>
-        </div>
-      ))}
     </div>
+    <div className="createdProduct__exampleCard">
+      {input&&<Card id={input.id} images={input.images} name={input.name} price={input.price} description={input.description} stock={input.stock}  categoriesName={cat} isCreated={true} handleDelete={handleDelete}/>}
+    </div>
+    </>
   );
 };
 
