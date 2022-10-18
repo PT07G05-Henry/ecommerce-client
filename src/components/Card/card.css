@@ -1,0 +1,30 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 20rem;
+  width: 15rem;
+  padding: 0.5rem;
+  margin: 1rem;
+  background: rgba(var(--color-bg-rgb), 0.5);
+  box-shadow: 4px 4px 4px 0px rgba(var(--color-black-rgb), 0.25);
+}
+
+
+.card__imageViewer {
+    height: fit-content;
+    min-height: 8rem;
+}
+
+.card__imageViewer > img {
+    height: 8rem;
+}
+
+.card__imageViewer-controller{
+    display: flex;
+}
+
+.card__imageViewer-controller > button{
+    width: 100%;
+}

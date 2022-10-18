@@ -190,10 +190,10 @@ export const apiSlice = createSlice({
                 state.payments = action.payload;
             })
             .addCase(getProducts.pending, (state) => {
-                state.products = [{ idle: true }];
+                state.products = { idle: true };
             })
             .addCase(getProducts.rejected, (state) => {
-                state.products = [{ error: "Something went wrong" }];
+                state.products = { error: "Something went wrong" };
             })
             .addCase(getProducts.fulfilled, (state, action) => {
                 state.products = action.payload;

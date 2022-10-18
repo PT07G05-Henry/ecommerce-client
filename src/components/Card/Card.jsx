@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "./card.css";
 
 const Card = ({ id, images, name, price }) => {
   const navigate = useNavigate();
@@ -7,32 +8,46 @@ const Card = ({ id, images, name, price }) => {
   const image = images
     ?.filter((e) => e.image !== null)
     .map((e) => <img src={e.image} alt="image" />);
-  //const image = images.filter((e) => e.image !== null)
-  console.log(images)
   return (
-    <article onClick={() => navigate(`/products/${id}`)}>
+    <article className="card">
       {image && image.length && (
-        <div className="card__imageViewer">
-          <button
-            className="card__imageViewer-arrow"
-            style={imgIndex === 0 ? { display: "none" } : {}}
-            onClick={() => setImgIndex(imgIndex - 1)}
-          >
-            {"<"}
-          </button>
-          {image[imgIndex]}
-          <button
-            className="card__imageViewer-arrow"
-            style={imgIndex === image.length - 1 ? { display: "none" } : {}}
-            onClick={() => setImgIndex(imgIndex + 1)}
-          >
-            {">"}
-          </button>
-        </div>
+        <>
+          <div className="card__imageViewer">
+            {image[imgIndex]}
+            <div className="card__imageViewer-controller">
+              <button
+                className="btn btn-primary card__imageViewer-arrow"
+                style={
+                  imgIndex === 0
+                    ? { display: "none", width: "100%" }
+                    : { width: "100%" }
+                }
+                onClick={() => setImgIndex(imgIndex - 1)}
+              >
+                {"<"}
+              </button>
+              <button
+                className="btn btn-primary card__imageViewer-arrow"
+                style={
+                  imgIndex === image.length - 1
+                    ? { display: "none", width: "100%" }
+                    : { width: "100%" }
+                }
+                onClick={() => setImgIndex(imgIndex + 1)}
+              >
+                {">"}
+              </button>
+            </div>
+          </div>
+        </>
       )}
-      <h3>{name}</h3>
+      <Link to={`/products/${id}`}>
+        <h3>{name}</h3>
+      </Link>
       <h3>${price}</h3>
-      <button onClick={() => {}}>Add to cart</button>
+      <button className="btn" onClick={() => {}}>
+        Add to cart
+      </button>
     </article>
   );
 };

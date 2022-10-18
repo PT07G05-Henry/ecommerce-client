@@ -1,21 +1,25 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import NavBar from "./components/NavBar/NavBar";
-import Home from "./components/Home/Home";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import WebFrame from "./containers/webFrame/WebFrame";
+import Home from "./containers/Home/Home";
+import Catalog from "./containers/catalog/Catalog";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
-import Footer from "./components/Footer/Footer";
 import CreateProduct from "../src/components/CreateProduct/CreateProduct";
 
 function App() {
+  const navigate = useNavigate();
   return (
     <>
-      <NavBar />
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/products/:id" element={<ProductDetail />} />
-        <Route exact path="/createProduct" element={<CreateProduct />} />
+        <Route path="/" element={<WebFrame />}>
+          <Route index element={<Home />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/products/:name" element={<section className="container"><h1>Search products by name!</h1></section>} />
+          <Route path="/create/product" element={<CreateProduct />} />
+          <Route path="*" element={<section className="container"><h1>Is not a valid path!</h1><button className="btn" onClick={() => { navigate("/") }}>Go back to Home!</button></section>} />
+        </Route>
       </Routes>
-      <Footer />
     </>
   );
 }
