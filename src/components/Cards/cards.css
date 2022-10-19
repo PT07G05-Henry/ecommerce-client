@@ -7,6 +7,35 @@
   align-items: center;
 }
 
+.active{
+  background-color: aqua !important;
+  color: black !important;
+}
+
+.btnDots{
+  background-color: #f0fcfc;
+  width: max-content;
+  display: inline-block;
+  color: black;
+  padding: 0.25rem 1.2rem;
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.divCenter {
+  display: flex;
+  position: relative;
+  margin: 10px auto;
+  align-items: center;
+  flex-direction: column;
+}
+[value^="PrevPag"] {
+  margin-right: 5px;
+}
+
+[value^="NextPag"]{
+  margin-left: 5px;
+}
 @media (max-width: 1790px) {
   .cards__grid {
     grid-template-columns: repeat(4, 1fr);
