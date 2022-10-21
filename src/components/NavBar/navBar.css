@@ -4,10 +4,16 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
   background: var(--color-bg);
 }
 
 .nav__spacer {
   height: .5rem;
   background: var(--color-bg);
+}
+
+.nav__logo{
+  height: 100px;
+  width: 100px;
 }
