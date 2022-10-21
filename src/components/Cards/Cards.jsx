@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import {
+  NAME,
   PAGE,
   QUANTITY,
   CATEGORY,
@@ -26,7 +27,7 @@ const Cards = ({ products, dispatch }) => {
   const [change, setChange] = useState(false);
   let buttons = [];
   const removeOfController = (key) => {
-    let newController = controller;
+    let newController = structuredClone(controller);
     delete newController[key];
     setController(newController);
     setChange(!change);
@@ -68,7 +69,8 @@ const Cards = ({ products, dispatch }) => {
   function pag(a) {
     return (
       <input
-        key={a}
+        key={`page_${a}`}
+        flag={a}
         id={"paginadoNum" + a}
         className={`${Number(products.page) === Number(a) ? "active" : ""} btn`}
         type="button"
@@ -101,10 +103,10 @@ const Cards = ({ products, dispatch }) => {
     name: "Products per page",
     key: QUANTITY,
     values: [
-      { [QUANTITY]: 25, label: "25 Items" },
-      { [QUANTITY]: 50, label: "50 Items" },
-      { [QUANTITY]: 75, label: "75 Items" },
-      { [QUANTITY]: 100, label: "100 Items" },
+      { [QUANTITY]: "25", label: "25 Items" },
+      { [QUANTITY]: "50", label: "50 Items" },
+      { [QUANTITY]: "75", label: "75 Items" },
+      { [QUANTITY]: "100", label: "100 Items" },
     ],
   };
 
@@ -122,6 +124,7 @@ const Cards = ({ products, dispatch }) => {
     key: ORDERBY,
     values: [
       { [ORDERBY]: ID, label: "Id" },
+      { [ORDERBY]: NAME, label: "Name" },
       { [ORDERBY]: PRICE, label: "Price" },
       { [ORDERBY]: DESCRIPTION, label: "Description" },
       { [ORDERBY]: STOCK, label: "Stock" },
@@ -134,7 +137,6 @@ const Cards = ({ products, dispatch }) => {
 
   const isInController = (key) => {
     const applied = Object.keys(controller);
-    console.log(applied);
     return applied.length ? Boolean(applied.find((e) => e === key)) : false;
   };
 
@@ -143,33 +145,35 @@ const Cards = ({ products, dispatch }) => {
     flag[key] === REMOVE ? removeOfController(key) : addToController(flag);
   };
 
-  const Filter = ({ name, key, values }) => {
+  const Filter = ({ name, flag, values }) => {
     return (
       <label className="filter">
         {name}
         <select
           value={
-            isInController(key)
-              ? JSON.stringify({ [key]: controller[key] })
-              : JSON.stringify({ [key]: REMOVE })
+            isInController(flag)
+              ? JSON.stringify({ [flag]: controller[flag] })
+              : JSON.stringify({ [flag]: REMOVE })
           }
-          onChange={(e) => applyFilter(e, key)}
+          onChange={(e) => applyFilter(e, flag)}
         >
           <option
-            value={JSON.stringify({ [key]: REMOVE })}
+            value={JSON.stringify({ [flag]: REMOVE })}
             className="filter__option"
           >
             None
           </option>
-          {values.map((option) => (
-            <option
-              key={`option_${key}-${option[key]}`}
-              value={JSON.stringify({ [key]: option[key] })}
-              className="filter__option"
-            >
-              {option.label}
-            </option>
-          ))}
+          {values.map((option) => {
+            return (
+              <option
+                key={`option_${flag}-${option[flag]}`}
+                value={JSON.stringify({ [flag]: option[flag] })}
+                className="filter__option"
+              >
+                {option.label}
+              </option>
+            );
+          })}
         </select>
       </label>
     );
@@ -196,7 +200,12 @@ const Cards = ({ products, dispatch }) => {
           }}
         >
           {filters.map(({ name, key, values }) => (
-            <Filter name={name} key={key} values={values} />
+            <Filter
+              key={`${key}_filter`}
+              name={name}
+              flag={key}
+              values={values}
+            />
           ))}
         </form>
       </>
@@ -265,7 +274,7 @@ const Cards = ({ products, dispatch }) => {
       <div className="cards__grid">
         {products.results?.map((el) => (
           <Card
-            key={`product_${el.id}`}
+            key={`product${el.id}`}
             id={el.id}
             images={el.images}
             name={el.name}
