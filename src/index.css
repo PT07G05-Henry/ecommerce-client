@@ -72,6 +72,7 @@ a:hover {
   color: var(--color-black);
 }
 
+
 .btn {
   width: max-content;
   display: inline-block;
@@ -92,6 +93,17 @@ a:hover {
 .btn-primary {
   background-color: var(--color-bg);
   color: var(--color-primary);
+}
+.button-primary-add {
+  background-color: teal;
+  border: none;
+  font-family: var(--mulish-font);
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 20px auto;
+  width: 130px;
+  height: 50px;
+  cursor: pointer;
 }
 
 .btn-attention {
