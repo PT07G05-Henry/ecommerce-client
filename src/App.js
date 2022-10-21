@@ -6,6 +6,8 @@ import Catalog from "./containers/catalog/Catalog";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import CreateProduct from "../src/components/CreateProduct/CreateProduct";
 import SearchByName from "./containers/SearchByName/SearchByName";
+import Orders from "../src/components/Orders/Orders";
+import OrderDetail from "../src/components/OrderDetail/OrderDetail";
 
 function App() {
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ function App() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/create/product" element={<CreateProduct />} />
+          <Route path="/or" element={<Orders/>} />
+          <Route path="orDetail/:id" element={<OrderDetail/>} />
           <Route
             path="*"
             element={
