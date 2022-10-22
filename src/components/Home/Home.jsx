@@ -52,7 +52,7 @@ export default function Home() {
         `http://${process.env.REACT_APP_DEV_API}/users/auth0`,
         userToPost
       );
-      console.log(resp.data);
+      console.log(resp.data); // datos que me devuelve el back
     } catch (e) {
       console.log(e);
     }
@@ -63,8 +63,8 @@ export default function Home() {
     if (user && user.email_verified) {
       if (!userAuth.hasOwnProperty("user")) {
         console.log("posteando");
-        postUserAuth0(userToPost);
-        setUserAuth({ user: userToPost });
+        postUserAuth0(userToPost); // posteo al back
+        setUserAuth({ user: userToPost }); // actualizo estado componente
       }
     } else {
       if (!user) setUserAuth({});
@@ -122,4 +122,30 @@ export default function Home() {
       sub: "auth0|6352df81e584359a2df82675"
       }
       
+      datos que espera recibir el back para autenticar:
+
+      endpoint: `http://${process.env.REACT_APP_DEV_API}/users/auth0`
+
+      datos que debe mandar el front por body en un post:
+
+      {
+        first_name,
+        last_name (opcional),
+        email,
+        picture_profile,
+        social,
+        sid
+      }
+
+      datos que recibe como respuesta:
+      {
+        userDb (o newUser), --> objeto si es nuevo o existente
+        roles --> array de roles ['Superadmin', 'Admin', 'User']
+      }
+
+      para navegar en la pagina se debe mandar al back ls siguientes datos:
+      {
+        email,
+        sid
+      }
       */
