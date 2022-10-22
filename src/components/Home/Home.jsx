@@ -6,10 +6,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 export default function Home() {
-  const { user } = useAuth0();
+  const { user, getIdTokenClaims } = useAuth0();
   const [userAuth, setUserAuth] = useState({});
-  console.log(user);
+  //console.log(user);
   var userToPost = {};
+
   if (user) {
     const makeUserObject = (user) => {
       const social = user.sub.split("|");
@@ -19,15 +20,16 @@ export default function Home() {
           last_name: user.family_name,
           email: user.email,
           picture_profile: user.picture,
-          social_account: "google",
+          social: "google",
         };
       }
-      if (social[0].includes("github")) {
+      if (social[0].includes("microsoft")) {
         return {
-          first_name: user.nickname,
+          first_name: user.given_name,
+          last_name: user.family_name,
           email: user.email,
           picture_profile: user.picture,
-          social_account: "github",
+          social: "microsoft",
         };
       }
       if (social[0].includes("auth0")) {
@@ -35,7 +37,7 @@ export default function Home() {
           first_name: user.nickname,
           email: user.email,
           picture_profile: user.picture,
-          social_account: "auth0",
+          social: "auth0",
         };
       }
     };
@@ -43,10 +45,11 @@ export default function Home() {
     userToPost = makeUserObject(user);
   }
   const postUserAuth0 = async (userToPost) => {
+    const { sid } = await getIdTokenClaims();
+    userToPost.sid = sid;
     try {
-      console.log("posteando");
       const resp = await axios.post(
-        `http://localhost:3001/users/test`,
+        `http://localhost:3001/users/auth0`,
         userToPost
       );
       console.log(resp.data);
@@ -56,11 +59,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log(userAuth);
-    console.log(user);
     console.log(userToPost);
     if (user && user.email_verified) {
       if (!userAuth.hasOwnProperty("user")) {
+        console.log("posteando");
         postUserAuth0(userToPost);
         setUserAuth({ user: userToPost });
       }
