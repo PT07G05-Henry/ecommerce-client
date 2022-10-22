@@ -9,6 +9,7 @@ import productsReducer from "./products"
 import productsByNameReducer from "./productsByName"
 import userByIdReducer from "./userById"
 import usersReducer from "./users"
+import cartReducer from "./cart"
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     productsByName: productsByNameReducer,
     userById: userByIdReducer,
     users: usersReducer,
+    cart: cartReducer,
   },
 });
