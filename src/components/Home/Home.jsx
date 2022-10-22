@@ -49,7 +49,7 @@ export default function Home() {
     userToPost.sid = sid;
     try {
       const resp = await axios.post(
-        `http://localhost:3001/users/auth0`,
+        `http://${process.env.REACT_APP_DEV_API}/users/auth0`,
         userToPost
       );
       console.log(resp.data);
