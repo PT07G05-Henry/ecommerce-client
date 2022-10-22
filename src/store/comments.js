@@ -5,7 +5,7 @@ const initialState = {
     comments: [{ toBeField: true }]
 }
 
-export const getComments = createAsyncThunk("api/getComments", async () => {
+export const getComments = createAsyncThunk("comments/getComments", async () => {
     try {
         const response = await axios.get(
             `http://${process.env.REACT_APP_DEV_API || document.domain}/comments`
@@ -31,7 +31,7 @@ export const commentsSlice = createSlice(
                 state.comments = [{ idle: true }];
             })
             .addCase(getComments.rejected, (state) => {
-                state.comments = [{ error: "Something went wrongg" }];
+                state.comments = [{ error: "Something went wrong" }];
             })
             .addCase(getComments.fulfilled, (state, action) => {
                 state.comments = action.payload;

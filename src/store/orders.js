@@ -5,7 +5,7 @@ const initialState = {
     orders: [{ toBeField: true }],
 }
 
-export const getOrders = createAsyncThunk("api/getOrders", async () => {
+export const getOrders = createAsyncThunk("orders/getOrders", async () => {
     try {
         const response = await axios.get(
             `http://${process.env.REACT_APP_DEV_API || document.domain}/orders`
@@ -27,15 +27,15 @@ export const ordersSlice = createSlice(
         },
         extraReducers: (builder) => {
             builder
-            .addCase(getOrders.pending, (state) => {
-                state.orders = [{ idle: true }];
-            })
-            .addCase(getOrders.rejected, (state) => {
-                state.orders = [{ error: "Something  went wrong" }];
-            })
-            .addCase(getOrders.fulfilled, (state, action) => {
-                state.orders = action.payload;
-            })
+                .addCase(getOrders.pending, (state) => {
+                    state.orders = [{ idle: true }];
+                })
+                .addCase(getOrders.rejected, (state) => {
+                    state.orders = [{ error: "Something  went wrong" }];
+                })
+                .addCase(getOrders.fulfilled, (state, action) => {
+                    state.orders = action.payload;
+                })
         }
     }
 )

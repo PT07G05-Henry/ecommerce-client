@@ -5,7 +5,7 @@ const initialState = {
     payments: [{ toBeField: true }],
 }
 
-export const getPayments = createAsyncThunk("api/getPayments", async () => {
+export const getPayments = createAsyncThunk("payments/getPayments", async () => {
     try {
         const response = await axios.get(
             `http://${process.env.REACT_APP_DEV_API || document.domain}/payments`
@@ -27,15 +27,15 @@ export const paymentsSlice = createSlice(
         },
         extraReducers: (builder) => {
             builder
-            .addCase(getPayments.pending, (state) => {
-                state.payments = [{ idle: true }];
-            })
-            .addCase(getPayments.rejected, (state) => {
-                state.payments = [{ error: "Something went wrong" }];
-            })
-            .addCase(getPayments.fulfilled, (state, action) => {
-                state.payments = action.payload;
-            })
+                .addCase(getPayments.pending, (state) => {
+                    state.payments = [{ idle: true }];
+                })
+                .addCase(getPayments.rejected, (state) => {
+                    state.payments = [{ error: "Something went wrong" }];
+                })
+                .addCase(getPayments.fulfilled, (state, action) => {
+                    state.payments = action.payload;
+                })
         }
     }
 )

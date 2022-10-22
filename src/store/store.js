@@ -1,8 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit';
-import apiReducer from './api';
+import categoriesReducer from "./categories"
+import commentsReducer from "./comments"
+import deliveriesReducer from "./deliveries"
+import ordersReducer from "./orders"
+import paymentsReducer from "./payments"
+import productByIdReducer from "./productById"
+import productsReducer from "./products"
+import productsByNameReducer from "./productsByName"
+import userByIdReducer from "./userById"
+import usersReducer from "./users"
 
 export const store = configureStore({
   reducer: {
-    api: apiReducer,
+    categories: categoriesReducer,
+    comments: commentsReducer,
+    deliveries: deliveriesReducer,
+    orders: ordersReducer,
+    payments: paymentsReducer,
+    productById: productByIdReducer,
+    products: productsReducer,
+    productsByName: productsByNameReducer,
+    userById: userByIdReducer,
+    users: usersReducer,
   },
 });

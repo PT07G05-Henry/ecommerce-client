@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
+// Constantes para usar las queries de getProducts
 export const NAME = "name";
 export const PAGE = "page";
 export const QUANTITY = "quantity";
@@ -17,11 +17,7 @@ export const STOCK = "stock";
 export const RATING = "rating";
 export const USER_ROL_ID = "usersRolId";
 
-const initialState = {
-    products: { toBeField: true },
-}
-
-export const getProducts = createAsyncThunk("api/getProducts", async (flags) => {
+export const getProductsEndpoint = async (flags) => {
     let queries = '?';
     flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `${e}=${flags[e]}&` }));
     try {
@@ -32,7 +28,13 @@ export const getProducts = createAsyncThunk("api/getProducts", async (flags) => 
     } catch (error) {
         console.error(error);
     }
-});
+}
+
+const initialState = {
+    products: { toBeField: true },
+}
+
+export const getProducts = createAsyncThunk("products/getProducts", getProductsEndpoint);
 
 export const productsSlice = createSlice(
     {
@@ -45,15 +47,15 @@ export const productsSlice = createSlice(
         },
         extraReducers: (builder) => {
             builder
-            .addCase(getProducts.pending, (state) => {
-                state.products = { idle: true };
-            })
-            .addCase(getProducts.rejected, (state) => {
-                state.products = { error: "Something went wrong" };
-            })
-            .addCase(getProducts.fulfilled, (state, action) => {
-                state.products = action.payload;
-            })
+                .addCase(getProducts.pending, (state) => {
+                    state.products = { idle: true };
+                })
+                .addCase(getProducts.rejected, (state) => {
+                    state.products = { error: "Something went wrong" };
+                })
+                .addCase(getProducts.fulfilled, (state, action) => {
+                    state.products = action.payload;
+                })
         }
     }
 )

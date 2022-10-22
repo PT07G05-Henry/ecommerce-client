@@ -1,28 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const NAME = "name";
-export const PAGE = "page";
-export const QUANTITY = "quantity";
-export const CATEGORY = "category";
-export const TYPE_ORDER = "typeOrder";
-export const ASC = "ASC";
-export const DESC = "DESC";
-export const ORDERBY = "orderBy";
-export const ID = "id";
-export const PRICE = "price";
-export const DESCRIPTION = "description";
-export const STOCK = "stock";
-export const RATING = "rating";
-export const USER_ROL_ID = "usersRolId";
-
 const initialState = {
-    productsById: { toBeField: true },
-    products: { noProduct: true },
+    product: { noProduct: true },
     
 }
 
-export const getProductById = createAsyncThunk("api/getProductById", async (id) => {
+export const getProductById = createAsyncThunk("productsById/getProductById", async (id) => {
     try {
         const response = await axios.get(
             `http://${process.env.REACT_APP_DEV_API || document.domain}/products/${id}`
@@ -45,19 +29,19 @@ export const productsByIdSlice = createSlice(
         extraReducers: (builder) => {
             builder
             .addCase(getProductById.pending, (state) => {
-                state.products = { idle: true };
+                state.product = { idle: true };
             })
             .addCase(getProductById.rejected, (state) => {
-                state.products = { error: "Something went wrong" };
+                state.product = { error: "Something went wrong" };
             })
             .addCase(getProductById.fulfilled, (state, action) => {
-                state.products = action.payload;
+                state.product = action.payload;
             })
         }
     }
 )
 
-export const selectproductsById = (state) => state.productsById.productsById;
+export const selectProductsById = (state) => state.productsById.product;
 
 export const { start } = productsByIdSlice.actions
 
