@@ -53,6 +53,8 @@ code {
 .container {
   width: var(--container-width-lg);
   margin: 0 auto;
+  position: relative;
+  
 }
 
 h1,
@@ -74,6 +76,7 @@ a:hover {
 
 .btn {
   width: max-content;
+  display: inline-block;
   color: var(--color-white);
   background: var(--color-primary);
   padding: 0.25rem 1.2rem;

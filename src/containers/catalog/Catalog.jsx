@@ -5,16 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProducts, selectProducts, CATEGORY, PAGE } from "../../store/api";
 import Loading from "../../components/loading/Loading";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 const Catalog = () => {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
   const {categoryId} = useParams();
-  //const [isACategoryId, setIsACategoryId] = useState(false);
-  
-  
-  
+   
   useEffect(() => {
     
     products &&

@@ -6,12 +6,8 @@ import "./navBar.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import ButtonLogin from "../Account/ButtonLogin";
 import Account from "../Account/Account";
-
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories, selectCategories } from "../../store/api";
-
-import logo from '../../assets/Logo1.png'
-
 
 export default function NavBar() {
   const { isAuthenticated, get } = useAuth0();
@@ -27,7 +23,6 @@ export default function NavBar() {
     <>
       <div className="container nav__spacer" />
       <nav className="container nav">
-        <img className="nav__logo" src={logo} alt="logo" />
         <Link className="btn btn-primary" to="/">
           Home
         </Link>
