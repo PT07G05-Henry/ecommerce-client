@@ -38,7 +38,7 @@ const OrderDetail = (props) => {
       </div>
       <div>
         <div>
-          <h4>Customer's information</h4>
+          <h3>Customer's information</h3>
           <h4>
             Name: {order.user && order.user.first_name},{" "}
             {order.user && order.user.last_name}
@@ -47,11 +47,11 @@ const OrderDetail = (props) => {
           <h4>Phone number: {order.delivery && order.delivery.phone_number}</h4>
         </div>
         <div>
-          <h4>Ship info</h4>
-          <h4>Type: {order.delivery && order.delivery.shipping_address}</h4>
-          <h4>Shipping address: {order.delivery && order.delivery.type}</h4>
+          <h3>Ship info</h3>
+          <h4>Type: {order.delivery && order.delivery.type}</h4>
+          <h4>Shipping address: {order.delivery && order.delivery.shipping_address}</h4>
           <h4>Status: {order.delivery && order.delivery.status}</h4>
-        </div>
+        </div> 
       </div>
       <table>
         <tbody>
@@ -80,7 +80,7 @@ const OrderDetail = (props) => {
       </table>
       <h4>Subtotal: ${order.total_price}</h4>
       <div>
-        <h4>Payment</h4>
+        <h3>Payment</h3>
         <h4>payment method: {order.payment && order.payment.type}</h4>
         <h4>status: {order.payment && order.payment.status}</h4>
       </div>
