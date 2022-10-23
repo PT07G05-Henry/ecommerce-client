@@ -17,7 +17,6 @@ export default function NavBar() {
     categories &&
       (categories[0].toBeField || categories[0].error) &&
       dispatch(getCategories());
-      console.log(categories)
   }, [categories]);
   return (
     <>
