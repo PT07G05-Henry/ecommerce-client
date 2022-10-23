@@ -30,39 +30,27 @@ const OrderDetail = (props) => {
       <h1>PURCHASE ORDER</h1>
       <div className="initialData">
         <div>
-          <h4>Date of issue</h4>
-          <h4>Order number</h4>
-        </div>
-        <div>
-          <h4>{order.createdAt && order.createdAt.slice(0, 10)}</h4>
-          <h4>{order.id}</h4>
+          <h4>
+            Date of issue: {order.createdAt && order.createdAt.slice(0, 10)}
+          </h4>
+          <h4>Order number: {order.id}</h4>
         </div>
       </div>
       <div>
         <div>
           <h4>Customer's information</h4>
-          <h4>Name</h4>
-          <h4>Email</h4>
-          <h4>Phone number</h4>
-        </div>
-        <div>
           <h4>
-            {order.user && order.user.first_name},{" "}
+            Name: {order.user && order.user.first_name},{" "}
             {order.user && order.user.last_name}
           </h4>
-          <h4>{order.user && order.user.email}</h4>
-          <h4>{order.delivery && order.delivery.phone_number}</h4>
+          <h4>Email: {order.user && order.user.email}</h4>
+          <h4>Phone number: {order.delivery && order.delivery.phone_number}</h4>
         </div>
         <div>
           <h4>Ship info</h4>
-          <h4>Type</h4>
-          <h4>Shipping address</h4>
-          <h4>Status</h4>
-        </div>
-        <div>
-          <h4>{order.delivery && order.delivery.shipping_address}</h4>
-          <h4>{order.delivery && order.delivery.type}</h4>
-          <h4>{order.delivery && order.delivery.status}</h4>
+          <h4>Type: {order.delivery && order.delivery.shipping_address}</h4>
+          <h4>Shipping address: {order.delivery && order.delivery.type}</h4>
+          <h4>Status: {order.delivery && order.delivery.status}</h4>
         </div>
       </div>
       <table>
@@ -92,15 +80,9 @@ const OrderDetail = (props) => {
       </table>
       <h4>Subtotal: ${order.total_price}</h4>
       <div>
-        <div>
-          <h4>Payment</h4>
-          <h4>payment method</h4>
-          <h4>status</h4>
-        </div>
-        <div>
-          <h4>{order.payment && order.payment.type}</h4>
-          <h4>{order.payment && order.payment.status}</h4>
-        </div>
+        <h4>Payment</h4>
+        <h4>payment method: {order.payment && order.payment.type}</h4>
+        <h4>status: {order.payment && order.payment.status}</h4>
       </div>
     </div>
   );
