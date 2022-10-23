@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { PAGE } from "../../store/api";
 import "./paginated.css";
 
-const Cards = ({ data, dispatch }) => {
+const Paginated = ({ data, dispatch }) => {
   const [controller, setController] = useState(data.query);
-  const [arrayPag, setArrayPag] = useState([]);
   const [change, setChange] = useState(false);
 
   const addToController = (flag) => {
@@ -216,7 +215,7 @@ const Cards = ({ data, dispatch }) => {
   );
 };
 
-export default Cards;
+export default Paginated;
 
 // import React, { useEffect }  from "react";
 // import "./home.css";

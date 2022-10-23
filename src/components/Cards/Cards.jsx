@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "../Card/Card";
+import Paginated from "../Paginated/Paginated.jsx"
 import {
   NAME,
   PAGE,
@@ -266,6 +267,7 @@ const Cards = ({ products, dispatch }) => {
 
   return (
     <>
+    <Paginated data={products} dispatch={dispatch}/>
       <Pager />
       <RenderFilters filters={filters} />
       <div className="cards__grid">
