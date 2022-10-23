@@ -1,0 +1,27 @@
+.CategoryImg {
+    width: 100px;
+    display: flex;
+    margin: auto;
+}
+
+.CategoryName {
+    justify-content: center;
+    display: flex;
+}
+
+.InfoCategory {
+    border: 1px solid black;
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  min-width: fit-content;
+  padding: 0px 20px;
+}
+
+.ImgCheck {
+  width:15px
+}
+
+.ContainerImgInput{
+display: flex;
+}

@@ -5,6 +5,8 @@ import Home from "./containers/Home/Home";
 import Catalog from "./containers/catalog/Catalog";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import CreateProduct from "../src/components/CreateProduct/CreateProduct";
+import CreateCategory from "../src/components/CreateCategory/CreateCategory";
+ 
 import SearchByName from "./containers/SearchByName/SearchByName";
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/create/product" element={<CreateProduct />} />
+          <Route path="/create/category" element={<CreateCategory />} />
           <Route
             path="*"
             element={
