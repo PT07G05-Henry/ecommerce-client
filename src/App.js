@@ -6,7 +6,8 @@ import Catalog from "./containers/catalog/Catalog";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import CreateProduct from "../src/components/CreateProduct/CreateProduct";
 import SearchByName from "./containers/SearchByName/SearchByName";
-
+import Users from "./components/Users/Users"; 
+  
 function App() {
   const navigate = useNavigate();
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/create/product" element={<CreateProduct />} />
+          <Route path="/users" element={<Users />} />
           <Route
             path="*"
             element={

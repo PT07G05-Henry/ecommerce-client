@@ -7,10 +7,17 @@ const initialState = {
 
 export const getUsers = createAsyncThunk("users/getUsers", async (email) => {
     try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/users?email=${email}`
-        );
-        return response.data;
+        if (email) {
+            const response = await axios.get(
+                `http://${process.env.REACT_APP_DEV_API || document.domain}/users?email=${email}`
+            );
+            return response.data;
+        } else {
+            const response = await axios.get(
+                `http://${process.env.REACT_APP_DEV_API || document.domain}/users`
+            );
+            return response.data;
+        }
     } catch (error) {
         console.error(error);
     }
