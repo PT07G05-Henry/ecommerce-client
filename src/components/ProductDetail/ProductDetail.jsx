@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductById, selectProduct } from "../../store/api";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import "./ProductDetail.css"
+import {FcApproval} from "react-icons/fc"
+import {BsCart4} from "react-icons/bs"
+
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -19,9 +23,9 @@ const ProductDetail = () => {
   }, [dispatch]);
 
   return (
-    <section>
+    <section className="product-detail">
       {image && image.length && (
-        <div className="card__imageViewer">
+        <div className="product-detail__img">
           <button
             className="card__imageViewer-arrow"
             style={imgIndex === 0 ? { display: "none" } : {}}
@@ -39,13 +43,17 @@ const ProductDetail = () => {
           </button>
         </div>
       )}
-
-      <h2>{product.name}</h2>
-      <h3>${product.price}</h3>
-      <h3>stock: {product.stock}</h3>
-      <button> Add to cart </button>
-      <h4>Description</h4>
-      <p>{product.description}</p>
+      <div className="product-detail__info">
+      <h2 className="name"> {product.name} <hr></hr></h2>
+      <div className="stock">
+      <h3> Price:${product.price}</h3>
+      <h3 className="stock"> <FcApproval /> Stock:{product.stock}</h3>
+      </div>
+      <div>
+      <button className="button-primary-add"><BsCart4/> Add to cart </button>
+      <p className="description">{product.description}</p>
+      </div>
+      </div>
     </section>
   );
 };

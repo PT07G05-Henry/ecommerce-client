@@ -16,7 +16,7 @@ export default function Footer() {
           <p>Henryecommerce@gmail.com</p>
         </article>
         <article className="footer__article">
-          <p>© 2022 all rights reserved to | HENRY</p>
+          <p>© 2022 all rights reserved to | HENRY <hr></hr> </p>
         </article>
         <article className="footer__article">
           <h3>Follow us</h3>

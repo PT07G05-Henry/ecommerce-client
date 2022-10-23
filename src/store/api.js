@@ -1,278 +1,74 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+/*
 
-export const NAME = "name";
-export const PAGE = "page";
-export const QUANTITY = "quantity";
-export const CATEGORY = "category";
-export const TYPE_ORDER = "typeOrder";
-export const ASC = "ASC";
-export const DESC = "DESC";
-export const ORDERBY = "orderBy";
-export const ID = "id";
-export const PRICE = "price";
-export const DESCRIPTION = "description";
-export const STOCK = "stock";
-export const RATING = "rating";
-export const USER_ROL_ID = "usersRolId";
+ATENCIÓN! > ESTE ES UN ARCHIVO DEDICADO UNICAMENTE PARA MANTENER LA COMPATIBILIDAD DE LOS
+COMPONENTES CREADOS ANTES DE LA MODULARIZACIÓN DEL STORE DE REDUX.
 
+NO IMPORTAR ESTE ARCHIVO A NUEVOS COMPONENTES NI VOLVER A MODIFICAR
 
+SI NECESITAN EXTENDER LA FUNCIONALIDAD DEL STORE PARA NUEVOS COMPONENTES O ACTUALIZAR 
+COMPONENTES VIEJOS USEN E IMPORTEN LOS NUEVOS MÓDULOS.
 
-let initialState = {
-    categories: [{ toBeField: true }],
-    comments: [{ toBeField: true }],
-    deliveries: [{ toBeField: true }],
-    orders: [{ toBeField: true }],
-    payments: [{ toBeField: true }],
-    products: { toBeField: true },
-    productsByName: { toBeField: true },
-    product: { noProduct: true },
-    user: { toBeField: true },
-};
+*/
 
-export const getCategories = createAsyncThunk("api/getCategories", async () => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/categories`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
+import { getCategories as newGetCategories, selectCategories as newSelectCategories } from "./categories";
+import { getComments as newGetComments, selectComments as newSelectComments } from "./comments";
+import { getDeliveries as newGetDeliveries, selectDeliveries as newSelectDeliveries } from "./deliveries";
+import { getOrders as newGetOrders, selectOrders as newSelectOrders } from "./orders";
+import { getPayments as newGetPayments, selectPayments as newSelectPayments } from "./payments";
+import {
+    NAME as NEW_NAME,
+    PAGE as NEW_PAGE,
+    QUANTITY as NEW_QUANTITY,
+    CATEGORY as NEW_CATEGORY,
+    TYPE_ORDER as NEW_TYPE_ORDER,
+    ASC as NEW_ASC,
+    DESC as NEW_DESC,
+    ORDERBY as NEW_ORDERBY,
+    ID as NEW_ID,
+    PRICE as NEW_PRICE,
+    DESCRIPTION as NEW_DESCRIPTION,
+    STOCK as NEW_STOCK,
+    RATING as NEW_RATING,
+    USER_ROL_ID as NEW_USER_ROL_ID,
+    getProducts as newGetProducts,
+    selectProducts as newSelectProducts,
+} from "./products";
+import { getProductsByName as newGetProductsByName, selectProductsByName as newSelectProductsByName } from "./productsByName";
+import { getProductById as newGetProductById, selectProductsById as newSelectProductsById } from "./productById";
+import { getUsers as newGetUsers, selectUser as newSelectUser } from "./users";
+import { getUsersById as newGetUsersById, selectUserById as newSelectUserById } from "./userById";
 
-export const getComments = createAsyncThunk("api/getComments", async () => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/comments`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getDeliveries = createAsyncThunk("api/getDeliveries", async () => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/deliveries`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getOrders = createAsyncThunk("api/getOrders", async () => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/orders`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getPayments = createAsyncThunk("api/getPayments", async () => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/payments`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getProducts = createAsyncThunk("api/getProducts", async (flags) => {
-    let queries = '?';
-    flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `${e}=${flags[e]}&` }));
-    try {
-        const response = await axios.get(
-            (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries.length > 1 ? queries : ''}` : flags)
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getProductsByName = createAsyncThunk("api/getProductsByName", async (flags) => {
-    let queries = '?';
-    flags && ((typeof flags) !== "string") && (Object.keys(flags).forEach((e) => { queries = queries + `${e}=${flags[e]}&` }));
-    try {
-        const response = await axios.get(
-            (!flags || (typeof flags !== "string") ? `http://${process.env.REACT_APP_DEV_API || document.domain}/products${queries.length > 1 ? queries : ''}` : flags)
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getProductById = createAsyncThunk("api/getProductById", async (id) => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/products/${id}`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getUsers = createAsyncThunk("api/getUsers", async (email) => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/users?email=${email}`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-export const getUsersById = createAsyncThunk("api/getUsersById", async (id) => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.REACT_APP_DEV_API || document.domain}/users/${id}`
-        );
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-
-
-export const apiSlice = createSlice({
-    name: "api",
-    initialState,
-    reducers: {
-        start: (state) => {
-            state.categories = [{ toBeField: true }];
-            state.comments = [{ toBeField: true }];
-            state.deliveries = [{ toBeField: true }];
-            state.orders = [{ toBeField: true }];
-            state.payments = [{ toBeField: true }];
-            state.products = { toBeField: true };
-            state.productsByName = { toBeField: true };
-            state.product = { noProduct: true };
-            state.user = [{ toBeField: true }];
-        },
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(getCategories.pending, (state) => {
-                state.categories = [{ idle: true }]; //categories[0].toBeField 
-            })
-            .addCase(getCategories.rejected, (state) => {
-                state.categories = [{ error: "Something went wrong" }];
-            })
-            .addCase(getCategories.fulfilled, (state, action) => {
-                state.categories = action.payload;
-            })
-            .addCase(getComments.pending, (state) => {
-                state.comments = [{ idle: true }];
-            })
-            .addCase(getComments.rejected, (state) => {
-                state.comments = [{ error: "Something went wrong" }];
-            })
-            .addCase(getComments.fulfilled, (state, action) => {
-                state.comments = action.payload;
-            })
-            .addCase(getDeliveries.pending, (state) => {
-                state.deliveries = [{ idle: true }];
-            })
-            .addCase(getDeliveries.rejected, (state) => {
-                state.deliveries = [{ error: "Something went wrong" }];
-            })
-            .addCase(getDeliveries.fulfilled, (state, action) => {
-                state.deliveries = action.payload;
-            })
-            .addCase(getOrders.pending, (state) => {
-                state.orders = [{ idle: true }];
-            })
-            .addCase(getOrders.rejected, (state) => {
-                state.orders = [{ error: "Something went wrong" }];
-            })
-            .addCase(getOrders.fulfilled, (state, action) => {
-                state.orders = action.payload;
-            })
-            .addCase(getPayments.pending, (state) => {
-                state.payments = [{ idle: true }];
-            })
-            .addCase(getPayments.rejected, (state) => {
-                state.payments = [{ error: "Something went wrong" }];
-            })
-            .addCase(getPayments.fulfilled, (state, action) => {
-                state.payments = action.payload;
-            })
-            .addCase(getProducts.pending, (state) => {
-                state.products = { idle: true };
-            })
-            .addCase(getProducts.rejected, (state) => {
-                state.products = { error: "Something went wrong" };
-            })
-            .addCase(getProducts.fulfilled, (state, action) => {
-                state.products = action.payload;
-            })
-            .addCase(getProductsByName.pending, (state) => {
-                state.productsByName = { idle: true };
-            })
-            .addCase(getProductsByName.rejected, (state) => {
-                state.productsByName = { error: "Something went wrong" };
-            })
-            .addCase(getProductsByName.fulfilled, (state, action) => {
-                state.productsByName = action.payload;
-            })
-            .addCase(getProductById.pending, (state) => {
-                state.product = { idle: true };
-            })
-            .addCase(getProductById.rejected, (state) => {
-                state.product = { error: "Something went wrong" };
-            })
-            .addCase(getProductById.fulfilled, (state, action) => {
-                state.product = action.payload;
-            })
-            .addCase(getUsers.pending, (state) => {
-                state.user = { idle: true };
-            })
-            .addCase(getUsers.rejected, (state) => {
-                state.user = [{ error: "Something went wrong" }];
-            })
-            .addCase(getUsers.fulfilled, (state, action) => {
-                state.user = action.payload;
-            })
-            .addCase(getUsersById.pending, (state) => {
-                state.user = { idle: true };
-            })
-            .addCase(getUsersById.rejected, (state) => {
-                state.user = [{ error: "Something went wrong" }];
-            })
-            .addCase(getUsersById.fulfilled, (state, action) => {
-                state.user = action.payload;
-            });
-    },
-});
-
-export const selectCategories = (state) => state.api.categories;
-export const selectComments = (state) => state.api.comments;
-export const selectDeliveries = (state) => state.api.deliveries;
-export const selectOrders = (state) => state.api.orders;
-export const selectPayments = (state) => state.api.payments;
-export const selectProducts = (state) => state.api.products;
-export const selectNext = (state) => state.api.products.next;
-export const selectPrev = (state) => state.api.products.prev;
-export const selectProductsByName = (state) => state.api.productsByName;
-export const selectNextByName = (state) => state.api.productsByName.next;
-export const selectPrevByName = (state) => state.api.productsByName.prev;
-export const selectProduct = (state) => state.api.product;
-export const selectUser = (state) => state.api.user;
-
-export const {
-    start
-} = apiSlice.actions;
-
-export default apiSlice.reducer;
+export const getCategories = newGetCategories;
+export const selectCategories = newSelectCategories;
+export const getComments = newGetComments;
+export const selectComments = newSelectComments;
+export const getDeliveries = newGetDeliveries;
+export const selectDeliveries = newSelectDeliveries;
+export const getOrders = newGetOrders;
+export const selectOrders = newSelectOrders;
+export const getPayments = newGetPayments;
+export const selectPayments = newSelectPayments;
+export const NAME = NEW_NAME;
+export const PAGE = NEW_PAGE;
+export const QUANTITY = NEW_QUANTITY;
+export const CATEGORY = NEW_CATEGORY;
+export const TYPE_ORDER = NEW_TYPE_ORDER;
+export const ASC = NEW_ASC;
+export const DESC = NEW_DESC;
+export const ORDERBY = NEW_ORDERBY;
+export const ID = NEW_ID;
+export const PRICE = NEW_PRICE;
+export const DESCRIPTION = NEW_DESCRIPTION;
+export const STOCK = NEW_STOCK;
+export const RATING = NEW_RATING;
+export const USER_ROL_ID = NEW_USER_ROL_ID;
+export const getProducts = newGetProducts;
+export const selectProducts = newSelectProducts;
+export const getProductsByName = newGetProductsByName;
+export const selectProductsByName = newSelectProductsByName;
+export const getProductById = newGetProductById;
+export const selectProduct = newSelectProductsById;
+export const getUsers = newGetUsers;
+export const selectUser = newSelectUser;
+export const getUsersById = newGetUsersById;
+export const selectUsers = newSelectUserById;

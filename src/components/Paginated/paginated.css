@@ -1,0 +1,87 @@
+.cards__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: space-evenly;
+    align-content: space-evenly;
+    justify-items: center;
+    align-items: center;
+  }
+  
+
+  .cards__controller{
+    display: inline-flex;  
+    position: relative;
+    flex-direction: row;
+
+  }
+  .cards__controller-pagerL {
+    display: inline-flex;
+    
+  }
+
+  .cards__controller-pagerR {
+    display: inline-flex;
+
+  }
+
+    #container{width:100%;}
+
+    #left{float:left;width:100px;}
+
+    #right{float:right;width:100px;}
+
+    #center{margin:0 auto;width:100px;}
+
+  .active{
+    background-color: aqua !important;
+    color: black !important;
+  }
+  
+  .btnDots{
+    background-color: #f0fcfc;
+    width: max-content;
+    display: inline-block;
+    color: black;
+    padding: 0.25rem 1.2rem;
+    border: 1px solid transparent;
+    transition: var(--transition);
+  }
+  
+  .divCenter {
+    display: flex;
+    position: relative;
+    margin: 10px auto;
+    align-items: center;
+    flex-direction: column;
+  }
+  [value^="PrevPag"] {
+    margin-right: 5px;
+  }
+  
+  [value^="NextPag"]{
+    margin-left: 5px;
+  }
+  @media (max-width: 1790px) {
+    .cards__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (max-width: 1425px) {
+    .cards__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 1050px) {
+    .cards__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 1050px) {
+    .cards__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  

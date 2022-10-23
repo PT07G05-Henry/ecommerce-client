@@ -1,19 +1,20 @@
 .footer {
     width: 100%;
-    background-color: var(--color-bg);
-    color: var(--color-black)
+    background: var(--color-bg);
+    color: var(--color-primary);
 }
 
 .footer__container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 3rem 0;
+
 }
 
 .footer__article {
     display: flex;
     flex-direction: column;
-    height: 10rem;
+    height: 8rem;
     justify-content: center;
     align-content: space-between;
     align-items: center;
