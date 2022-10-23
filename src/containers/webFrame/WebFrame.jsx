@@ -1,4 +1,5 @@
 import React from "react";
+import Background from "../../components/background/Background";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
 import { Outlet } from "react-router-dom";
@@ -6,8 +7,9 @@ import { Outlet } from "react-router-dom";
 const WebFrame = () => {
   return (
     <>
-      <NavBar />
+      <Background/>
       <Outlet />
+      <NavBar />
       <Footer />
     </>
   );
