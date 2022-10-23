@@ -15,6 +15,7 @@ function App() {
         <Route path="/" element={<WebFrame />}>
           <Route index element={<Home />} />
           <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:categoryId" element={<Catalog />} />
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/create/product" element={<CreateProduct />} />

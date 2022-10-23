@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import Cards from "../../components/Cards/Cards";
 import "./catalog.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, selectProducts, CATEGORY, PAGE } from "../../store/api";
+import { getProducts, selectProducts, CATEGORY, PAGE } from "../../store/products";
+
 import Loading from "../../components/loading/Loading";
 import { useParams } from "react-router-dom";
 
@@ -19,6 +20,7 @@ const Catalog = () => {
   }, [products]);
   
   useEffect(()=>{
+    console.log(categoryId)
     dispatch(getProducts(categoryId && {[CATEGORY]:categoryId, [PAGE]:"1" }));
   },[categoryId]);
   
