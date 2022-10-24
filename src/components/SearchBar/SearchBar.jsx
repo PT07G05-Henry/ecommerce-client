@@ -6,28 +6,46 @@ import "./searchBar.css";
 export default function SearchBar() {
   const navigate = useNavigate();
   const [product, setProduct] = useState("");
+  const [show, setShow] = useState(false);
   function handleSubmit(e) {
     setProduct(e.target.value);
   }
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        navigate(`/productsByName/${product}`);
-        setProduct("");
-      }}
-      className="nav__searchBar"
-    >
-      <input
-        className="nav__searchBar-textInput"
-        type="text"
-        value={product}
-        onChange={handleSubmit}
-        placeholder="Search products..."
-      />
-      <button type="submit" className="btn btn-primary">
-        <GoSearch />
-      </button>
-    </form>
+    <>
+      <div className="searchBar__container">
+        <div className="container searchBar__flex">
+          <form
+            style={!show ? { display: "none" } : undefined}
+            onSubmit={(e) => {
+              e.preventDefault();
+              navigate(`/productsByName/${product}`);
+              setProduct("");
+            }}
+            className="box searchBar"
+          >
+            <input
+              className="searchBar-textInput"
+              type="text"
+              value={product}
+              onChange={handleSubmit}
+              placeholder="Search products..."
+            />
+            <button type="submit" className="btn btn-primary">
+              Search
+            </button>
+          </form>
+          <div className="searchBar__buttonPlace">
+            <div
+              className="btn-rounded searchBar__button"
+              onClick={() => {
+                setShow(!show);
+              }}
+            >
+              <GoSearch size={24} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
