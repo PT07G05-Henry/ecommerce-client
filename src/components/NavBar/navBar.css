@@ -1,19 +1,56 @@
-.nav {
-  position: sticky;
-  top: 0;
+.nav__container {
+  position: fixed;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
+  bottom: 0;
+  width: 100%;
+}
+
+.nav {
+  --radius: 1.5rem;
+  position: relative;
+  bottom: 7rem;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  background: var(--color-bg);
+  padding: .1rem 1rem;
+  background: linear-gradient(0deg,rgba(var(--color-secondary-rgb), 0.5) 0%,rgba(var(--color-black-rgb), 0.5) 100%);
+  border-bottom: var(--border);
+  border-left: var(--border);
+  border-right: var(--border);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  box-shadow: 0px 0px 59px 10px rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
 }
 
-.nav__spacer {
-  height: .5rem;
-  background: var(--color-bg);
-}
-
-.nav__logo{
+.nav__logo {
   height: 100px;
   width: 100px;
+}
+
+.nav__button{
+  background: transparent;
+  padding: .25rem .75rem ;
+  color: var(--color-primary);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.nav__button > svg {
+  filter: drop-shadow(0px 0px 15px rgb( var(--color-black-rgb) ));
+  transition: var(--transition);
+}
+
+.nav__button:hover{
+  color: var(--color-white);
+}
+
+.nav__button:hover > svg {
+  filter: drop-shadow(0px 0px 15px rgb( var(--color-primary-rgb) ));
+}
+
+.nav__middleSpace{
+  display: block;
+  width: 5rem;
 }

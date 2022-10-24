@@ -20,7 +20,7 @@ const Account = () => {
           }}
         />
       </div>
-      <div className="nav__user-menu" style={show ? {} : { display: "none" }}>
+      <div className="box nav__user-menu" style={show ? {} : { display: "none" }}>
         <button className="btn btn-primary" onClick={() => navigate("/create/product")}>
           Create Product
         </button>

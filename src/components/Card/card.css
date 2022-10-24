@@ -1,24 +1,21 @@
 .card {
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 20rem;
   width: 15rem;
-  padding: 0.5rem;
+  padding-bottom: .5rem;
   margin: 1rem;
-  background: rgba(var(--color-bg-rgb), 0.5);
-  box-shadow: 4px 4px 4px 0px rgba(var(--color-black-rgb), 0.25);
+  text-align: center;
 }
 
-
 .card__imageViewer {
-    height: fit-content;
-    min-height: 8rem;
+    display: flex;
+    max-height: 11.15rem;
+    width: 100%;
 }
 
 .card__imageViewer > img {
-    height: 8rem;
+    object-fit: cover;
 }
 
 .card__imageViewer-controller{

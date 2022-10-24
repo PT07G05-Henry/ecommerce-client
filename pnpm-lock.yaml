@@ -10,7 +10,7 @@ specifiers:
   axios: ^1.1.2
   react: ^18.2.0
   react-dom: ^18.2.0
-  react-icons: ^4.4.0
+  react-icons: ^4.6.0
   react-redux: ^8.0.4
   react-router-dom: ^6.4.2
   react-scripts: 5.0.1
@@ -28,7 +28,7 @@ dependencies:
   axios: 1.1.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  react-icons: 4.4.0_react@18.2.0
+  react-icons: 4.6.0_react@18.2.0
   react-redux: 8.0.4_biqbaboplfbrettd7655fr4n2y
   react-router-dom: 6.4.2_biqbaboplfbrettd7655fr4n2y
   react-scripts: 5.0.1_react@18.2.0
@@ -8251,8 +8251,8 @@ packages:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
     dev: false
 
-  /react-icons/4.4.0_react@18.2.0:
-    resolution: {integrity: sha512-fSbvHeVYo/B5/L4VhB7sBA1i2tS8MkT0Hb9t2H1AVPkwGfVHLJCqyr2Py9dKMxsyM63Eng1GkdZfbWj+Fmv8Rg==}
+  /react-icons/4.6.0_react@18.2.0:
+    resolution: {integrity: sha512-rR/L9m9340yO8yv1QT1QurxWQvWpbNHqVX0fzMln2HEb9TEIrQRGsqiNFQfiv9/JEUbyHmHPlNTB2LWm2Ttz0g==}
     peerDependencies:
       react: '*'
     dependencies:

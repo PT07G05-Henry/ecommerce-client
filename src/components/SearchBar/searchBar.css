@@ -1,13 +1,48 @@
-.nav__searchBar {
-  width: max-content;
-  display: inline-block;
-  background: transparent;
-  color: var(--color-white);
-  padding: 0.25rem 1.2rem;
-  margin-left: auto;
+.searchBar__container{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
-.nav__searchBar-textInput {
+.searchBar__flex{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+}
+
+.searchBar__buttonPlace{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+  justify-content: center;
+  width: fit-content;
+  height: 5.5rem;
+}
+
+.searchBar__button{
+  position: relative;
+  bottom: 90vh;
+  right: 3vw;
+  padding: .5rem ;
+  margin: 2rem 0;
+}
+
+.searchBar {
+  position: relative;
+  bottom: 86vh;
+  right: 3.25vw;
+  padding: .75rem;
+}
+
+.searchBar > button {
+  margin: .25rem;
+}
+
+.searchBar-textInput {
   background: transparent;
+  color: var(--color-white);
   border-bottom: 2px solid rgba(var(--color-primary-rgb), .5);
 }
+
