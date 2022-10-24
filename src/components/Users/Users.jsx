@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, selectUser } from "../../store/api";
-import axios from "axios";
+import Paginated from "./Paginated";
+//import SearchBar from "./SearchBar";
 
 export default function Users() {
   const dispatch = useDispatch();
@@ -14,27 +15,18 @@ export default function Users() {
     if (value === "All") {
       return setFilteredUsers(users);
     }
+    console.log(filteredUsers, 'filtro')
     setFilteredUsers(
       users.filter((user) => user.rols && user.rols[0].type === value)
     );
-  }
+  };
 
-  setTimeout(() => {
-    if (!filteredUsers.length) {
-      setFilteredUsers(users);
-    }
-  }, 3000);
-
-  function handleClick(e) {
-    console.log(e.target.value);
-    axios
-      .delete(
-        `http://${process.env.REACT_APP_DEV_API || document.domain}/users`,
-        e.target.value
-      )
-      .then(alert("User deleted successfully"))
-      .catch((err) => alert(e.response.data));
-  }
+  // setTimeout(() => {
+  //   console.log(filteredUsers, 'setTime')
+  //   if (!filteredUsers.length) {
+  //     setFilteredUsers(users);
+  //   }
+  // }, 5000);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -43,40 +35,19 @@ export default function Users() {
   return (
     <>
       <div>
+        {/* <SearchBar
+          setFilteredUsers={setFilteredUsers}
+        /> */}
         <select onChange={handleChange}>
           <option value="All">All</option>
           <option value="Admin">Admin</option>
           <option value="User">User</option>
         </select>
-        <table>
-          <tbody>
-            <tr>
-              <th>User number</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Delete</th>
-            </tr>
-          </tbody>
-          {filteredUsers &&
-            filteredUsers.map((user, index) => (
-              <tbody key={index}>
-                <tr>
-                  <td>{user.id}</td>
-                  <td>
-                    {user.first_name} {user.last_name}
-                  </td>
-                  <td>{user.email}</td>
-                  <td>{user.rols && user.rols[0].type}</td>
-                  <td>
-                    <button value={user.email} onClick={handleClick}>
-                      X
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-        </table>
+        <Paginated
+          filteredUsers={filteredUsers}
+          setFilteredUsers={setFilteredUsers}
+          users={users}
+        />
       </div>
     </>
   );
