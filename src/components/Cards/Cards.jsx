@@ -40,7 +40,7 @@ const Cards = ({ products, dispatch }) => {
   const removeOfController = (key) => {
     let newController = structuredClone(controller);
     delete newController[key];
-    setController({...newController,[PAGE]:"1"});
+    setController({ ...newController, [PAGE]: "1" });
     setChange(!change);
   };
   const addToController = (flag) => {
@@ -63,10 +63,10 @@ const Cards = ({ products, dispatch }) => {
     const NEXT = true;
     const BACK = false;
     const pageButtons = (direction) => {
-      const DEFAULT = "cards__pager-btn btn";
-      const SM = "cards__pager-btn-sm cards__pager-btn btn";
-      const MD = "cards__pager-btn-md cards__pager-btn btn";
-      const LG = "cards__pager-btn-lg cards__pager-btn btn";
+      const DEFAULT = "pager__btn btn-rounded";
+      const SM = "pager__btn-sm pager__btn btn-rounded";
+      const MD = "pager__btn-md pager__btn btn-rounded";
+      const LG = "pager__btn-lg pager__btn btn-rounded";
       const currentPage = parseInt(controller.page);
       let pages = [
         {
@@ -83,11 +83,15 @@ const Cards = ({ products, dispatch }) => {
         },
         {
           class: MD,
-          page: direction ? Math.ceil((currentPage + 10) / 10) * 10 : Math.floor((currentPage - 10) / 10) * 10,
+          page: direction
+            ? Math.ceil((currentPage + 10) / 10) * 10
+            : Math.floor((currentPage - 10) / 10) * 10,
         },
         {
           class: LG,
-          page: direction ? Math.ceil((currentPage + 20) / 10) * 10 : Math.floor((currentPage - 20) / 10) * 10,
+          page: direction
+            ? Math.ceil((currentPage + 20) / 10) * 10
+            : Math.floor((currentPage - 20) / 10) * 10,
         },
       ];
       if (direction) {
@@ -102,7 +106,7 @@ const Cards = ({ products, dispatch }) => {
       } else {
         let button = {
           class: LG,
-          page: Math.floor((currentPage - (currentPage / 2)) / 10) * 10,
+          page: Math.floor((currentPage - currentPage / 2) / 10) * 10,
         };
         button.page < pages[4].page && pages.push(button);
       }
@@ -127,14 +131,18 @@ const Cards = ({ products, dispatch }) => {
     );
 
     return (
-      <div className="cards__pager">
-        <div className="cards__pager-back">
+      <div className="pager">
+        <div className="pager__back">
           {pageButtons(BACK).map((page) => (
             <PageButton page={page} />
           ))}
         </div>
-        <div className="btn cards__pager-currentPage">{controller.page}</div>
-        <div className="cards__pager-next">
+        <div className="pager__current">
+          <div className="pager__current-page btn-rounded">
+            {controller.page}
+          </div>
+        </div>
+        <div className="pager__next">
           {pageButtons(NEXT).map((page) => (
             <PageButton page={page} />
           ))}
@@ -167,14 +175,6 @@ const Cards = ({ products, dispatch }) => {
       ],
     },
     {
-      name: "Order direction",
-      key: TYPE_ORDER,
-      values: [
-        { [TYPE_ORDER]: ASC, label: "Ascendent" },
-        { [TYPE_ORDER]: DESC, label: "Decedent" },
-      ],
-    },
-    {
       name: "Order by",
       key: ORDERBY,
       values: [
@@ -187,6 +187,14 @@ const Cards = ({ products, dispatch }) => {
         { [ORDERBY]: USER_ROL_ID, label: "CreatedBy" },
       ],
     },
+    {
+      name: "Order direction",
+      key: TYPE_ORDER,
+      values: [
+        { [TYPE_ORDER]: ASC, label: "Ascendent" },
+        { [TYPE_ORDER]: DESC, label: "Decedent" },
+      ],
+    },
   ];
 
   const RenderFilters = ({ filters }) => {
@@ -194,7 +202,7 @@ const Cards = ({ products, dispatch }) => {
 
     const Filter = ({ name, flag, values }) => {
       const applyFilter = (e, key) => {
-        const flag = {...JSON.parse(e.target.value),[PAGE]:"1"};
+        const flag = { ...JSON.parse(e.target.value), [PAGE]: "1" };
         flag[key] === REMOVE ? removeOfController(key) : addToController(flag);
       };
 
@@ -208,6 +216,7 @@ const Cards = ({ products, dispatch }) => {
                 : JSON.stringify({ [flag]: REMOVE })
             }
             onChange={(e) => applyFilter(e, flag)}
+            className="filter__selector"
           >
             <option
               value={JSON.stringify({ [flag]: REMOVE })}
@@ -232,33 +241,37 @@ const Cards = ({ products, dispatch }) => {
     };
 
     return (
-      <>
-        <button
-          className="btn filters__btn"
-          onClick={() => {
-            setShow(!show);
-          }}
-        >
-          <ImFilter />
-        </button>
-        <form
-          action=""
-          className="modal filters__modal"
-          style={show ? undefined : { display: "none" }}
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          {filters.map(({ name, key, values }) => (
-            <Filter
-              key={`${key}_filter`}
-              name={name}
-              flag={key}
-              values={values}
-            />
-          ))}
-        </form>
-      </>
+      <div className="filters__flex">
+        <div className="filters__buttonPlace">
+          <button
+            className="btn-rounded filters__btn"
+            onClick={() => {
+              setShow(!show);
+            }}
+          >
+            <ImFilter size={24} />
+          </button>
+        </div>
+        <div className="filters__box">
+          <form
+            action=""
+            className="box"
+            style={show ? undefined : { display: "none" }}
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            {filters.map(({ name, key, values }) => (
+              <Filter
+                key={`${key}_filter`}
+                name={name}
+                flag={key}
+                values={values}
+              />
+            ))}
+          </form>
+        </div>
+      </div>
     );
   };
 

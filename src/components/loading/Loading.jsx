@@ -1,11 +1,11 @@
 import React from "react";
 import "./loading.css";
-import { Waveform } from "@uiball/loaders";
+import { Ring } from "@uiball/loaders";
 
 const Loading = ({ size }) => {
   return (
     <div className="loading">
-      <Waveform size={size} color="#0c7489" />
+      <Ring size={size} color="#c5a86d" />
     </div>
   );
 };
