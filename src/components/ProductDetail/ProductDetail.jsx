@@ -3,18 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductById, selectProductsById } from "../../store/productById";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css";
-import { FcApproval } from "react-icons/fc";
-import { BsCart4 } from "react-icons/bs";
 
 const ProductDetail = () => {
   const { id } = useParams();
-
   const dispatch = useDispatch();
-
   const product = useSelector(selectProductsById);
-
   const [imgIndex, setImgIndex] = useState(0);
-
   const image = product.images
     ?.filter((e) => e.image !== null)
     .map((e) => <img src={e.image} alt="image" />);
@@ -25,43 +19,39 @@ const ProductDetail = () => {
   }, [id]);
 
   return (
-    <section className="product-detail">
-      {image && image.length && (
-        <div className="product-detail__img">
-          <button
-            className="card__imageViewer-arrow"
-            style={imgIndex === 0 ? { display: "none" } : {}}
-            onClick={() => setImgIndex(imgIndex - 1)}
-          >
-            {"<"}
-          </button>
-          {image[imgIndex]}
-          <button
-            className="card__imageViewer-arrow"
-            style={imgIndex === image.length - 1 ? { display: "none" } : {}}
-            onClick={() => setImgIndex(imgIndex + 1)}
-          >
-            {">"}
-          </button>
+    <section className="container productDetail">
+      <div className="box-dry productDetail__box">
+        {image && image.length && (
+          <div className="productDetail__img-place">
+            <div className="productDetail__button">
+              <button
+                className="btn-rounded productDetail__img-arrow productDetail__img-arrowBack "
+                style={imgIndex === 0 ? { display: "none" } : {}}
+                onClick={() => setImgIndex(imgIndex - 1)}
+              >
+                {"<"}
+              </button>
+            </div>
+            <div className="productDetail_img">{image[imgIndex]}</div>
+            <div className="productDetail__button">
+              <button
+                className="btn-rounded productDetail__img-arrow productDetail__img-arrowNext"
+                style={imgIndex === image.length - 1 ? { display: "none" } : {}}
+                onClick={() => setImgIndex(imgIndex + 1)}
+              >
+                {">"}
+              </button>
+            </div>
+          </div>
+        )}
+        <h1>{product.name}</h1>
+        <div className="productDetail__info">
+          <h3>{`Price: ${product.price}`}</h3>
+          <h3>{`Stock: ${product.stock}`}</h3>
+          <button className="btn">Add to cart</button>
         </div>
-      )}
-      <div className="product-detail__info">
-        <h2 className="name">
-          {" "}
-          {product.name} <hr></hr>
-        </h2>
-        <div className="stock">
-          <h3> Price:${product.price}</h3>
-          <h3 className="stock">
-            {" "}
-            <FcApproval /> Stock:{product.stock}
-          </h3>
-        </div>
-        <div>
-          <button className="button-primary-add">
-            <BsCart4 /> Add to cart{" "}
-          </button>
-          <p className="description">{product.description}</p>
+        <div className="productDetails__description">
+          <p>{product.description}</p>
         </div>
       </div>
     </section>
