@@ -6,13 +6,15 @@ import Footer from "../../components/Footer/Footer";
 import { Outlet } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import LOGO from "../../assets/Logo.svg";
+import { useNavigate } from "react-router-dom";
 
 const WebFrame = () => {
+  const navigate = useNavigate()
   return (
     <>
       <Background />
       <div className="webFrame__topSpace">
-        <div className="brand">
+        <div className="brand" onClick={()=>{navigate("/")}}>
           <div className="logo">
             <img src={LOGO} alt="logo" />
           </div>
