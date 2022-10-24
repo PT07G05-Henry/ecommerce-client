@@ -1,6 +1,9 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 import SearchBar from "../SearchBar/SearchBar";
+import Categories from "../Categories/Categories"
 import "./navBar.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import ButtonLogin from "../Account/ButtonLogin";
@@ -29,3 +32,8 @@ export default function NavBar() {
     </>
   );
 }
+
+
+
+  
+ 
