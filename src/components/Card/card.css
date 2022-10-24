@@ -8,14 +8,14 @@
   text-align: center;
 }
 
-
 .card__imageViewer {
-    height: fit-content;
-    min-height: 8rem;
+    display: flex;
+    max-height: 11.15rem;
+    width: 100%;
 }
 
 .card__imageViewer > img {
-    height: 8rem;
+    object-fit: cover;
 }
 
 .card__imageViewer-controller{

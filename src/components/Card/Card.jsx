@@ -22,7 +22,7 @@ const Card = ({
     <article className="box card">
       {false && //negué la condición para desaparece el slider de imágenes
         image &&
-        image.length && ( 
+        image.length && (
           <>
             <div className="card__imageViewer">
               {image[imgIndex]}
@@ -53,7 +53,7 @@ const Card = ({
             </div>
           </>
         )}
-      {image[0]}
+      <div className="card__imageViewer">{image[0]}</div>
       {!isCreated && (
         <Link to={`/products/${id}`}>
           <h3>{name}</h3>

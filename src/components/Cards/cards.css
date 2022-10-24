@@ -62,7 +62,7 @@
 
 .filter__option {
   background-color: var(--color-black);
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 @media (max-width: 1790px) {

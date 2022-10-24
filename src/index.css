@@ -3,8 +3,8 @@
 :root {
   --color-primary: #c5a86d;
   --color-primary-rgb: 197, 168, 109;
-  --color-secondary: #ad9d8d;
-  --color-secondary-rgb: 173, 157, 141;
+  --color-secondary: #a6a7a9;
+  --color-secondary-rgb: 166, 167, 169;
   --color-bg: #ad9d8d;
   --color-bg-rgb: 173, 157, 141;
   --color-attention-primary: #e7ae16;
@@ -208,7 +208,7 @@ img {
   width: var(--box);
 }
 
-.pager__current{
+.pager__current {
   width: fit-content;
   height: fit-content;
 }

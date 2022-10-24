@@ -1,20 +1,29 @@
 import React from "react";
-import "./webFrame.css"
+import "./webFrame.css";
 import Background from "../../components/background/Background";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
 import { Outlet } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import LOGO from "../../assets/Logo.svg";
 
 const WebFrame = () => {
   return (
     <>
-      <Background/>
-      <div className="webFrame__topSpace"/>
+      <Background />
+      <div className="webFrame__topSpace">
+        <div className="brand">
+          <div className="logo">
+            <img src={LOGO} alt="logo" />
+          </div>
+          <p className="name">TECNOMERCH</p>
+          <p className="slogan">The future is here</p>
+        </div>
+      </div>
       <Outlet />
-      <NavBar />
-      <SearchBar/>
       <Footer />
+      <NavBar />
+      <SearchBar />
     </>
   );
 };
