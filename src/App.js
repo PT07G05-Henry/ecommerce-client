@@ -22,6 +22,7 @@ function App() {
           <Route path="/create/product" element={<CreateProduct />} />
           <Route path="/or" element={<Orders/>} />
           <Route path="orDetail/:id" element={<OrderDetail/>} />
+
           <Route
             path="*"
             element={
