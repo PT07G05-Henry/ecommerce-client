@@ -16,7 +16,7 @@ export const getUsers = createAsyncThunk("users/getUsers", async (flags) => {
   try {
     const response = await axios.get(
       !flags || typeof flags !== "string"
-        ? `http://${
+        ? `https://${
             process.env.REACT_APP_DEV_API || document.domain
           }/users/all${queries.length > 1 ? queries : ""}`
         : flags
@@ -24,7 +24,7 @@ export const getUsers = createAsyncThunk("users/getUsers", async (flags) => {
     return response.data;
     // if (email) {
     //   const response = await axios.get(
-    //     `http://${
+    //     `https://${
     //       process.env.REACT_APP_DEV_API || document.domain
     //     }/users?email=${email}`
     //   );
