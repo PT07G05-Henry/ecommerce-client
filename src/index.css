@@ -234,6 +234,10 @@ img {
   width: 100%;
 }
 
+.swiper{
+  z-index: 0 ;
+}
+
 /* Media Queries (Pager) */
 
 @media (max-width: 1425px) {
