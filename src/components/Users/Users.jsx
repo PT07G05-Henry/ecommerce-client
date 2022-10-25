@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, selectUser } from "../../store/api";
-import Paginated from "./Paginated";
-//import SearchBar from "./SearchBar";
-
+import Paginated from "../Paginated/Paginated.jsx";
+import "./users.css"
 export default function Users() {
   const dispatch = useDispatch();
 
@@ -15,11 +14,11 @@ export default function Users() {
     if (value === "All") {
       return setFilteredUsers(users);
     }
-    console.log(filteredUsers, 'filtro')
+    console.log(filteredUsers, "filtro");
     setFilteredUsers(
       users.filter((user) => user.rols && user.rols[0].type === value)
     );
-  };
+  }
 
   // setTimeout(() => {
   //   console.log(filteredUsers, 'setTime')
@@ -29,6 +28,7 @@ export default function Users() {
   // }, 5000);
 
   useEffect(() => {
+    console.log(users);
     dispatch(getUsers());
   }, [dispatch]);
 
@@ -46,8 +46,51 @@ export default function Users() {
         <Paginated
           filteredUsers={filteredUsers}
           setFilteredUsers={setFilteredUsers}
-          users={users}
+          data={users}
+          dispatch={(flags) => {
+            dispatch(getUsers(flags));
+          }}
         />
+        <div>
+          <table className="user__table">
+            <tbody>
+              <tr>
+                <th>User number</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Delete</th>
+              </tr>
+            </tbody>
+            {users &&
+              users.results?.map((user, index) => (
+                <tbody key={index}>
+                  <tr>
+                    <td>{user.id}</td>
+                    <td>
+                      {user.first_name} {user.last_name}
+                    </td>
+                    <td>{user.email}</td>
+                    <td>
+                      {user.rols &&
+                        user.rols.length === 3 ? "Superadmin" : user.rols.length === 2 ? "Admin" : "User"
+                        }
+                    </td>
+                    <td>
+                      {user.id && (
+                        <button className="btn" value={user.id} onClick={() => {}}>
+                          X
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
+          </table>
+        </div>
+        {/* {users && users.results?.map(()=>{
+
+        })} */}
       </div>
     </>
   );
