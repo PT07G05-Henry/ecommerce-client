@@ -2,44 +2,39 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, selectUser } from "../../store/api";
 import Paginated from "../Paginated/Paginated.jsx";
-import "./users.css"
+import { useAuth0 } from "@auth0/auth0-react";
+import "./users.css";
 export default function Users() {
   const dispatch = useDispatch();
-
+  const { getIdTokenClaims } = useAuth0();
   const users = useSelector(selectUser);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState("All");
 
   function handleChange(e) {
     const value = e.target.value;
-    if (value === "All") {
-      return setFilteredUsers(users);
-    }
-    console.log(filteredUsers, "filtro");
-    setFilteredUsers(
-      users.filter((user) => user.rols && user.rols[0].type === value)
-    );
+    setFilteredUsers(value);
   }
-
-  // setTimeout(() => {
-  //   console.log(filteredUsers, 'setTime')
-  //   if (!filteredUsers.length) {
-  //     setFilteredUsers(users);
-  //   }
-  // }, 5000);
 
   useEffect(() => {
     console.log(users);
-    dispatch(getUsers());
-  }, [dispatch]);
+    getIdTokenClaims()
+      .then((r) => r.sid)
+      .then((sid) => {
+        dispatch(
+          getUsers({
+            rol: filteredUsers,
+            sid,
+          })
+        );
+      });
+  }, [dispatch, filteredUsers]);
 
   return (
     <>
       <div>
-        {/* <SearchBar
-          setFilteredUsers={setFilteredUsers}
-        /> */}
         <select onChange={handleChange}>
           <option value="All">All</option>
+          <option value="Superadmin">Superadmin</option>
           <option value="Admin">Admin</option>
           <option value="User">User</option>
         </select>
@@ -72,13 +67,17 @@ export default function Users() {
                     </td>
                     <td>{user.email}</td>
                     <td>
-                      {user.rols &&
-                        user.rols.length === 3 ? "Superadmin" : user.rols.length === 2 ? "Admin" : "User"
-                        }
+                      {user.rols && user.rols.length === 3
+                        ? "Superadmin"
+                        : user.rols[0].type}
                     </td>
                     <td>
                       {user.id && (
-                        <button className="btn" value={user.id} onClick={() => {}}>
+                        <button
+                          className="btn"
+                          value={user.id}
+                          onClick={() => {}}
+                        >
                           X
                         </button>
                       )}
@@ -88,9 +87,6 @@ export default function Users() {
               ))}
           </table>
         </div>
-        {/* {users && users.results?.map(()=>{
-
-        })} */}
       </div>
     </>
   );
