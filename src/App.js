@@ -9,6 +9,7 @@ import SearchByName from "./containers/SearchByName/SearchByName";
 import UpdateProduct from "../src/components/UpdateProduct/UpdateProduct";
 import OrderDetail from "../src/components/OrderDetail/OrderDetail";
 import DashBoard from "./components/DashBoard/DashBoard";
+import Cart from "../src/components/Cart/Cart";
 
 function App() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ function App() {
               </section>
             }
           />
+          <Route path="/cart" element={<Cart/>}/>
         </Route>
       </Routes>
     </>

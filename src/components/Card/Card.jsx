@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import "./card.css";
+import {setItem} from "../../store/cart"
 
 const Card = ({
   id,
@@ -15,9 +17,13 @@ const Card = ({
   handleDelete,
 }) => {
   const [imgIndex, setImgIndex] = useState(0);
+  const dispatch = useDispatch();
   const image = images
     ?.filter((e) => e.image !== null)
     .map((e) => <img src={e.image} alt="image" />);
+    function addToChart(){
+      dispatch(setItem({id, images, name,price,description,stock,categoriesId,categoriesName, qty:1}))
+    }
   return (
     <article className="box card">
       {false && //negué la condición para desaparece el slider de imágenes
@@ -80,7 +86,7 @@ const Card = ({
           );
         })}
       {isCreated && <p>Description: {description}</p>}
-      <button className="btn" onClick={() => {}}>
+      <button className="btn" onClick={() => {addToChart(id)}}>
         Add to cart
       </button>
     </article>

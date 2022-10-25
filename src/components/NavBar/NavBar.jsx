@@ -22,7 +22,7 @@ export default function NavBar() {
         <button className="nav__button" onClick={()=>navigate("/")} ><SlHome size={buttonSize} /></button>
         <button className="nav__button" onClick={()=>navigate("/catalog")} ><SlBookOpen size={buttonSize} /></button>
         <div className="nav__middleSpace"/>
-        <button className="nav__button" onClick={()=>navigate("/")} ><AiOutlineShoppingCart size={buttonSize} /></button>
+        <button className="nav__button" onClick={()=>navigate("/cart")} ><AiOutlineShoppingCart size={buttonSize} /></button>
         <button className="nav__button" onClick={()=>navigate("/")} ><AiOutlineMessage size={buttonSize} /></button>
       </nav>
     </div>
