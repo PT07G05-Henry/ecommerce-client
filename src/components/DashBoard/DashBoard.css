@@ -1,0 +1,14 @@
+.component {
+    display: flex;
+}
+
+.options {
+    background-color: grey;
+    display: grid;
+    width: 10%;
+    height: 50vh;
+}
+
+.selectedOption {
+    padding-left: 20%;
+}

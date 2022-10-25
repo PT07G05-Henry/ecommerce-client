@@ -6,8 +6,9 @@ import Catalog from "./containers/catalog/Catalog";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import CreateProduct from "../src/components/CreateProduct/CreateProduct";
 import SearchByName from "./containers/SearchByName/SearchByName";
-import Orders from "../src/components/Orders/Orders";
+import UpdateProduct from "../src/components/UpdateProduct/UpdateProduct";
 import OrderDetail from "../src/components/OrderDetail/OrderDetail";
+import DashBoard from "./components/DashBoard/DashBoard";
 
 function App() {
   const navigate = useNavigate();
@@ -20,8 +21,9 @@ function App() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/create/product" element={<CreateProduct />} />
-          <Route path="/or" element={<Orders/>} />
+          <Route path="/update/product/:id" element={<UpdateProduct />} />
           <Route path="orDetail/:id" element={<OrderDetail/>} />
+          <Route path="/dashBoard" element={<DashBoard/>} />
 
           <Route
             path="*"
