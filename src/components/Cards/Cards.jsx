@@ -289,6 +289,9 @@ const Cards = ({ products, dispatch }) => {
             images={el.images}
             name={el.name}
             price={el.price}
+            description={el.description}
+            stock={el.stock}
+
           />
         ))}
       </div>

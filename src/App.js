@@ -8,7 +8,7 @@ import CreateProduct from "../src/components/CreateProduct/CreateProduct";
 import SearchByName from "./containers/SearchByName/SearchByName";
 import Orders from "../src/components/Orders/Orders";
 import OrderDetail from "../src/components/OrderDetail/OrderDetail";
-
+import Cart from "../src/components/Cart/Cart";
 function App() {
   const navigate = useNavigate();
   return (
@@ -38,6 +38,7 @@ function App() {
               </section>
             }
           />
+          <Route path="/cart" element={<Cart/>}/>
         </Route>
       </Routes>
     </>
