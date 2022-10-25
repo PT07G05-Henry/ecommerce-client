@@ -10,7 +10,7 @@ export const getProductById = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.get(
-        `http://${
+        `https://${
           process.env.REACT_APP_DEV_API || document.domain
         }/products/${id}`
       );

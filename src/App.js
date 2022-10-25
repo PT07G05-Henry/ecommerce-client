@@ -10,27 +10,27 @@ import UpdateProduct from "../src/components/UpdateProduct/UpdateProduct";
 import OrderDetail from "../src/components/OrderDetail/OrderDetail";
 import DashBoard from "./components/DashBoard/DashBoard";
 import Cart from "../src/components/Cart/Cart";
+import Orders from "../src/components/Orders/Orders";
 import { selectThisUserRoles } from "./store/thisUser";
 import { useSelector } from "react-redux";
 
 function App() {
   const navigate = useNavigate();
-  const rol = useSelector(selectThisUserRoles)
-  const access = ()=>{
-    if(rol.find((e)=> e === "Superadmin")){
-      return "Superadmin"
+  const rol = useSelector(selectThisUserRoles);
+  const access = () => {
+    if (rol.find((e) => e === "Superadmin")) {
+      return "Superadmin";
     }
-    if(rol.find((e)=> e === "Admin")){
-      return "Admin"
+    if (rol.find((e) => e === "Admin")) {
+      return "Admin";
     }
-    if(rol.find((e)=> e === "User")){
-      return "User"
+    if (rol.find((e) => e === "User")) {
+      return "User";
     }
-    if(rol.find((e)=> e === "Guest")){
-      return "Guest"
+    if (rol.find((e) => e === "Guest")) {
+      return "Guest";
     }
-
-  }
+  };
   return (
     <>
       <Routes>
@@ -39,12 +39,22 @@ function App() {
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/products/:id" element={<ProductDetail />} />
-          {!(access()=== ("Guest" || "User")) && <Route path="/create/product" element={<CreateProduct />} />}
-          {!(access()=== ("Guest" || "User" || "Admin")) && <Route path="/or" element={<Orders/>} />}
-          {!(access()=== ("Guest" || "User" || "Admin")) && <Route path="orDetail/:id" element={<OrderDetail/>} />}
-          {!(access()=== ("Admin")) && <Route path="/cart" element={<Cart/>}/>}
-          {!(access()=== ("Guest" || "User" || "Admin" )) &&  <Route path="/update/product/:id" element={<UpdateProduct />} />}
-          {!(access()=== ("Guest")) && <Route path="/dashBoard" element={<DashBoard/>} />} 
+          {!(access() === ("Guest" || "User")) && (
+            <Route path="/create/product" element={<CreateProduct />} />
+          )}
+          {!(access() === ("Guest" || "User" || "Admin")) && (
+            <Route path="/or" element={<Orders />} />
+          )}
+          {!(access() === ("Guest" || "User" || "Admin")) && (
+            <Route path="orDetail/:id" element={<OrderDetail />} />
+          )}
+          {!(access() === "Admin") && <Route path="/cart" element={<Cart />} />}
+          {!(access() === ("Guest" || "User" || "Admin")) && (
+            <Route path="/update/product/:id" element={<UpdateProduct />} />
+          )}
+          {!(access() === "Guest") && (
+            <Route path="/dashBoard" element={<DashBoard />} />
+          )}
           <Route
             path="*"
             element={
