@@ -7,35 +7,64 @@
   align-items: center;
 }
 
-.active{
-  background-color: aqua !important;
-  color: black !important;
+.filters__container {
+  width: 100%;
 }
 
-.btnDots{
-  background-color: #f0fcfc;
-  width: max-content;
-  display: inline-block;
-  color: black;
-  padding: 0.25rem 1.2rem;
-  border: 1px solid transparent;
-  transition: var(--transition);
-}
-
-.divCenter {
+.filters__flex {
   display: flex;
-  position: relative;
-  margin: 10px auto;
   align-items: center;
-  flex-direction: column;
-}
-[value^="PrevPag"] {
-  margin-right: 5px;
+  align-content: center;
 }
 
-[value^="NextPag"]{
-  margin-left: 5px;
+.filters__buttonPlace {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+  justify-content: center;
+  width: 5rem;
+  height: max-content;
 }
+
+.filters__btn {
+  position: relative;
+  bottom: 3.5rem;
+  padding: 0.5rem;
+  margin: 2rem 0;
+}
+
+.filters__box {
+  display: inline;
+  position: relative;
+  overflow: visible;
+  height: 2.75rem;
+  width: fit-content;
+  bottom: 8rem;
+}
+
+.filters__box > form {
+  padding: 1rem;
+  width: fit-content;
+}
+
+.filter {
+  display: flex;
+  width: 100%;
+}
+
+.filter > select {
+  background-color: rgba(var(--color-secondary-rgb), 0.25);
+  backdrop-filter: blur(2px);
+  color: var(--color-white);
+  margin: 0.25rem;
+}
+
+.filter__option {
+  background-color: var(--color-black);
+  color: var(--color-secondary);
+}
+
 @media (max-width: 1790px) {
   .cards__grid {
     grid-template-columns: repeat(4, 1fr);
@@ -54,7 +83,13 @@
   }
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 820px) {
+  .pager__btn-md {
+    display: none;
+  }
+}
+
+@media (max-width: 580px) {
   .cards__grid {
     grid-template-columns: 1fr;
   }
