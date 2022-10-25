@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import "./cardcart.css";
-import { deleteItem , updateItemQty} from "../../store/cart";
+import { deleteItem, updateItemQty } from "../../store/cart";
 import { useEffect } from "react";
 
 export default function CardCart({
@@ -16,7 +16,7 @@ export default function CardCart({
   categoriesName,
   isCreated,
   handleDelete,
-  qty
+  qty,
 }) {
   const [imgIndex, setImgIndex] = useState(0);
   const [unitsToBuy, setUnitsToBuy] = useState(1);
@@ -25,8 +25,7 @@ export default function CardCart({
     ?.filter((e) => e.image !== null)
     .map((e) => <img className="imgCart" src={e.image} alt="image" />);
 
-  useEffect(() => {
-  }, [unitsToBuy]);
+  useEffect(() => {}, [unitsToBuy]);
 
   function handlerUnitsToBuy(e) {
     var value = e.target.value;
@@ -37,7 +36,7 @@ export default function CardCart({
       value = 1;
     }
     setUnitsToBuy(value);
-    dispatch(updateItemQty({id:id, qty:value}))
+    dispatch(updateItemQty({ id: id, qty: value }));
   }
 
   function removeProduct() {
@@ -45,30 +44,26 @@ export default function CardCart({
   }
 
   return (
-    <div className="ContainerArticule">
-      <div className="ArticuleInfo">
-        <div className="divImage">
-          <div className="card__imageViewer-controller">
+    <div className="box-dry cartItem__box-dry">
+      <div className="cart__item">
+        <div className="cart__item-img">
+          <div className="cart__imageViewer-controller">
             <button
-              className="btn btn-primary card__imageViewer-arrow"
-              style={
-                imgIndex === 0
-                  ? { display: "none", width: "100%" }
-                  : { width: "100%" }
-              }
+              className="btn-rounded cart__imageViewer-arrowBack"
+              style={imgIndex === 0 ? { display: "none" } : undefined}
               onClick={() => setImgIndex(imgIndex - 1)}
             >
               {"<"}
             </button>
           </div>
+
           {image[imgIndex]}
-          <div className="card__imageViewer-controller">
+
+          <div className="cart__imageViewer-controller">
             <button
-              className="btn btn-primary card__imageViewer-arrow"
+              className="btn-rounded cart__imageViewer-arrowNext"
               style={
-                imgIndex === image.length - 1
-                  ? { display: "none", width: "100%" }
-                  : { width: "100%" }
+                imgIndex === image.length - 1 ? { display: "none" } : undefined
               }
               onClick={() => setImgIndex(imgIndex + 1)}
             >
@@ -77,7 +72,7 @@ export default function CardCart({
           </div>
         </div>
         {/* <div className="card__imageViewer">{image[0]}</div> */}
-        <div className="dataInfo">
+        <div className="cart__item-info">
           {!isCreated && (
             <Link to={`/products/${id}`}>
               <h3>{name}</h3>
@@ -128,9 +123,7 @@ export default function CardCart({
           )}
         </div>
       </div>
-      <div className="divDescription">
-        {isCreated && <p>Description: {description}</p>}
-      </div>
+
     </div>
   );
 }

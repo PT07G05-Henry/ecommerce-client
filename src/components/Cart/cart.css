@@ -21,3 +21,11 @@
     background-color:  #7d673b;
     cursor: pointer;
 }
+
+.cart__btn{
+    font-size: 1.5rem;
+}
+
+.cart__container{
+    min-height: 100vh;
+}

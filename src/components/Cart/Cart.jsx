@@ -33,14 +33,14 @@ export default function Cart() {
     const result = await axios.get()
   }
   return (
-    <>
+    <div className="container cart__container">
       <div className="CartTitle">
         <h1>Cart</h1>
         {cart.length > 0 ? (
             <>
             <h2>Total Items: <span className="totalText">{totalItems}</span></h2>
             <h2>Total Price: <span className="totalText">{"$" + Number(totalPrice).toFixed(2)}</span></h2>
-            <input type="button" className="btn__buy" value="Proceed to checkout" onClick={()=>{loginWithPopup()}}></input>
+            <input type="button" className="btn cart__btn" value="Proceed to checkout" onClick={()=>{loginWithPopup()}}></input>
           <h2>These are the selected products</h2>
           </>
         ) : (
@@ -50,6 +50,7 @@ export default function Cart() {
           </>
         )}
       </div>
+        
       {cart?.map((c) => {
         return (
           <div key={c.id}>
@@ -69,6 +70,6 @@ export default function Cart() {
           </div>
         );
       })}
-    </>
+    </div>
   );
 }
