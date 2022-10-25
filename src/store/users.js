@@ -5,21 +5,32 @@ const initialState = {
   users: [{ toBeField: true }],
 };
 
-export const getUsers = createAsyncThunk("users/getUsers", async (email) => {
+
+export const getUsers = createAsyncThunk("users/getUsers", async (flags) => {
+  let queries = "?";
+  flags &&
+    typeof flags !== "string" &&
+    Object.keys(flags).forEach((e) => {
+      queries = queries + `${e}=${flags[e]}&`;
+    });
   try {
-    if (email) {
-      const response = await axios.get(
-        `https://${
-          process.env.REACT_APP_DEV_API || document.domain
-        }/users?email=${email}`
-      );
-      return response.data;
-    } else {
-      const response = await axios.get(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/users`
-      );
-      return response.data;
-    }
+    const response = await axios.get(
+      !flags || typeof flags !== "string"
+        ? `https://${
+            process.env.REACT_APP_DEV_API || document.domain
+          }/users/all${queries.length > 1 ? queries : ""}`
+        : flags
+    );
+    return response.data;
+    // if (email) {
+    //   const response = await axios.get(
+    //     `https://${
+    //       process.env.REACT_APP_DEV_API || document.domain
+    //     }/users?email=${email}`
+    //   );
+    //   return response.data;
+    // } else {
+    // }
   } catch (error) {
     console.error(error);
   }

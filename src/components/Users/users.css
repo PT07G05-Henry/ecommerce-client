@@ -1,0 +1,17 @@
+.user__table{
+    margin: 5px auto;
+    border-spacing: 2px;
+}
+
+table, th, td {
+    border: 1px solid white;
+  }
+
+  th, td {
+    padding: 5px 10px;
+  }
+
+  tbody tr:hover {
+    background-color: yellow;
+    color:black
+  }
