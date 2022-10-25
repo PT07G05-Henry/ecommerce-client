@@ -5,11 +5,13 @@ import CardCart from "../CardCart/CardCart";
 import "./cart.css";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import {selectThisUserRoles} from "../../store/thisUser"
 
 
 
 export default function Cart() {
   const cart = useSelector((state) => state.cart.cart);
+  const rol = useSelector(selectThisUserRoles)
   const [totalPrice, setTotalPrice] = useState();
   const [totalItems, setTotalItems] = useState();
   const { loginWithPopup } = useAuth0();
@@ -20,6 +22,7 @@ export default function Cart() {
     setTotalPrice(value);
     const numItems = cart.length;
     setTotalItems(numItems);
+    console.log(rol)
   }, [cart]);
 
   return (
