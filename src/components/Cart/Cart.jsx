@@ -1,13 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getItem } from "../../store/cart";
+import {  useSelector } from "react-redux";
 import CardCart from "../CardCart/CardCart";
 import "./cart.css";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
-import userRol from "../../functionality/login.js";
+
+
 
 export default function Cart() {
   const cart = useSelector((state) => state.cart.cart);
