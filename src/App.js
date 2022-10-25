@@ -6,11 +6,13 @@ import Catalog from "./containers/catalog/Catalog";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import CreateProduct from "../src/components/CreateProduct/CreateProduct";
 import SearchByName from "./containers/SearchByName/SearchByName";
-import Orders from "../src/components/Orders/Orders";
+import UpdateProduct from "../src/components/UpdateProduct/UpdateProduct";
 import OrderDetail from "../src/components/OrderDetail/OrderDetail";
+import DashBoard from "./components/DashBoard/DashBoard";
 import Cart from "../src/components/Cart/Cart";
 import { selectThisUserRoles } from "./store/thisUser";
 import { useSelector } from "react-redux";
+
 function App() {
   const navigate = useNavigate();
   const rol = useSelector(selectThisUserRoles)
@@ -41,7 +43,8 @@ function App() {
           {!(access()=== ("Guest" || "User" || "Admin")) && <Route path="/or" element={<Orders/>} />}
           {!(access()=== ("Guest" || "User" || "Admin")) && <Route path="orDetail/:id" element={<OrderDetail/>} />}
           {!(access()=== ("Admin")) && <Route path="/cart" element={<Cart/>}/>}
-
+          {!(access()=== ("Guest" || "User" || "Admin" )) &&  <Route path="/update/product/:id" element={<UpdateProduct />} />}
+          {!(access()=== ("Guest")) && <Route path="/dashBoard" element={<DashBoard/>} />} 
           <Route
             path="*"
             element={
