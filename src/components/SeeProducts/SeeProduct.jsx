@@ -17,7 +17,7 @@ const SeeProduct = ({ category, name }) => {
     !loaded &&
       axios
         .get(
-          `http://${
+          `https://${
             process.env.REACT_APP_DEV_API || document.domain
           }/products?quantity=5&orderBy=rating&typeOrder=DESC&category=${category}`
         )
