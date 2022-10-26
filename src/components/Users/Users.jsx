@@ -29,6 +29,18 @@ export default function Users() {
       });
   }, [dispatch, filteredUsers]);
 
+  function handlerRolSwitch(id, rol) {
+    /*aqui va la logica de acceder al backend como superadmin
+    y poder cambiar el rol de User a Admin o viceversa
+    los Superadmin no deberian cambiar de rol
+    pasar id del User o Admin y cambiar su rol
+    */
+    console.log(
+      `${rol} with ID: ${id} is change to 
+      ${rol === "Admin" ? "User" : "Admin"} (falta la logica en la funcion)`
+    );
+  }
+
   return (
     <>
       <div>
@@ -54,6 +66,7 @@ export default function Users() {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <th>Change Rol</th>
                 <th>Delete</th>
               </tr>
             </tbody>
@@ -70,6 +83,22 @@ export default function Users() {
                       {user.rols && user.rols.length === 3
                         ? "Superadmin"
                         : user.rols[0].type}
+                    </td>
+                    <td>
+                      {user.rols && user.rols.length === 3 ? (
+                        ""
+                      ) : (
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            onChange={() => {
+                              handlerRolSwitch(user.id, user.rols[0].type);
+                            }}
+                            checked={user.rols[0].type === "Admin"}
+                          />
+                          <span class="slider round"></span>
+                        </label>
+                      )}
                     </td>
                     <td>
                       {user.id && (
