@@ -43,9 +43,9 @@ const Account = () => {
       >
         <button
           className="btn btn-primary"
-          onClick={() => navigate("/create/product")}
+          onClick={() => navigate("/dashBoard")}
         >
-          Create Product
+          Dashboard
         </button>
         <ButtonLogOut />
       </div>
