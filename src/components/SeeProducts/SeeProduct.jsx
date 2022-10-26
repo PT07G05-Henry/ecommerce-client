@@ -43,6 +43,14 @@ const SeeProduct = ({ category, name }) => {
             slideShadows: true,
           }}
           breakpoints={{
+            300: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            360: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
             640: {
               slidesPerView: 1,
               spaceBetween: 20,
