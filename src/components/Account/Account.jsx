@@ -4,7 +4,11 @@ import ButtonLogOut from "./ButtonLogOut";
 import "./account.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getThisUser, selectThisUserRoles } from "../../store/thisUser";
+import {
+  getThisUser,
+  selectThisUserRoles,
+  selectThisUser,
+} from "../../store/thisUser";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -12,20 +16,23 @@ const Account = () => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const roles = useSelector(selectThisUserRoles);
+  const dataUser = useSelector(selectThisUser);
   useEffect(() => {
     roles[0] === "Guest" &&
       getIdTokenClaims()
         .then((response) => {
-          console.log(response);
           const { sid } = response;
-          const APIToken = sid;
-          console.log(sid);
+          console.log("sid", sid);
           dispatch(getThisUser({ user: user, sid: sid }));
         })
         .catch((error) => {
           console.error(error);
         });
-  }, [user]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log("roles", roles);
+  }, [roles]);
   return (
     <>
       <div className="nav__user-image">
@@ -41,12 +48,14 @@ const Account = () => {
         className="box nav__user-menu"
         style={show ? {} : { display: "none" }}
       >
-        <button
-          className="btn btn-primary"
-          onClick={() => navigate("/dashBoard")}
-        >
-          Dashboard
-        </button>
+        {!(roles.find((r) => r === "Guest") === "Guest") && (
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate("/dashboard")}
+          >
+            Dashboard
+          </button>
+        )}
         <ButtonLogOut />
       </div>
     </>
@@ -54,3 +63,14 @@ const Account = () => {
 };
 
 export default Account;
+
+{
+  /* {(roles.find((r)=>r === "Admin") === "Admin" || roles.find((r)=>r==="Superadmin") === "Superadmin") && (
+  <button
+    className="btn btn-primary"
+    onClick={() => navigate("/create/product")}
+  >
+    Create Product
+  </button>
+)} */
+}
