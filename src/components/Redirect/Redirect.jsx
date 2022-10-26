@@ -1,22 +1,21 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-
+import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Loading from '../loading/Loading'
 const Redirect = () => {
-  const  navigate = useNavigate()
-  return (
-    <section className="container">
-    <h1 className='container container__title'>Is not a valid path!</h1>
-    { setTimeout(() => {
-        
-        navigate("/")
-    }, 5000)
-        
-    }
-      
-      
-  </section>
-    
-  )
-}
+  const navigate = useNavigate();
 
-export default Redirect
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/");
+    }, 4000);
+  });
+  return (
+    <section className="title">
+      <h1>Is not a valid path!</h1>
+      <Loading />
+    </section>
+  );
+};
+
+export default Redirect;
