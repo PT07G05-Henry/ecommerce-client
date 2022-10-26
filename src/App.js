@@ -13,7 +13,7 @@ import Cart from "../src/components/Cart/Cart";
 import Orders from "../src/components/Orders/Orders";
 import { selectThisUserRoles } from "./store/thisUser";
 import { useSelector } from "react-redux";
-
+import Redirect from "./components/Redirect/Redirect";
 function App() {
   const navigate = useNavigate();
   const rol = useSelector(selectThisUserRoles);
@@ -55,22 +55,7 @@ function App() {
           {!(access() === "Guest") && (
             <Route path="/dashBoard" element={<DashBoard />} />
           )}
-          <Route
-            path="*"
-            element={
-              <section className="container">
-                <h1>Is not a valid path!</h1>
-                <button
-                  className="btn"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  Go back to Home!
-                </button>
-              </section>
-            }
-          />
+          <Route path="*" element={<Redirect />} />
         </Route>
       </Routes>
     </>
