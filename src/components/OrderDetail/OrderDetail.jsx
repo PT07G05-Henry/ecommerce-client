@@ -11,7 +11,7 @@ const OrderDetail = (props) => {
   async function getOrder(id) {
     try {
       const orderDetail = await axios(
-        `http://${
+        `https://${
           process.env.REACT_APP_DEV_API || document.domain
         }/orders/${id}`
       );
