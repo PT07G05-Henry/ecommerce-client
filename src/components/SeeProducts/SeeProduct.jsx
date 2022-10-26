@@ -17,7 +17,7 @@ const SeeProduct = ({ category, name }) => {
     !loaded &&
       axios
         .get(
-          `http://${
+          `https://${
             process.env.REACT_APP_DEV_API || document.domain
           }/products?quantity=5&orderBy=rating&typeOrder=DESC&category=${category}`
         )
@@ -43,6 +43,14 @@ const SeeProduct = ({ category, name }) => {
             slideShadows: true,
           }}
           breakpoints={{
+            300: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            360: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
             640: {
               slidesPerView: 1,
               spaceBetween: 20,

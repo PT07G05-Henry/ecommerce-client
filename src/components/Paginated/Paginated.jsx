@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { PAGE } from "../../store/api";
+import { useAuth0 } from "@auth0/auth0-react";
 import "./paginated.css";
 
-const Paginated = ({ data, dispatch }) => {
+const Paginated = ({ data, dispatch, setFilteredUsers, filteredUsers }) => {
   const [controller, setController] = useState(data.query);
   const [change, setChange] = useState(false);
-
+  const { getIdTokenClaims } = useAuth0();
   const addToController = (flag) => {
     setController({ ...controller, ...flag });
     setChange(!change);
@@ -139,8 +140,16 @@ const Paginated = ({ data, dispatch }) => {
       return;
     }
     window.location.hash = `#${e.target.value}`;
-    const flag = { [PAGE]: e.target.value.toString() };
-    addToController(flag);
+    getIdTokenClaims()
+      .then((r) => r.sid)
+      .then((sid) =>
+        dispatch({
+          ...controller,
+          [PAGE]: e.target.value.toString(),
+          rol: filteredUsers,
+          sid: sid,
+        })
+      );
   }
   return (
     <>
@@ -220,7 +229,7 @@ export default Paginated;
 // import React, { useEffect }  from "react";
 // import "./home.css";
 // import { useDispatch, useSelector } from "react-redux";
-// import Paginated2 from "../../components/Paginated/Paginated2"
+// import Paginated from "../../components/Paginated/Paginated"
 // import { getProducts, selectProducts } from "../../store/api";
 // import Loading from "../../components/loading/Loading";
 
@@ -235,9 +244,9 @@ export default Paginated;
 //   return (
 //     <section className="container home__container">
 //       <h1>Home!</h1>
-//       {products.results ? <Paginated2 data={products} dispatch={(flags) => {
+//       {products.results ? <Paginated data={products} dispatch={(flags) => {
 //             dispatch(getProducts(flags));}}/>: <Loading />}
-      
+
 //     </section>
 //   );
 // };

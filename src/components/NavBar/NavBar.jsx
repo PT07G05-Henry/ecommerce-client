@@ -40,7 +40,7 @@ export default function NavBar() {
         />
         )}
         <div className="nav__middleSpace"/>
-        <button className="nav__button" onClick={()=>navigate("/")} ><AiOutlineShoppingCart size={buttonSize} /></button>
+        <button className="nav__button" onClick={()=>navigate("/cart")} ><AiOutlineShoppingCart size={buttonSize} /></button>
         <button className="nav__button" onClick={()=>navigate("/")} ><AiOutlineMessage size={buttonSize} /></button>
       </nav>
     </div>

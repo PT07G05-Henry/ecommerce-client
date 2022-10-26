@@ -10,7 +10,7 @@
 
 # production
 # Disabled for deploy
-#/build 
+/build 
 
 # misc
 .env
