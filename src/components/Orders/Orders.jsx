@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrders, selectOrders } from "../../store/api";
 import SortButton from "./SortButton";
 import Paginated from "./Paginated";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Doughnut, Bar } from "react-chartjs-2"
 import {
   Chart as ChartJS,
@@ -29,6 +30,7 @@ export default function Orders() {
   const dispatch = useDispatch();
   const orders = useSelector(selectOrders);
   const [filteredOrders, setFilteredOrders] = useState([]);
+  const {getIdTokenClaims} = useAuth0()
 
   function handleChange(e) {
     const value = e.target.value;
@@ -41,7 +43,7 @@ export default function Orders() {
 
 
   function countOrders(orders) {
-
+    console.log("orders",orders)
     let data = {
       acceptedOrders: 0,
       pendingdOrders: 0,
@@ -87,6 +89,7 @@ export default function Orders() {
   if (orders[0].id) {
     valuesOrders = countOrders(orders)
     valuesUser = countUsers(orders)
+    console.log("valuesUser",valuesUser)
   }
 
   let dataOrders = {
@@ -119,6 +122,7 @@ export default function Orders() {
   }
 
   function countUsers(orders) {
+
     let data = []
     orders.map((o) => {
       let user = o.user.email
@@ -137,25 +141,14 @@ export default function Orders() {
     })
     return data.sort(((a, b) => b.total - a.total));
   }
-
+  const newArrayUser = valuesUser.map((v)=>v.user).slice(0,5);
+  const newArrayTotal = valuesUser.map((v)=>v.total).slice(0,5);
   let dataUsers = {
-    labels: [
-      valuesUser[0].user,
-      valuesUser[1].user,
-      valuesUser[2].user,
-      valuesUser[3].user,
-      valuesUser[4].user
-    ],
+    labels: newArrayUser,
     datasets: [
       {
         label: 'Total Orders Price',
-        data: [
-          valuesUser[0].total,
-          valuesUser[1].total,
-          valuesUser[2].total,
-          valuesUser[3].total,
-          valuesUser[4].total
-        ],
+        data: newArrayTotal,
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
         borderColor: 'rgba(54, 162, 235, 1)'
       },
@@ -167,7 +160,8 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    dispatch(getOrders());
+    getIdTokenClaims().then(r=>r.sid).then(sid=>dispatch(getOrders({sid})))
+    
   }, [dispatch]);
 
   return (

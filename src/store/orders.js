@@ -5,10 +5,10 @@ const initialState = {
   orders: [{ toBeField: true }],
 };
 
-export const getOrders = createAsyncThunk("orders/getOrders", async () => {
+export const getOrders = createAsyncThunk("orders/getOrders", async ({sid}) => {
   try {
     const response = await axios.get(
-      `https://${process.env.REACT_APP_DEV_API || document.domain}/orders`
+      `https://${process.env.REACT_APP_DEV_API || document.domain}/orders?sid=${sid}`
     );
     return response.data;
   } catch (error) {
