@@ -3,6 +3,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrders, selectOrders } from "../../store/api";
 import SortButton from "./SortButton";
 import Paginated from "./Paginated";
+import { Doughnut, Bar } from "react-chartjs-2"
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+} from 'chart.js';
+
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title
+);
 
 export default function Orders() {
   const dispatch = useDispatch();
@@ -16,6 +37,133 @@ export default function Orders() {
       return setFilteredOrders(orders);
     }
     setFilteredOrders(orders.filter((order) => order.status === value));
+  }
+
+
+  function countOrders(orders) {
+
+    let data = {
+      acceptedOrders: 0,
+      pendingdOrders: 0,
+      rejectedOrders: 0,
+      billedOrders: 0,
+      dispatchedOrders: 0
+    }
+
+    orders.map((o) => {
+      switch (o.status) {
+        case 'Accepted':
+          return data.acceptedOrders++
+        case 'Rejected':
+          return data.rejectedOrders++
+        case 'Pending':
+          return data.pendingdOrders++
+        case 'Billed':
+          return data.billedOrders++
+        case 'Dispatched':
+          return data.dispatchedOrders++
+        default:
+          return ''
+      }
+    })
+    return data;
+  }
+
+  let valuesOrders = {
+    acceptedOrders: 0,
+    rejectedOrders: 0,
+    billedOrders: 0,
+    dispatchedOrders: 0,
+    pendingdOrders: 0
+  }
+  let valuesUser = [
+    { user: '', total: 0 },
+    { user: '', total: 0 },
+    { user: '', total: 0 },
+    { user: '', total: 0 },
+    { user: '', total: 0 }
+  ];
+
+  if (orders[0].id) {
+    valuesOrders = countOrders(orders)
+    valuesUser = countUsers(orders)
+  }
+
+  let dataOrders = {
+    labels: ['Accepted', 'Rejected', 'Billed', 'Dispatched', 'Pending'],
+    datasets: [{
+      label: 'Total Orders',
+      data: [
+        valuesOrders.acceptedOrders,
+        valuesOrders.rejectedOrders,
+        valuesOrders.billedOrders,
+        valuesOrders.dispatchedOrders,
+        valuesOrders.pendingdOrders
+      ],
+      backgroundColor: [
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+      ],
+      borderColor: [
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(153, 102, 255, 1)',
+      ],
+      borderWidth: 1
+    }]
+  }
+
+  function countUsers(orders) {
+    let data = []
+    orders.map((o) => {
+      let user = o.user.email
+      let userId = o.user.id
+      if (o.status === 'Accepted') {
+        if (Object.hasOwn(data, userId)) {
+          data[userId].total = data[userId].total + o.total_price
+        }
+        else {
+          data[userId] = {
+            user: user,
+            total: o.total_price
+          }
+        }
+      }
+    })
+    return data.sort(((a, b) => b.total - a.total));
+  }
+
+  let dataUsers = {
+    labels: [
+      valuesUser[0].user,
+      valuesUser[1].user,
+      valuesUser[2].user,
+      valuesUser[3].user,
+      valuesUser[4].user
+    ],
+    datasets: [
+      {
+        label: 'Total Orders Price',
+        data: [
+          valuesUser[0].total,
+          valuesUser[1].total,
+          valuesUser[2].total,
+          valuesUser[3].total,
+          valuesUser[4].total
+        ],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)'
+      },
+    ],
+  };
+
+  let options = {
+    responsive: true
   }
 
   useEffect(() => {
@@ -42,6 +190,20 @@ export default function Orders() {
           setFilteredOrders={setFilteredOrders}
           orders={orders}
         />
+        <div>
+          Total Orders: {orders.length}
+          <Doughnut
+            data={dataOrders}
+            options={options}
+          />
+        </div>
+        <div>
+          Top 5 Buyers
+          <Bar
+            data={dataUsers}
+            options={options}
+          />
+        </div>
       </div>
     </>
   );
