@@ -3,6 +3,7 @@ import Orders from "../Orders/Orders";
 import Products from "../Products/Products";
 import Users from "../Users/Users";
 import CreateProduct from "../CreateProduct/CreateProduct";
+import CreateCategory from "../CreateCategory/CreateCategory";
 import { selectThisUserRoles, selectThisUser } from "../../store/thisUser";
 import { useSelector } from "react-redux";
 import Profile from "../Profile/Profile";
@@ -36,9 +37,7 @@ export default function DashBoard() {
     }
   };
 
-  useEffect(() => {
-    console.log("userId", userId.userDb.id);
-  }, []);
+  useEffect(() => {}, []);
 
   function handleClick(e) {
     const value = e.target.value;
@@ -49,6 +48,7 @@ export default function DashBoard() {
       createProduct: true,
       profile: true,
       history: true,
+      createCategory: true,
       default: true,
     };
     switch (value) {
@@ -74,6 +74,10 @@ export default function DashBoard() {
         break;
       case "history":
         objHide.history = false;
+        setHidden(objHide);
+        break;
+      case "createCategory":
+        objHide.createCategory = false;
         setHidden(objHide);
         break;
       default:
@@ -105,6 +109,7 @@ export default function DashBoard() {
     if (!hidden.profile)
       return <Profile rol={access()} userId={userId.userDb.id} test={"test"} />;
     if (!hidden.history) return <History />;
+    if (!hidden.createCategory) return <CreateCategory />;
   }
 
   if (access() === "User") {
@@ -133,6 +138,9 @@ export default function DashBoard() {
           <button value="createProduct" onClick={handleClick}>
             Create Product
           </button>
+          <button value="createCategory" onClick={handleClick}>
+            Create Category
+          </button>
           <button value="orders" onClick={handleClick}>
             Orders
           </button>
@@ -151,6 +159,9 @@ export default function DashBoard() {
         </button>
         <button value="createProduct" onClick={handleClick}>
           Create Product
+        </button>
+        <button value="createCategory" onClick={handleClick}>
+          Create Category
         </button>
         <button value="users" onClick={handleClick}>
           Users

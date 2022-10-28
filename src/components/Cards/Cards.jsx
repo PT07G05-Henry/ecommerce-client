@@ -29,7 +29,8 @@ const Cards = ({ products, dispatch }) => {
   const [controller, setController] = useState(products.query);
   const categoriesList = useSelector(selectCategories);
   useEffect(() => {
-    (categoriesList[0].toBeField || categoriesList[0].error) &&
+    categoriesList &&
+      (categoriesList[0].toBeField || categoriesList[0].error) &&
       internalDispatch(getCategories());
   }, [categoriesList]);
 
@@ -157,12 +158,14 @@ const Cards = ({ products, dispatch }) => {
     {
       name: "Categories",
       key: CATEGORY,
-      values: !(categoriesList[0].toBeField || categoriesList[0].error)
-        ? categoriesList.map((category) => ({
-            [CATEGORY]: category.id,
-            label: category.name,
-          }))
-        : [{ [CATEGORY]: REMOVE, label: "Loading Categories" }],
+      values:
+        categoriesList &&
+        !(categoriesList[0].toBeField || categoriesList[0].error)
+          ? categoriesList.map((category) => ({
+              [CATEGORY]: category.id,
+              label: category.name,
+            }))
+          : [{ [CATEGORY]: REMOVE, label: "Loading Categories" }],
     },
     {
       name: "Products per page",
@@ -291,7 +294,6 @@ const Cards = ({ products, dispatch }) => {
             price={el.price}
             description={el.description}
             stock={el.stock}
-
           />
         ))}
       </div>
