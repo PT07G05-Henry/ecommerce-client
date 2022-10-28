@@ -19,6 +19,20 @@ export const getCategories = createAsyncThunk(
   }
 );
 
+export const postCategories = createAsyncThunk(
+  "categories/postCategories",
+  async ({input, sid}) => {
+    try {
+      const response = await axios.post(
+        `https://${process.env.REACT_APP_DEV_API || document.domain}/categories?sid=${sid}`,input
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export const categoriesSlice = createSlice({
   name: "categories",
   initialState,
@@ -36,6 +50,15 @@ export const categoriesSlice = createSlice({
         state.categories = [{ error: "Something went wrong" }];
       })
       .addCase(getCategories.fulfilled, (state, action) => {
+        state.categories = action.payload;
+      })
+      .addCase(postCategories.pending, (state) => {
+        state.categories = [{ idle: true }];
+      })
+      .addCase(postCategories.rejected, (state) => {
+        state.categories = [{ error: "Something went wrong" }];
+      })
+      .addCase(postCategories.fulfilled, (state, action) => {
         state.categories = action.payload;
       });
   },

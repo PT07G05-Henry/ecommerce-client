@@ -10,7 +10,7 @@ COMPONENTES VIEJOS USEN E IMPORTEN LOS NUEVOS MÓDULOS.
 
 */
 
-import { getCategories as newGetCategories, selectCategories as newSelectCategories } from "./categories";
+import { getCategories as newGetCategories, postCategories as newPostCategories,selectCategories as newSelectCategories } from "./categories";
 import { getComments as newGetComments, selectComments as newSelectComments } from "./comments";
 import { getDeliveries as newGetDeliveries, selectDeliveries as newSelectDeliveries } from "./deliveries";
 import { getOrders as newGetOrders, selectOrders as newSelectOrders } from "./orders";
@@ -39,6 +39,7 @@ import { getProductById as newGetProductById, selectProductsById as newSelectPro
 import { getUsers as newGetUsers, selectUser as newSelectUser } from "./users";
 import { getUsersById as newGetUsersById, selectUserById as newSelectUserById } from "./userById";
 
+export const postCategories = newPostCategories;
 export const getCategories = newGetCategories;
 export const selectCategories = newSelectCategories;
 export const getComments = newGetComments;

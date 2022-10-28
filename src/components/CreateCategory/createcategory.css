@@ -1,0 +1,43 @@
+.CategoryImg {
+    width: 100px;
+    display: flex;
+    margin: auto;
+}
+
+.CategoryName {
+    justify-content: center;
+    display: flex;
+}
+
+.InfoCategory {
+    border: 1px solid black;
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  min-width: fit-content;
+  padding: 0px 20px;
+}
+
+.ImgCheck {
+  width:15px
+}
+
+.ContainerImgInput{
+display: flex;
+}
+
+.formControled__centeredForm{
+    border-radius: 25px 0px;
+}
+
+input[type=text]{
+    border-top: var(--border);
+    border-left: var(--border);
+    border-top-left-radius: 10px;
+    text-align: center;
+    border-bottom-right-radius: 10px;
+    background-color: rgba(var(--color-secondary-rgb), 0.25);
+    backdrop-filter: blur(3px);
+    color:var(--color-white);
+    margin-left: 0.5rem
+}
