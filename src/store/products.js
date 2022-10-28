@@ -47,6 +47,22 @@ export const getProducts = createAsyncThunk(
   getProductsEndpoint
 );
 
+export const postProducts = createAsyncThunk(
+  "products/postProdcuts",
+  async ({input, sid}) => {
+    try {
+      const response = await axios.post(
+        `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,input
+      );
+      alert('Product created successfully');
+      return response.data;
+    } catch (error) {
+      alert('Error: ' + error.message);
+      console.error(error);
+    }
+  }
+);
+
 export const productsSlice = createSlice({
   name: "products",
   initialState,

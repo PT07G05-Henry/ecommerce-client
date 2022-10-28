@@ -1,11 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories, selectCategories } from "../../store/api";
+import { getCategories, selectCategories, postProducts } from "../../store/api";
 import validate from "./validate";
-import validateImage from "./validateImage";
+//import validateImage from "./validateImage";
+import { useAuth0 } from "@auth0/auth0-react";
 import Card from "../Card/Card";
 import "./createProduct.css";
 
@@ -27,6 +28,9 @@ const CreateProduct = () => {
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
+
+  const {getIdTokenClaims} = useAuth0()
+
 
   const handleImageSubmit = () => {
     const image = ref.current.value;
@@ -103,10 +107,11 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post(
-      `http://${process.env.REACT_APP_DEV_API || document.domain}/products`,
-      input
-    );
+    getIdTokenClaims().then(r=>r.sid).then((sid)=>dispatch(postProducts({input, sid})))
+    // axios.post(
+    //   `https://${process.env.REACT_APP_DEV_API || document.domain}/products`,
+    //   input
+    // );
     setInput({
       images: [],
       name: "",
