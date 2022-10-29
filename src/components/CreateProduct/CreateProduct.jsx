@@ -128,21 +128,7 @@ const CreateProduct = () => {
       <div className="formControled__centeredForm">
         <form onSubmit={handleSubmit}>
           <h1>Create Product</h1>
-          <label htmlFor="images"> Images: </label>
-          <input
-            type="text"
-            name="images"
-            id="images"
-            ref={ref}
-            value={value}
-            onChange={handleImageChange}
-          />
-          <button onClick={handleImageCheck} type="button">
-            check image
-          </button>
-          <p className="errorAlert__errorMessage">
-            {error.images === "error" ? "" : error.images}
-          </p>
+        and
 
           <label htmlFor="name"> Name: </label>
           <input
