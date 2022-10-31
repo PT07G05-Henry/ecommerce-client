@@ -4,6 +4,9 @@ import { getUsersById } from "../../store/userById";
 import { selectThisUser } from "../../store/thisUser";
 import { updateUsers } from "../../store/users";
 import { useAuth0 } from "@auth0/auth0-react";
+import validate from "./validate";
+import './Profile.css';
+
 
 export default function Profile({ userId }) {
   const dispatch = useDispatch();
@@ -18,11 +21,11 @@ export default function Profile({ userId }) {
     password: "",
   });
 
+  const [error, setError] = useState({});
+
   const [input, setInput] = useState({
     id: userData.userDb.id,
   });
-
-  console.log(userData)
 
   const [inputHidden, setInputHidden] = useState({
     first_name: "hidden",
@@ -44,13 +47,6 @@ export default function Profile({ userId }) {
         submit: "show",
         edit: "show",
       });
-    } else if (e.target.value === "submit") {
-      setInputHidden({
-        ...inputHidden,
-        button: "show",
-        submit: "hidden",
-        edit: "hidden",
-      });
     } else {
       setInputHidden({
         ...inputHidden,
@@ -64,13 +60,12 @@ export default function Profile({ userId }) {
       ...input,
       [e.target.name]: e.target.value,
     });
-
-    // setError(
-    //     validate({
-    //         ...input,
-    //         [e.target.name]: e.target.value,
-    //     })
-    // );
+    setError(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   };
 
   const handleSubmit = (e) => {
@@ -86,6 +81,16 @@ export default function Profile({ userId }) {
           !input.password
         )
           return alert("No values ​​to update");
+        setInputHidden({
+          first_name: "hidden",
+          last_name: "hidden",
+          birth_date: "hidden",
+          profile_picture: "hidden",
+          password: "hidden",
+          edit: "hidden",
+          button: "show",
+          submit: "hidden",
+        });
         dispatch(updateUsers({ input, sid, setUpdate }));
       });
     setInput({
@@ -104,8 +109,7 @@ export default function Profile({ userId }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Profile Image: </label>
-          <img src={userData.userDb.profile_picture} alt="Profile" />
-          {/* <input value="Change Image"></input> */}
+          <img className='profPic' src={userData.userDb.profile_picture} alt="Profile" />
           <div className={inputHidden.edit}>
             <input
               className={inputHidden.profile_picture}
@@ -132,6 +136,7 @@ export default function Profile({ userId }) {
             value={input.first_name}
             onChange={handleInputChange}
           />
+           <p className="errorAlert__errorMessage">{error.first_name}</p>
           <button value="first_name" onClick={handleHidden}>
             Edit
           </button>
@@ -140,7 +145,6 @@ export default function Profile({ userId }) {
           <label>
             Last Name: {userData.userDb.last_name && userData.userDb.last_name}
           </label>
-          {/* {!userData.userDb.last_name && <input value="update"></input>} */}
           <div className={inputHidden.edit}>
             <input
               className={inputHidden.last_name}
@@ -150,6 +154,7 @@ export default function Profile({ userId }) {
               value={input.last_name}
               onChange={handleInputChange}
             />
+            <p className="errorAlert__errorMessage">{error.last_name}</p>
             <button value="last_name" onClick={handleHidden}>
               Edit
             </button>
@@ -160,18 +165,16 @@ export default function Profile({ userId }) {
             Birth Date:{" "}
             {userData.userDb.birth_date && userData.userDb.birth_date}
           </label>
-          {/* {!userData.userDb.birth_date && (
-            <input value="add birth_date"></input>
-          )} */}
           <div className={inputHidden.edit}>
             <input
               className={inputHidden.birth_date}
               type="date"
               name="birth_date"
-              id="name"
+              id="birth_date"
               value={input.birth_date}
               onChange={handleInputChange}
             />
+            <p className="errorAlert__errorMessage">{error.birth_date}</p>
             <button value="birth_date" onClick={handleHidden}>
               Edit
             </button>
@@ -187,11 +190,7 @@ export default function Profile({ userId }) {
         >
           Edit Profile
         </button>
-        <input
-          className={inputHidden.submit}
-          type="submit"
-          value="submit"
-        />
+        <input className={inputHidden.submit} type="submit" value="submit" />
       </form>
     </>
   );
