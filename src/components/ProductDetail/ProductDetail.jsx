@@ -5,9 +5,11 @@ import { selectCarts } from "../../store/cart";
 import { useParams } from "react-router-dom";
 import { setItem, deleteItem } from "../../store/cart";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import {selectThisUserRoles} from "../../store/thisUser";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
+  const rol = useSelector(selectThisUserRoles)
   const { id } = useParams();
   const cart = useSelector(selectCarts);
   const dispatch = useDispatch();
@@ -137,14 +139,15 @@ const ProductDetail = () => {
                 ? "btn-remove"
                 : "btn"
             }
-            value={
+            value={ rol[0] !== "Admin" ? 
               cart.findIndex((i) => i.id === product.id) !== -1
                 ? "Remove from cart"
                 : "Add to cart"
-            }
+            : "Disable for Admin"}
             onClick={(e) => {
               handlerButtonCart(e);
             }}
+            disabled={rol[0] === "Admin" ? true : false}
           ></input>
         </div>
         <div className="productDetails__description">
