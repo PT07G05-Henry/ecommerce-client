@@ -132,6 +132,9 @@ export default function DashBoard() {
     return (
       <div className="component">
         <div className="options">
+          <button value="profile" onClick={handleClick}>
+            Profile
+          </button>
           <button value="products" onClick={handleClick}>
             Products
           </button>
@@ -154,6 +157,9 @@ export default function DashBoard() {
     //Superadmin
     <div className="component">
       <div className="options">
+        <button value="profile" onClick={handleClick}>
+          Profile
+        </button>
         <button value="products" onClick={handleClick}>
           Products
         </button>

@@ -32,11 +32,11 @@ import {
     USER_ROL_ID as NEW_USER_ROL_ID,
     getProducts as newGetProducts,
     selectProducts as newSelectProducts,
-    postProducts as newPostProducts
+    postProducts as newPostProducts,
 } from "./products";
 import { getProductsByName as newGetProductsByName, selectProductsByName as newSelectProductsByName } from "./productsByName";
 import { getProductById as newGetProductById, selectProductsById as newSelectProductsById } from "./productById";
-import { getUsers as newGetUsers, selectUser as newSelectUser } from "./users";
+import { getUsers as newGetUsers, selectUser as newSelectUser,  updateUsers as newUpdateUsers } from "./users";
 import { getUsersById as newGetUsersById, selectUserById as newSelectUserById } from "./userById";
 
 export const postCategories = newPostCategories;
@@ -75,3 +75,4 @@ export const getUsers = newGetUsers;
 export const selectUser = newSelectUser;
 export const getUsersById = newGetUsersById;
 export const selectUsers = newSelectUserById;
+export const updateUser = newUpdateUsers;
