@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { setItem, deleteItem } from "../../store/cart";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import {selectThisUserRoles} from "../../store/thisUser";
+import { ratingArray, ratingArrayEmpty } from "./numberToArray";
+import { IconContext } from "react-icons";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
@@ -25,32 +27,7 @@ const ProductDetail = () => {
       dispatch(getProductById(id));
   }, [id]);
 
-  useEffect(() => {}, [cart]);
-
-  const ratingArray = () => {
-    if (product.rating === 0) {
-      return [];
-    }
-    let arrayFill = [];
-    for (let i = 0; i < product.rating; i++) {
-      arrayFill.push(i + 1);
-    }
-    return arrayFill;
-  };
-
-  const ratingArrayEmpty = () => {
-    if (product.rating === 0) {
-      return [0];
-    }
-    if (product.rating === 5) {
-      return [];
-    }
-    let arrayEmpty = []; //3 -> 2
-    for (let i = 0; i < 5 - product.rating; i++) {
-      arrayEmpty.push(i + 1);
-    }
-    return arrayEmpty;
-  };
+  useEffect(() => {}, [cart, product]);
 
   function handlerButtonCart(e) {
     if (e.target.value === "Add to cart") {
@@ -110,28 +87,34 @@ const ProductDetail = () => {
           <h3>{`Price: ${product.price}`}</h3>
           <h3>{`Stock: ${product.stock}`}</h3>
           <div>
-          <h3>Rating</h3>
-          {ratingArray().length > 0 &&
-            ratingArray().map((r) => {
-              return <AiFillStar />;
-            })}
-          {ratingArrayEmpty().length > 0 &&
-            ratingArrayEmpty().map((r) => {
-              if (r === 0) {
+            <h3>Rating</h3>
+            {ratingArray(product.rating).length > 0 &&
+              ratingArray(product.rating).map((r) => {
                 return (
-                  <div>
-                    <AiOutlineStar />
-                    <AiOutlineStar />
-                    <AiOutlineStar />
-                    <AiOutlineStar />
-                    <AiOutlineStar />
-                  </div>
+                  <IconContext.Provider
+                    value={{ className: "fillStar" }}
+                  >
+                    <AiFillStar />
+                  </IconContext.Provider>
                 );
-              } else {
-                return <AiOutlineStar />;
-              }
-            })}
-            </div>
+              })}
+            {ratingArrayEmpty(product.rating).length > 0 &&
+              ratingArrayEmpty(product.rating).map((r) => {
+                if (r === 0) {
+                  return (
+                    <div>
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                    </div>
+                  );
+                } else {
+                  return <AiOutlineStar />;
+                }
+              })}
+          </div>
           <input
             type="button"
             className={
@@ -151,7 +134,66 @@ const ProductDetail = () => {
           ></input>
         </div>
         <div className="productDetails__description">
+          <h3>Description</h3>
           <p>{product.description}</p>
+        </div>
+
+        <div>
+          {product.id && product.comments.length > 0 && <h3>Comments</h3>}
+
+          {product.id &&
+            product.comments.length > 0 &&
+            product.comments.map((c) => {
+              return (
+                <div className="productDetail__comment">
+                  <div>
+                    <img
+                      className="productDetail__comment-picture"
+                      src={c.user.profile_picture}
+                      alt={c.user.first_name + c.user.id}
+                    ></img>
+                  </div>
+                  <div className="productDetail__comment-containerProfile">
+                    <p className="productDetail__comment-name">
+                      {c.user.first_name +
+                        (c.user.last_name && " " + c.user.last_name)}
+                    </p>
+                    {/* <p className="productDetail__comment-ratingText">Rating:</p> */}
+                    <p className="productDetail__comment-ratingStar">
+                      {ratingArray(c.rating).length > 0 &&
+                        ratingArray(c.rating).map((r) => {
+                          return (
+                            <IconContext.Provider
+                              value={{ fill: "yellow", className: "fillStar" }}
+                            >
+                              <AiFillStar />
+                            </IconContext.Provider>
+                          );
+                        })}
+                      {ratingArrayEmpty(c.rating).length > 0 &&
+                        ratingArrayEmpty(c.rating).map((r) => {
+                          if (r === 0) {
+                            return (
+                              <div>
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                              </div>
+                            );
+                          } else {
+                            return <AiOutlineStar />;
+                          }
+                        })}
+                    </p>
+                  </div>
+                  <div className="productDetail__comment-section">
+                    <p className="productDetail__comment-value">{c.value}</p>
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </div>
     </section>
