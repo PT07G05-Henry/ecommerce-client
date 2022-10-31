@@ -27,9 +27,8 @@ export const getProductsEndpoint = async (flags) => {
   try {
     const response = await axios.get(
       !flags || typeof flags !== "string"
-        ? `https://${
-            process.env.REACT_APP_DEV_API || document.domain
-          }/products${queries.length > 1 ? queries : ""}`
+        ? `https://${process.env.REACT_APP_DEV_API || document.domain
+        }/products${queries.length > 1 ? queries : ""}`
         : flags
     );
     return response.data;
@@ -49,13 +48,37 @@ export const getProducts = createAsyncThunk(
 
 export const postProducts = createAsyncThunk(
   "products/postProdcuts",
-  async ({input, sid}) => {
+  async ({ input, sid }) => {
     try {
       const response = await axios.post(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,input
+        `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`, input
       );
       alert('Product created successfully');
       return response.data;
+    } catch (error) {
+      alert('Error: ' + error.message);
+      console.error(error);
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "products/updateProdcuts",
+  async ({ input, sid, setUpdate }) => {
+    try {
+      axios.put(
+        `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,
+        input
+      ).then((res) => {
+        setUpdate({
+          name: res.data.name,
+          price: res.data.price,
+          description: res.data.description,
+          stock: res.data.stock,
+          images: res.data.images
+        })
+        alert('Product updated successfully');
+      });
     } catch (error) {
       alert('Error: ' + error.message);
       console.error(error);

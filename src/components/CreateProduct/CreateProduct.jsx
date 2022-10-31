@@ -1,11 +1,9 @@
 import React from "react";
 import { useState } from "react";
-//import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories, selectCategories, postProducts } from "../../store/api";
 import validate from "./validate";
-//import validateImage from "./validateImage";
 import { useAuth0 } from "@auth0/auth0-react";
 import Card from "../Card/Card";
 import "./createProduct.css";
@@ -66,8 +64,6 @@ const CreateProduct = () => {
   const handleDelete = (e) => {
     const nombre = e.target.value;
     const id = cat.indexOf(nombre);
-    console.log("nombre", nombre);
-    console.log("id", id);
     if (input.categories) {
       setCat([].concat(cat.filter((e) => e !== nombre)));
       setInput({
@@ -102,16 +98,11 @@ const CreateProduct = () => {
   };
   const handleImageChange = (e) => {
     setValue(e.target.value);
-    // setError(validateImage(e.target.value));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     getIdTokenClaims().then(r=>r.sid).then((sid)=>dispatch(postProducts({input, sid})))
-    // axios.post(
-    //   `https://${process.env.REACT_APP_DEV_API || document.domain}/products`,
-    //   input
-    // );
     setInput({
       images: [],
       name: "",
@@ -143,7 +134,6 @@ const CreateProduct = () => {
           <p className="errorAlert__errorMessage">
             {error.images === "error" ? "" : error.images}
           </p>
-
           <label htmlFor="name"> Name: </label>
           <input
             type="text"

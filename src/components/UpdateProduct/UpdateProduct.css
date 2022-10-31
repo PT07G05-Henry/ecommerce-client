@@ -5,3 +5,8 @@
 .show {
     display: block;
 }
+
+.imageUpdate {
+    display: flex;
+    width: 15rem;
+}
