@@ -11,7 +11,7 @@ import { SlHome , SlBookOpen } from "react-icons/sl"
 import { AiOutlineShoppingCart , AiOutlineMessage } from "react-icons/ai"
 import {MdRemoveShoppingCart} from "react-icons/md"
 import {selectCarts} from "../../store/cart"
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {selectThisUserRoles} from "../../store/thisUser";
 import LOGO from "../../assets/Logo.svg";
 import { useEffect } from "react";
