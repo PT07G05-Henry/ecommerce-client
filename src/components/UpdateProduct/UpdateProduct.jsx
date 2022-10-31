@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-//import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById, selectProduct, updateProduct } from "../../store/api";
@@ -37,15 +36,26 @@ const UpdateProduct = () => {
   });
 
   const [imgIndex, setImgIndex] = useState(0);
-  const image = product.images
-    ?.filter((e) => e.image !== null)
-    .map((e) => <img src={e.image} alt="image" />);
+  let image;
+  if (update.images.length) {
+    image = update.images
+      ?.filter((e) => e.image !== null)
+      .map((e) => (
+        <div>
+          <img src={e.image} alt="image" />
+        </div>
+      ));
+  } else {
+    image = product.images
+      ?.filter((e) => e.image !== null)
+      .map((e) => (
+        <div>
+          <img src={e.image} alt="image" />
+        </div>
+      ));
+  }
 
   const { getIdTokenClaims } = useAuth0();
-
-  useEffect(() => {
-    dispatch(getProductById(id));
-  }, [dispatch]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -61,45 +71,6 @@ const UpdateProduct = () => {
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) => {
-        if (input.images && input.images.length === 0) setInput(delete input.images);
-        if (
-            !input.images &&
-            !input.name &&
-            !input.price &&
-            !input.description &&
-            !input.stock
-        )
-          return alert("No values ​​to update");
-        console.log(input);
-        dispatch(updateProduct({ input, sid, setUpdate }));
-      });
-    // axios.put(
-    //     `https://${process.env.REACT_APP_DEV_API || document.domain}/products`,
-    //     input
-    // ).then((res) => {
-    //     setUpdate({
-    //         name: res.data.name,
-    //         price: res.data.price,
-    //         description: res.data.description,
-    //         stock: res.data.stock,
-    //     })
-    // });
-    setInputHidden({
-      name: "hidden",
-      price: "hidden",
-      description: "hidden",
-      stock: "hidden",
-      images: "hidden",
-    });
-    setInput({
-      id: id,
-    });
-  };
   const handleHidden = (e) => {
     e.preventDefault();
     setInputHidden({
@@ -110,7 +81,6 @@ const UpdateProduct = () => {
 
   const handleImageChange = (e) => {
     setValue(e.target.value);
-    // setError(validateImage(e.target.value));
   };
 
   const handleImageSubmit = () => {
@@ -125,12 +95,14 @@ const UpdateProduct = () => {
       tester.onload = imageFound;
       tester.onerror = imageNotFound;
       tester.src = URL;
-    }
+    };
+
     function imageFound() {
       alert("That image is found and loaded");
       handleImageSubmit();
       return setError((err) => ({ ...err }));
-    }
+    };
+    
     function imageNotFound() {
       alert("That image was not found.");
       setValue("");
@@ -143,6 +115,39 @@ const UpdateProduct = () => {
     }
     testImage(value);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getIdTokenClaims()
+      .then((r) => r.sid)
+      .then((sid) => {
+        if (input.images && input.images.length === 0)
+          setInput(delete input.images);
+        if (
+          !input.images &&
+          !input.name &&
+          !input.price &&
+          !input.description &&
+          !input.stock
+        )
+          return alert("No values ​​to update");
+        dispatch(updateProduct({ input, sid, setUpdate }));
+      });
+    setInputHidden({
+      name: "hidden",
+      price: "hidden",
+      description: "hidden",
+      stock: "hidden",
+      images: "hidden",
+    });
+    setInput({
+      id: id,
+    });
+  };
+
+  useEffect(() => {
+    dispatch(getProductById(id));
+  }, [dispatch]);
 
   return (
     <>

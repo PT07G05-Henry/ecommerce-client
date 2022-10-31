@@ -64,7 +64,7 @@ export const postProducts = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "products/updateProdcuts",
-  async ({ input, sid, setUpdate  }) => {
+  async ({ input, sid, setUpdate }) => {
     try {
       axios.put(
         `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,
@@ -77,11 +77,9 @@ export const updateProduct = createAsyncThunk(
           stock: res.data.stock,
           images: res.data.images
         })
+        alert('Product updated successfully');
       });
-      alert('Product updated successfully');
-
-    }
-    catch (error) {
+    } catch (error) {
       alert('Error: ' + error.message);
       console.error(error);
     }

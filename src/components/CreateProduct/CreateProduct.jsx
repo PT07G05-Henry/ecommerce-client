@@ -29,8 +29,7 @@ const CreateProduct = () => {
     dispatch(getCategories());
   }, [dispatch]);
 
-  const {getIdTokenClaims} = useAuth0()
-
+  const { getIdTokenClaims } = useAuth0();
 
   const handleImageSubmit = () => {
     const image = ref.current.value;
@@ -51,9 +50,9 @@ const CreateProduct = () => {
       return setError((err) => ({ ...err }));
     }
     function imageNotFound() {
-      alert('That image was not found.');
+      alert("That image was not found.");
       setValue("");
-      if(!input.images){
+      if (!input.images) {
         return setError((err) => ({
           ...err,
           images: "That image was not found.",
@@ -66,8 +65,6 @@ const CreateProduct = () => {
   const handleDelete = (e) => {
     const nombre = e.target.value;
     const id = cat.indexOf(nombre);
-    console.log("nombre", nombre);
-    console.log("id", id);
     if (input.categories) {
       setCat([].concat(cat.filter((e) => e !== nombre)));
       setInput({
@@ -102,16 +99,14 @@ const CreateProduct = () => {
   };
   const handleImageChange = (e) => {
     setValue(e.target.value);
-    // setError(validateImage(e.target.value));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getIdTokenClaims().then(r=>r.sid).then((sid)=>dispatch(postProducts({input, sid})))
-    // axios.post(
-    //   `https://${process.env.REACT_APP_DEV_API || document.domain}/products`,
-    //   input
-    // );
+    getIdTokenClaims()
+      .then((r) => r.sid)
+      .then((sid) => dispatch(postProducts({ input, sid })));
+    
     setInput({
       images: [],
       name: "",
@@ -128,8 +123,6 @@ const CreateProduct = () => {
       <div className="formControled__centeredForm">
         <form onSubmit={handleSubmit}>
           <h1>Create Product</h1>
-        and
-
           <label htmlFor="name"> Name: </label>
           <input
             type="text"
