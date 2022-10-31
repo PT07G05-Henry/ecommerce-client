@@ -72,10 +72,13 @@ const SeeProduct = ({ category, name }) => {
           {products?.map((el) => (
             <SwiperSlide key={el.id}>
               <Card
+                key={el.id}
                 id={el.id}
                 images={el.images}
                 name={el.name}
                 price={el.price}
+                stock={el.stock}
+                description={el.description}
               />
             </SwiperSlide>
           ))}

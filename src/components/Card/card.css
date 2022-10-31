@@ -25,3 +25,18 @@
 .card__imageViewer-controller > button{
     width: 100%;
 }
+
+.btn-remove{
+    --radius: 0.75rem;
+    width: max-content;
+    color: var(--color-white);
+    background: var(--color-warning-primary);
+    padding: 0.25rem 1.2rem;
+    margin: 1px 2px;
+    overflow: hidden;
+    cursor: pointer;
+    border-top-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    border: 1px solid transparent;
+    transition: var(--transition);
+}
