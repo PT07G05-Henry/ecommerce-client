@@ -15,7 +15,7 @@ const UpdateProduct = () => {
   const ref = React.createRef();
   const [error, setError] = useState({});
   const [value, setValue] = useState("");
-  const [input, setInput] = useState({
+  const [input, setInput] = useState({ 
     id: id,
     images: [],
   });
