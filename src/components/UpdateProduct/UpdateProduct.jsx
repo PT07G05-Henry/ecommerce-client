@@ -41,7 +41,7 @@ const UpdateProduct = () => {
     image = update.images
       ?.filter((e) => e.image !== null)
       .map((e) => (
-        <div>
+        <div className="imageUpdate">
           <img src={e.image} alt="image" />
         </div>
       ));
@@ -49,7 +49,7 @@ const UpdateProduct = () => {
     image = product.images
       ?.filter((e) => e.image !== null)
       .map((e) => (
-        <div>
+        <div className="imageUpdate">
           <img src={e.image} alt="image" />
         </div>
       ));

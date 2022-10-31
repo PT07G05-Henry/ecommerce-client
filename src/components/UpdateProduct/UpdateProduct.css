@@ -6,7 +6,7 @@
     display: block;
 }
 
-.card__imageViewer {
+.imageUpdate {
     display: flex;
     width: 15rem;
 }
