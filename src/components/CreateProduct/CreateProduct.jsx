@@ -1,11 +1,9 @@
 import React from "react";
 import { useState } from "react";
-//import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories, selectCategories, postProducts } from "../../store/api";
 import validate from "./validate";
-//import validateImage from "./validateImage";
 import { useAuth0 } from "@auth0/auth0-react";
 import Card from "../Card/Card";
 import "./createProduct.css";
@@ -29,7 +27,8 @@ const CreateProduct = () => {
     dispatch(getCategories());
   }, [dispatch]);
 
-  const { getIdTokenClaims } = useAuth0();
+  const {getIdTokenClaims} = useAuth0()
+
 
   const handleImageSubmit = () => {
     const image = ref.current.value;
@@ -50,9 +49,9 @@ const CreateProduct = () => {
       return setError((err) => ({ ...err }));
     }
     function imageNotFound() {
-      alert("That image was not found.");
+      alert('That image was not found.');
       setValue("");
-      if (!input.images) {
+      if(!input.images){
         return setError((err) => ({
           ...err,
           images: "That image was not found.",
@@ -103,10 +102,7 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) => dispatch(postProducts({ input, sid })));
-    
+    getIdTokenClaims().then(r=>r.sid).then((sid)=>dispatch(postProducts({input, sid})))
     setInput({
       images: [],
       name: "",
@@ -123,6 +119,21 @@ const CreateProduct = () => {
       <div className="formControled__centeredForm">
         <form onSubmit={handleSubmit}>
           <h1>Create Product</h1>
+          <label htmlFor="images"> Images: </label>
+          <input
+            type="text"
+            name="images"
+            id="images"
+            ref={ref}
+            value={value}
+            onChange={handleImageChange}
+          />
+          <button onClick={handleImageCheck} type="button">
+            check image
+          </button>
+          <p className="errorAlert__errorMessage">
+            {error.images === "error" ? "" : error.images}
+          </p>
           <label htmlFor="name"> Name: </label>
           <input
             type="text"
