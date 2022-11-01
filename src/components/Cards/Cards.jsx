@@ -19,12 +19,14 @@ import {
   selectCategories,
 } from "../../store/api";
 import { useDispatch, useSelector } from "react-redux";
+import {selectThisUserRoles} from "../../store/thisUser";
 import "./cards.css";
 import { ImFilter } from "react-icons/im";
 
 const REMOVE = "remove";
 
 const Cards = ({ products, dispatch }) => {
+  const rol = useSelector(selectThisUserRoles)
   const internalDispatch = useDispatch();
   const [controller, setController] = useState(products.query);
   const categoriesList = useSelector(selectCategories);
@@ -294,6 +296,7 @@ const Cards = ({ products, dispatch }) => {
             price={el.price}
             description={el.description}
             stock={el.stock}
+            rol={rol}
           />
         ))}
       </div>
