@@ -1,0 +1,8 @@
+.cart__btn-aprove{
+    background-color: green !important;
+}
+
+.cart__btn-aprove:hover{
+    color: green !important;
+    background-color: rgba(0,0,0,0.5) !important;
+}
