@@ -6,7 +6,7 @@ import "./cart.css";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import {selectThisUserRoles} from "../../store/thisUser"
-
+import ButtonGenerateMPLink from "../MercadoPago/ButtonGenerateMPLink"
 
 
 export default function Cart() {
@@ -40,14 +40,16 @@ export default function Cart() {
                 {"$" + Number(totalPrice).toFixed(2)}
               </span>
             </h2>
-            <input
+            {rol[0]=== "Guest" ? <input
               type="button"
               className="btn cart__btn"
               value="Proceed to checkout"
               onClick={() => {
-                loginWithPopup();
+                loginWithPopup()
               }}
-            ></input>
+            ></input>:
+            <ButtonGenerateMPLink totalPrice={Number(totalPrice).toFixed(2)} cart={cart}/>}
+            
             <h2>These are the selected products</h2>
           </>
         ) : (
