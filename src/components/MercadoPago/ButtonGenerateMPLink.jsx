@@ -25,7 +25,7 @@ export default function ButtonGenerateMPLink({totalPrice, cart}) {
             total_price: totalPrice,
             products: products,
           },
-        }).then(r=>{console.log(r.data);window.open(r.data, '_blank');})
+        }).then(r=>{console.log(r.data);window.open(r.data, '_blank', "top=200,left=400,width=1000,height=700");})
       );
   }
 
