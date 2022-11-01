@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import "./buttongeneratemplink.css"
 
 export default function ButtonGenerateMPLink({totalPrice, cart}) {
   const { getIdTokenClaims } = useAuth0();
@@ -32,8 +33,9 @@ export default function ButtonGenerateMPLink({totalPrice, cart}) {
   return (
     <>
       <input
+        className="btn cart__btn cart__btn-aprove"
+        value="Proceed to checkout"
         type="button"
-        value="MPButton"
         onClick={() => {
           findLinkMP();
         }}
