@@ -43,7 +43,7 @@ export const userByIdSlice = createSlice({
   },
 });
 
-export const selectUserById = (state) => state.userById.userById;
+export const selectUserById = (state) => state.userById.user;
 
 export const { start } = userByIdSlice.actions;
 

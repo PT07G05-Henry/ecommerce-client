@@ -36,30 +36,6 @@ export const getUsers = createAsyncThunk("users/getUsers", async (flags) => {
   }
 });
 
-export const updateUsers = createAsyncThunk(
-  "users/updateUsers",
-  async ({ input, sid, setUpdate  }) => {
-    try {
-      axios.put(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/users?sid=${sid}`,
-        input
-      ).then((res) => {
-        setUpdate({
-          first_name: res.data.first_name,
-          last_name: res.data.last_name,
-          birth_date: res.data.birth_date,
-          profile_picture: res.data.profile_picture,
-          password: res.data.password
-        })
-      });
-      alert('Your profile was updated successfully');
-    } catch (error) {
-      alert('Error: ' + error.message);
-      console.error(error);
-    }
-  }
-);
-
 export const usersSlice = createSlice({
   name: "users",
   initialState,

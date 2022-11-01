@@ -1,38 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsersById } from "../../store/userById";
+import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser } from "../../store/thisUser";
-import { updateUsers } from "../../store/users";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from 'axios';
 import validate from "./validate";
-import './Profile.css';
-
+import "./Profile.css";
 
 export default function Profile({ userId }) {
   const dispatch = useDispatch();
-  const userData = useSelector(selectThisUser);
+  let userData = useSelector(selectThisUser);
   const { getIdTokenClaims } = useAuth0();
-
-  const [update, setUpdate] = useState({
-    first_name: "",
-    last_name: "",
-    birth_date: "",
-    profile_picture: "",
-    password: "",
-  });
-
+  const user = useSelector(selectUserById);
   const [error, setError] = useState({});
-
   const [input, setInput] = useState({
     id: userData.userDb.id,
   });
-
   const [inputHidden, setInputHidden] = useState({
     first_name: "hidden",
     last_name: "hidden",
     birth_date: "hidden",
     profile_picture: "hidden",
-    password: "hidden",
     edit: "hidden",
     button: "show",
     submit: "hidden",
@@ -77,10 +65,31 @@ export default function Profile({ userId }) {
           !input.first_name &&
           !input.last_name &&
           !input.birth_date &&
-          !input.profile_picture &&
-          !input.password
+          !input.profile_picture 
         )
           return alert("No values ​​to update");
+        if(
+          error.first_name ||
+          error.last_name ||
+          error.birth_date ||
+          error.profile_picture 
+        ) 
+          return alert("Error in any of the fields")
+        try {
+          axios
+            .put(
+              `https://${
+                process.env.REACT_APP_DEV_API || document.domain
+              }/users?sid=${sid}`,
+              input
+            )
+            .then(() => {
+              alert("Your profile was updated successfully");
+            });
+        } catch (error) {
+          alert("Error: " + error.message);
+          console.error(error);
+        }
         setInputHidden({
           first_name: "hidden",
           last_name: "hidden",
@@ -91,11 +100,13 @@ export default function Profile({ userId }) {
           button: "show",
           submit: "hidden",
         });
-        dispatch(updateUsers({ input, sid, setUpdate }));
       });
     setInput({
       id: userData.userDb.id,
     });
+    setTimeout(() => {
+      dispatch(getUsersById(userId));
+    }, 2000);
   };
 
   useEffect(() => {
@@ -109,7 +120,15 @@ export default function Profile({ userId }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Profile Image: </label>
-          <img className='profPic' src={userData.userDb.profile_picture} alt="Profile" />
+          <img
+            className="profPic"
+            src={
+              user.profile_picture
+                ? user.profile_picture
+                : userData.userDb.profile_picture
+            }
+            alt="Profile"
+          />
           <div className={inputHidden.edit}>
             <input
               className={inputHidden.profile_picture}
@@ -125,7 +144,10 @@ export default function Profile({ userId }) {
           </div>
         </div>
         <div>
-          <label>First Name: {userData.userDb.first_name}</label>
+          <label>
+            First Name:{" "}
+            {user.first_name ? user.first_name : userData.userDb.first_name}
+          </label>
         </div>
         <div className={inputHidden.edit}>
           <input
@@ -136,14 +158,17 @@ export default function Profile({ userId }) {
             value={input.first_name}
             onChange={handleInputChange}
           />
-           <p className="errorAlert__errorMessage">{error.first_name}</p>
+          <p className="errorAlert__errorMessage">{error.first_name}</p>
           <button value="first_name" onClick={handleHidden}>
             Edit
           </button>
         </div>
         <div>
           <label>
-            Last Name: {userData.userDb.last_name && userData.userDb.last_name}
+            Last Name:{" "}
+            {user.last_name
+              ? user.last_name
+              : userData.userDb.last_name && userData.userDb.last_name}
           </label>
           <div className={inputHidden.edit}>
             <input
@@ -163,7 +188,9 @@ export default function Profile({ userId }) {
         <div>
           <label>
             Birth Date:{" "}
-            {userData.userDb.birth_date && userData.userDb.birth_date}
+            {user.birth_date
+              ? user.birth_date
+              : userData.userDb.birth_date && userData.userDb.birth_date}
           </label>
           <div className={inputHidden.edit}>
             <input

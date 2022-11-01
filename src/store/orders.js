@@ -8,7 +8,7 @@ const initialState = {
 export const getOrders = createAsyncThunk("orders/getOrders", async () => {
   try {
     const response = await axios.get(
-      `https://${process.env.REACT_APP_DEV_API || document.domain}/orders`
+      `https://${process.env.REACT_APP_DEV_API || document.domain}/orders/all`
     );
     return response.data;
   } catch (error) {
