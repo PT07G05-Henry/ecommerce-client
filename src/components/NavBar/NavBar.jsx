@@ -10,9 +10,12 @@ import ButtonLogin from "../Account/ButtonLogin";
 import Account from "../Account/Account";
 import { SlHome , SlBookOpen } from "react-icons/sl"
 import { AiOutlineShoppingCart , AiOutlineMessage } from "react-icons/ai"
+import {selectCarts} from "../../store/cart"
+import { useSelector } from "react-redux";
 import LOGO from "../../assets/Logo.svg";
 
 export default function NavBar() {
+  const cart = useSelector(selectCarts)
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth0();
   const buttonSize = 32;
@@ -22,7 +25,7 @@ export default function NavBar() {
         <button className="nav__button" onClick={()=>navigate("/")} ><SlHome size={buttonSize} /></button>
         <button className="nav__button" onClick={()=>navigate("/catalog")} ><SlBookOpen size={buttonSize} /></button>
         <div className="nav__middleSpace"/>
-        <button className="nav__button" onClick={()=>navigate("/cart")} ><AiOutlineShoppingCart size={buttonSize} /></button>
+        <button className="nav__button tooltip__cart" onClick={()=>navigate("/cart")} ><AiOutlineShoppingCart size={buttonSize} />{cart.length >= 1 &&<span class="tooltiptext">{cart.length}</span>}</button>
         <button className="nav__button" onClick={()=>navigate("/")} ><AiOutlineMessage size={buttonSize} /></button>
       </nav>
     </div>

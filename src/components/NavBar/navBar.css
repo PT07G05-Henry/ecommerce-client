@@ -54,3 +54,21 @@
   display: block;
   width: 5rem;
 }
+
+.tooltip__cart .tooltiptext {
+  visibility: visible;
+  width: 1rem;
+  background-color: rgba(0, 0, 0, 0.242);
+  color: var(--color-primary);
+  text-align: center;
+  border-radius: 6px;
+  padding: 0px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip__cart:hover .tooltiptext {
+  visibility: hidden;
+}

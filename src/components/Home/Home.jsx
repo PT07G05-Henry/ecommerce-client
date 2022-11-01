@@ -14,7 +14,9 @@ export default function Home() {
   return (
     <div className="homeContainer">
       <div className="navBar">
-        <Cards products={product} />
+        <Cards products={products} dispatch={(flags) => {
+              dispatch(getProducts(flags));
+            }}/>
       </div>
     </div>
   );

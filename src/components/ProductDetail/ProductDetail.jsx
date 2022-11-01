@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById, selectProductsById } from "../../store/productById";
+import { selectCarts } from "../../store/cart";
 import { useParams } from "react-router-dom";
+import { setItem, deleteItem } from "../../store/cart";
+import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import { ratingArray, ratingArrayEmpty } from "./numberToArray";
+import { IconContext } from "react-icons";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const cart = useSelector(selectCarts);
   const dispatch = useDispatch();
   const product = useSelector(selectProductsById);
   const [imgIndex, setImgIndex] = useState(0);
+
   const image = product.images
     ?.filter((e) => e.image !== null)
     .map((e) => <img src={e.image} alt="image" />);
@@ -17,6 +24,35 @@ const ProductDetail = () => {
     (product.noProduct || product.error || product.id !== id) &&
       dispatch(getProductById(id));
   }, [id]);
+
+  useEffect(() => {}, [cart, product]);
+
+  function handlerButtonCart(e) {
+    if (e.target.value === "Add to cart") {
+      return addToChart();
+    }
+    if (e.target.value === "Remove from cart") {
+      return removeFromChart();
+    }
+  }
+
+  function addToChart() {
+    dispatch(
+      setItem({
+        id: product.id,
+        images: product.images,
+        name: product.name,
+        price: product.price,
+        description: product.description,
+        stock: product.stock,
+        qty: 1,
+      })
+    );
+  }
+
+  function removeFromChart() {
+    dispatch(deleteItem({ id: product.id }));
+  }
 
   return (
     <section className="container productDetail">
@@ -48,10 +84,113 @@ const ProductDetail = () => {
         <div className="productDetail__info">
           <h3>{`Price: ${product.price}`}</h3>
           <h3>{`Stock: ${product.stock}`}</h3>
-          <button className="btn">Add to cart</button>
+          <div>
+            <h3>Rating</h3>
+            {ratingArray(product.rating).length > 0 &&
+              ratingArray(product.rating).map((r) => {
+                return (
+                  <IconContext.Provider
+                    value={{ className: "fillStar" }}
+                  >
+                    <AiFillStar />
+                  </IconContext.Provider>
+                );
+              })}
+            {ratingArrayEmpty(product.rating).length > 0 &&
+              ratingArrayEmpty(product.rating).map((r) => {
+                if (r === 0) {
+                  return (
+                    <div>
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                      <AiOutlineStar />
+                    </div>
+                  );
+                } else {
+                  return <AiOutlineStar />;
+                }
+              })}
+          </div>
+          <input
+            type="button"
+            className={
+              cart.findIndex((i) => i.id === product.id) !== -1
+                ? "btn-remove"
+                : "btn"
+            }
+            value={
+              cart.findIndex((i) => i.id === product.id) !== -1
+                ? "Remove from cart"
+                : "Add to cart"
+            }
+            onClick={(e) => {
+              handlerButtonCart(e);
+            }}
+          ></input>
         </div>
         <div className="productDetails__description">
+          <h3>Description</h3>
           <p>{product.description}</p>
+        </div>
+
+        <div>
+          {product.id && product.comments.length > 0 && <h3>Comments</h3>}
+
+          {product.id &&
+            product.comments.length > 0 &&
+            product.comments.map((c) => {
+              return (
+                <div className="productDetail__comment">
+                  <div>
+                    <img
+                      className="productDetail__comment-picture"
+                      src={c.user.profile_picture}
+                      alt={c.user.first_name + c.user.id}
+                    ></img>
+                  </div>
+                  <div className="productDetail__comment-containerProfile">
+                    <p className="productDetail__comment-name">
+                      {c.user.first_name +
+                        (c.user.last_name && " " + c.user.last_name)}
+                    </p>
+                    {/* <p className="productDetail__comment-ratingText">Rating:</p> */}
+                    <p className="productDetail__comment-ratingStar">
+                      {ratingArray(c.rating).length > 0 &&
+                        ratingArray(c.rating).map((r) => {
+                          return (
+                            <IconContext.Provider
+                              value={{ fill: "yellow", className: "fillStar" }}
+                            >
+                              <AiFillStar />
+                            </IconContext.Provider>
+                          );
+                        })}
+                      {ratingArrayEmpty(c.rating).length > 0 &&
+                        ratingArrayEmpty(c.rating).map((r) => {
+                          if (r === 0) {
+                            return (
+                              <div>
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                                <AiOutlineStar />
+                              </div>
+                            );
+                          } else {
+                            return <AiOutlineStar />;
+                          }
+                        })}
+                    </p>
+                  </div>
+                  <div className="productDetail__comment-section">
+                    <p className="productDetail__comment-value">{c.value}</p>
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </div>
     </section>
