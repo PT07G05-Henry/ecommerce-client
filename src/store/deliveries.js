@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api, { endPoint } from "../lib/api";
 
 const initialState = {
   deliveries: [{ toBeField: true }],
@@ -9,9 +9,7 @@ export const getDeliveries = createAsyncThunk(
   "deliveries/getDeliveries",
   async () => {
     try {
-      const response = await axios.get(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/deliveries`
-      );
+      const response = await api.get(endPoint.deliveries);
       return response.data;
     } catch (error) {
       console.error(error);

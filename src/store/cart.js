@@ -6,9 +6,9 @@ export const initialState = {
 };
 
 /*
-Esperamos que en las actioncreator donde manden producto y cantidad sean mandados
+Esperamos que en las action creator donde manden producto y cantidad sean mandados
 : 
-{  id:id prtoducto, qty: cantidad} */
+{  id:id producto, qty: cantidad} */
 
 export const cartSlice = createSlice({
   name: "cart",

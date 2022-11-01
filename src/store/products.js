@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api, { endPoint } from "../lib/api";
 
 // Constantes para usar las queries de getProducts
 export const NAME = "name";
@@ -18,20 +18,8 @@ export const RATING = "rating";
 export const USER_ROL_ID = "usersRolId";
 
 export const getProductsEndpoint = async (flags) => {
-  let queries = "?";
-  flags &&
-    typeof flags !== "string" &&
-    Object.keys(flags).forEach((e) => {
-      queries = queries + `${e}=${flags[e]}&`;
-    });
   try {
-    const response = await axios.get(
-      !flags || typeof flags !== "string"
-        ? `https://${
-            process.env.REACT_APP_DEV_API || document.domain
-          }/products${queries.length > 1 ? queries : ""}`
-        : flags
-    );
+    const response = await api.get(endPoint.products, { params: flags });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -48,12 +36,10 @@ export const getProducts = createAsyncThunk(
 );
 
 export const postProducts = createAsyncThunk(
-  "products/postProdcuts",
-  async ({input, sid}) => {
+  "products/postProducts",
+  async ({ input }) => {
     try {
-      const response = await axios.post(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,input
-      );
+      const response = await api.post(postProducts, { data: input });
       alert('Product created successfully');
       return response.data;
     } catch (error) {

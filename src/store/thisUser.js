@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api, { endPoint } from "../lib/api";
 
 const makeUserObject = (user) => {
   const social = user.sub.split("|");
@@ -39,17 +39,9 @@ export const getThisUser = createAsyncThunk(
   "thisUser/getThisUser",
   async ({ user, sid }) => {
     let userToPost = makeUserObject(user);
-    console.log("entre!");
     userToPost.sid = sid;
-    console.log(userToPost);
     try {
-      const response = await axios.post(
-        `https://${
-          process.env.REACT_APP_DEV_API || document.domain
-        }/users/auth0`,
-        userToPost
-      );
-      console.log(response);
+      const response = await api.post(endPoint.thisUser, { data: userToPost });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -84,6 +76,9 @@ export const selectThisUser = (state) => state.thisUser.user;
 export const selectThisUserRoles = (state) => {
   return state.thisUser.user.roles ? state.thisUser.user.roles : ["Guest"];
 };
+export const selectThisUserSid = (state) => {
+  return (state.thisUser.user && state.thisUser.user.userDb && state.thisUser.user.userDb.sid) ? state.thisUser.user.userDb.sid : undefined;
+}
 
 export const { start } = thisUserSlice.actions;
 
