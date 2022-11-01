@@ -1,7 +1,7 @@
 import React from "react";
 import SeeProduct from "../../components/SeeProducts/SeeProduct";
 import "./home.css";
-
+import Banner from "./Banner";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <section className="container home__container">
-      
+      <Banner />
       {category[0].id ? (
         category.map((e) => (
           <SeeProduct key={`cat${e.id}`} category={e.id} name={e.name} />
@@ -29,8 +29,6 @@ const Home = () => {
       ) : (
         <Loading />
       )}
-      
-      
     </section>
   );
 };
