@@ -9,7 +9,7 @@ export default function Paginated(props) {
     if (props.filteredOrders.length && props.filteredOrders[0].id) {
       setItems([...props.filteredOrders].splice(0, 10));
     } else {
-      props.setFilteredOrders(props.orders);
+      setItems([]);
     }
     setCurrentPage(0);
   }
@@ -17,6 +17,7 @@ export default function Paginated(props) {
   let totalPages = 1;
 
   if (props.filteredOrders.length) {
+    console.log(Math.floor(props.filteredOrders.length / 10))
     totalPages =
       Math.floor(props.filteredOrders.length / 10) !== 0
         ? Math.floor(props.filteredOrders.length / 10)
@@ -61,7 +62,7 @@ export default function Paginated(props) {
             <th>Status</th>
             <th>Date</th>
           </tr>
-        </tbody>
+          </tbody>
         {items &&
           items.map((order, index) => (
             <tbody key={index}>
@@ -77,13 +78,18 @@ export default function Paginated(props) {
             </tbody>
           ))}
       </table>
-      <div>
-        <h1>
-          Page {current} of {totalPages}
-        </h1>
-        <button onClick={prevHandler}>Previous</button>
-        <button onClick={nextHandler}>Next</button>
-      </div>
+      {!items.length &&
+        <h1>No Orders to Show</h1>
+      }
+      {items.length &&
+        <div>
+          <h1>
+            Page {current} of {totalPages}
+          </h1>
+          <button onClick={prevHandler}>Previous</button>
+          <button onClick={nextHandler}>Next</button>
+        </div>
+      }   
     </div>
   );
 };
