@@ -30,7 +30,6 @@ export default function Orders() {
   const dispatch = useDispatch();
   const orders = useSelector(selectOrders);
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const {getIdTokenClaims} = useAuth0();
 
   function handleChange(e) {
     const value = e.target.value;
@@ -85,7 +84,7 @@ export default function Orders() {
     { user: '', total: 0 }
   ];
 
-  if (orders[0].id) {
+  if (orders && orders[0].id) {
     valuesOrders = countOrders(orders)
     valuesUser = countUsers(orders)
   }
@@ -178,7 +177,6 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    getIdTokenClaims().then(r=>r.sid).then(sid=>dispatch(getOrders(sid)))
     dispatch(getOrders());
   }, [dispatch]);
 
