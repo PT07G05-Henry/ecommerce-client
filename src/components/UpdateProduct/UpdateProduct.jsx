@@ -2,7 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, selectProduct, updateProduct } from "../../store/api";
+import { getProductById, selectProduct } from "../../store/api";
+import axios from "axios";
 import validate from "./validate";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -131,7 +132,24 @@ const UpdateProduct = () => {
           !input.stock
         )
           return alert("No values ​​to update");
-        dispatch(updateProduct({ input, sid, setUpdate }));
+          try {
+            axios.put(
+              `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,
+              input
+            ).then((res) => {
+              setUpdate({
+                name: res.data.name,
+                price: res.data.price,
+                description: res.data.description,
+                stock: res.data.stock,
+                images: res.data.images
+              })
+              alert('Product updated successfully');
+            });
+          } catch (error) {
+            alert('Error: ' + error.message);
+            console.error(error);
+          }
       });
     setInputHidden({
       name: "hidden",
@@ -142,6 +160,7 @@ const UpdateProduct = () => {
     });
     setInput({
       id: id,
+      image: []
     });
   };
 
