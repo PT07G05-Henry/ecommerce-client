@@ -30,7 +30,7 @@ export default function NavBar() {
         <button className="nav__button" onClick={()=>navigate("/catalog")} ><SlBookOpen size={buttonSize} /></button>
         <div className="nav__middleSpace"/>
         <button className="nav__button tooltip__cart" onClick={()=>{if(rol[0] !== "Admin" ){navigate("/cart")}}} >{rol[0] !== "Admin" ? <AiOutlineShoppingCart size={buttonSize} />: <MdRemoveShoppingCart size={buttonSize} /> }{cart.length >= 1 &&<span class="tooltiptext">{cart.length}</span>}</button>
-        <button className="nav__button" onClick={()=>navigate("/")} ><AiOutlineMessage size={buttonSize} /></button>
+        <button className="nav__button" onClick={()=>navigate("/aboutus")} ><AiOutlineMessage size={buttonSize} /></button>
       </nav>
     </div>
     <div className="nav__container">      
