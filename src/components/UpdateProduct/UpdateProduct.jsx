@@ -2,7 +2,12 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, selectProduct } from "../../store/api";
+import {
+  getProductById,
+  selectProduct,
+  getCategories,
+  selectCategories,
+} from "../../store/api";
 import axios from "axios";
 import validate from "./validate";
 import { useParams } from "react-router-dom";
@@ -13,12 +18,15 @@ const UpdateProduct = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const product = useSelector(selectProduct);
+  const categories = useSelector(selectCategories);
   const ref = React.createRef();
   const [error, setError] = useState({});
   const [value, setValue] = useState("");
-  const [input, setInput] = useState({ 
+  const [cat, setCat] = useState([]);
+  const [input, setInput] = useState({
     id: id,
     images: [],
+    categories: [],
   });
 
   const [update, setUpdate] = useState({
@@ -34,6 +42,7 @@ const UpdateProduct = () => {
     description: "hidden",
     stock: "hidden",
     images: "hidden",
+    categories: "hidden",
   });
 
   const [imgIndex, setImgIndex] = useState(0);
@@ -72,6 +81,16 @@ const UpdateProduct = () => {
     );
   };
 
+  let concatCat = "";
+
+  if (product.categories) {
+    for (let i = 0; i < product.categories.length; i++) {
+      if (i < product.categories.length - 1) {
+        concatCat = concatCat.concat(product.categories[i].name, ", ");
+      } else concatCat = concatCat.concat(product.categories[i].name);
+    }
+  };
+
   const handleHidden = (e) => {
     e.preventDefault();
     setInputHidden({
@@ -96,14 +115,14 @@ const UpdateProduct = () => {
       tester.onload = imageFound;
       tester.onerror = imageNotFound;
       tester.src = URL;
-    };
+    }
 
     function imageFound() {
       alert("That image is found and loaded");
       handleImageSubmit();
       return setError((err) => ({ ...err }));
-    };
-    
+    }
+
     function imageNotFound() {
       alert("That image was not found.");
       setValue("");
@@ -116,6 +135,24 @@ const UpdateProduct = () => {
     }
     testImage(value);
   };
+
+  const handleCategories = (e) => {
+    const newCategorie = e.target.value;
+    const select = document.getElementById("selectId");
+    const id = select.options[select.selectedIndex].id;
+    if (!input.categories.includes(id)) {
+      setCat([...cat, newCategorie]);
+      setInput({ ...input, categories: [...input.categories, id] });
+    }
+  };
+
+  function handleClick(e) {
+    setCat(
+      cat.filter( c => c !== e.target.value));
+      let id = categories.indexOf(e.target.value) + 1;
+      console.log(id)
+      console.log('in', input)
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -132,24 +169,28 @@ const UpdateProduct = () => {
           !input.stock
         )
           return alert("No values ​​to update");
-          try {
-            axios.put(
-              `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,
+        try {
+          axios
+            .put(
+              `https://${
+                process.env.REACT_APP_DEV_API || document.domain
+              }/products?sid=${sid}`,
               input
-            ).then((res) => {
+            )
+            .then((res) => {
               setUpdate({
                 name: res.data.name,
                 price: res.data.price,
                 description: res.data.description,
                 stock: res.data.stock,
-                images: res.data.images
-              })
-              alert('Product updated successfully');
+                images: res.data.images,
+              });
+              alert("Product updated successfully");
             });
-          } catch (error) {
-            alert('Error: ' + error.message);
-            console.error(error);
-          }
+        } catch (error) {
+          alert("Error: " + error.message);
+          console.error(error);
+        }
       });
     setInputHidden({
       name: "hidden",
@@ -157,16 +198,23 @@ const UpdateProduct = () => {
       description: "hidden",
       stock: "hidden",
       images: "hidden",
+      categories: "hidden",
     });
     setInput({
       id: id,
-      image: []
+      images: [],
     });
   };
 
   useEffect(() => {
     dispatch(getProductById(id));
+    setInput({...input, categories: product.categories ? [...product.categories] : []})
   }, [dispatch]);
+
+  useEffect(() => {
+    setInput({...input, categories: product.categories ? [...product.categories] : []})
+    if (concatCat && !cat.includes(concatCat.split(','))) setCat(concatCat.split(','))
+  }, [product]);
 
   return (
     <>
@@ -288,6 +336,36 @@ const UpdateProduct = () => {
               onChange={handleInputChange}
             />
             <p className="errorAlert__errorMessage">{error.description}</p>
+          </div>
+          <h3>categories: {concatCat}</h3>
+          <button value="categories" onClick={handleHidden}>
+            Edit
+          </button>
+          <div className={inputHidden.categories}>
+            <label htmlFor="select_categories"> Category: </label>
+            <select
+              id="selectId"
+              name="select_categories"
+              onChange={handleCategories}
+            >
+              <option value="" disabled selected></option>
+              {categories.length > 1 ? (
+                categories.map((e) => (
+                  <option key={e.id} id={e.id} value={e.name}>
+                    {e.name}
+                  </option>
+                ))
+              ) : (
+                <p>Loading</p>
+              )}
+            </select>
+            <div className="selectedOptions">
+                    {cat && cat.map((c, index) =>
+                        <div key={index}>
+                            <p>{c}</p>
+                            <button type='button' value={c} onClick={ handleClick }>x</button>
+                        </div>)}
+                </div>
           </div>
           <input type="submit" value="Update" />
         </form>
