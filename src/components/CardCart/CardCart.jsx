@@ -16,6 +16,7 @@ export default function CardCart({
   categoriesName,
   isCreated,
   handleDelete,
+  remove,
   qty,
 }) {
   const [imgIndex, setImgIndex] = useState(0);
@@ -117,6 +118,7 @@ export default function CardCart({
               className="removeProduct"
               onClick={() => {
                 removeProduct();
+                remove(id)
               }}
               value={"Remove this product"}
             ></input>
