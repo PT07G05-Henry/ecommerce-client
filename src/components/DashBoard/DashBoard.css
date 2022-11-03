@@ -3,12 +3,21 @@
 }
 
 .options {
-    background-color: grey;
+    background-color: rgba(75, 75, 75, 0.575);
     display: grid;
-    width: 10%;
+    width: 15%;
     height: 50vh;
 }
 
+button:focus {
+    background-color: var(--color-white);
+    color: var(--color-black)
+}
+
+.options button {
+    width: 95%;
+}
+
 .selectedOption {
-    padding-left: 20%;
+    padding-left: 10%;
 }

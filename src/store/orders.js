@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api, { endPoint } from "../lib/api";
 
 const initialState = {
   orders: [{ toBeField: true }],
@@ -7,9 +7,7 @@ const initialState = {
 
 export const getOrders = createAsyncThunk("orders/getOrders", async () => {
   try {
-    const response = await axios.get(
-      `https://${process.env.REACT_APP_DEV_API || document.domain}/orders/all`
-    );
+    const response = await api.get(endPoint.orders);
     return response.data;
   } catch (error) {
     console.error(error);

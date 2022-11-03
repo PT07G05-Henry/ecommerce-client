@@ -14,6 +14,7 @@ import Orders from "../src/components/Orders/Orders";
 import { selectThisUserRoles } from "./store/thisUser";
 import { useSelector } from "react-redux";
 import Redirect from "./components/Redirect/Redirect";
+import About from "./components/AboutUs/Aboutus";
 function App() {
   const navigate = useNavigate();
   const rol = useSelector(selectThisUserRoles);
@@ -39,6 +40,7 @@ function App() {
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/aboutus" element={<About />} />
           {!(access() === ("Guest" || "User")) && (
             <Route path="/create/product" element={<CreateProduct />} />
           )}

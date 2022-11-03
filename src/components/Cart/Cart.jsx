@@ -1,24 +1,37 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {  useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import CardCart from "../CardCart/CardCart";
 import "./cart.css";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import {selectThisUserRoles} from "../../store/thisUser"
-
+import ButtonGenerateMPLink from "../MercadoPago/ButtonGenerateMPLink"
+import { setItem } from "../../store/cart";
 
 
 export default function Cart() {
-  const cart = useSelector((state) => state.cart.cart);
+  const dispatch = useDispatch()
+  const cart = useSelector((state) => state.cart.cart);  
+  console.log('cart',cart)
   const rol = useSelector(selectThisUserRoles)
   const [totalPrice, setTotalPrice] = useState();
   const [totalItems, setTotalItems] = useState();
+  const [items, setItems] = useState(JSON.parse(localStorage.getItem("cart")))
+  console.log("items",items)
   const { loginWithPopup } = useAuth0();
+
+  const remove = (value) => {
+    setItems(items.filter(e => e.id !== value))
+  }
   useEffect(() => {
-    const value = cart.reduce((accumulator, object) => {
+    const cartLocalStorage = JSON.stringify(cart);
+    localStorage.setItem('cart', cartLocalStorage);
+    items?.map(e => dispatch(setItem(e)))
+
+    const value =  cart.reduce((accumulator, object) => {
       return accumulator + Number(object.price) * Number(object.qty);
-    }, 0);
+    }, 0) ;
     setTotalPrice(value);
     const numItems = cart.length;
     setTotalItems(numItems);
@@ -40,17 +53,19 @@ export default function Cart() {
                 {"$" + Number(totalPrice).toFixed(2)}
               </span>
             </h2>
-            <input
+            {rol[0]=== "Guest" ? <input
               type="button"
               className="btn cart__btn"
               value="Proceed to checkout"
               onClick={() => {
-                loginWithPopup();
+                loginWithPopup()
               }}
-            ></input>
+            ></input>:
+            <ButtonGenerateMPLink totalPrice={Number(totalPrice).toFixed(2)} cart={cart}/>}
+            
             <h2>These are the selected products</h2>
           </>
-        ) : (
+        ) :(
           <>
             <h2>Your shopping cart is empty</h2>
             <h3>
@@ -73,7 +88,8 @@ export default function Cart() {
               categoriesId={c.categoriesId}
               categoriesName={c.categoriesName}
               isCreated={true}
-              handleDelete={""}
+              handleDelete={''}
+              remove={remove}
               qty={c.qty}
             />
           </div>

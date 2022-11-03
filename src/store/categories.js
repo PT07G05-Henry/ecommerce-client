@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api, { endPoint } from "../lib/api";
 
 const initialState = {
   categories: [{ toBeField: true }],
@@ -9,9 +9,7 @@ export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async () => {
     try {
-      const response = await axios.get(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/categories`
-      );
+      const response = await api.get(endPoint.categories);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -21,11 +19,9 @@ export const getCategories = createAsyncThunk(
 
 export const postCategories = createAsyncThunk(
   "categories/postCategories",
-  async ({input, sid}) => {
+  async ({ input, sid }) => {
     try {
-      const response = await axios.post(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/categories?sid=${sid}`,input
-      );
+      const response = await api.post(endPoint.categories, { data: input });
       return response.data;
     } catch (error) {
       console.error(error);

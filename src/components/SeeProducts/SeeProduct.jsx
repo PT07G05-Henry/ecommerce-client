@@ -5,6 +5,9 @@ import { useState } from "react";
 import Card from "../Card/Card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, EffectCoverflow } from "swiper";
+import {getThisUser, selectThisUserRoles} from "../../store/thisUser";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useDispatch, useSelector } from "react-redux";
 import "./SeeProduct.css";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,6 +16,9 @@ import "swiper/css/pagination";
 const SeeProduct = ({ category, name }) => {
   const [products, setProducts] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const {user, getIdTokenClaims} = useAuth0();
+  const dispatch = useDispatch();
+  const rol = useSelector(selectThisUserRoles)
   useEffect(() => {
     !loaded &&
       axios
@@ -25,6 +31,10 @@ const SeeProduct = ({ category, name }) => {
           setProducts(res.data.results);
         });
   }, [loaded]);
+
+  useEffect(()=>{
+    getIdTokenClaims().then(r=>r.sid).then(sid=>dispatch(getThisUser({user, sid})))
+  },[])
 
   return (
     <div className="title">
@@ -72,10 +82,14 @@ const SeeProduct = ({ category, name }) => {
           {products?.map((el) => (
             <SwiperSlide key={el.id}>
               <Card
+                key={el.id}
                 id={el.id}
                 images={el.images}
                 name={el.name}
                 price={el.price}
+                stock={el.stock}
+                description={el.description}
+                rol={rol}
               />
             </SwiperSlide>
           ))}

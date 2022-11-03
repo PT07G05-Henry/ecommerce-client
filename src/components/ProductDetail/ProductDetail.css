@@ -64,3 +64,68 @@
   border-top: 2px solid var(--color-secondary);
   padding: 3rem;
 }
+
+.productDetail__comment{
+  border: 0.1rem solid var(--color-primary);
+  border-right: none;
+  border-top-left-radius: 2rem;
+  margin: 0rem auto 3rem auto;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+
+
+.productDetail__comment-picture{
+  width:5rem;
+  display: inline-flex;
+  position: relative;
+
+}
+
+.productDetail__comment-containerProfile{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.productDetail__comment-name{
+  display: flex;
+  position: relative;
+  margin: 0.2rem 0.5rem;
+}
+
+.productDetail__comment-ratingText{
+  margin: 0.2rem 0.5rem;
+  display: flex;
+  position: relative;
+}
+
+.productDetail__comment-ratingStar{
+  margin: 0.2rem 0.5rem;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.productDetail__comment-section{
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid var(--color-primary);
+}
+
+.productDetail__comment-value{
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: justify;
+}
+
+.fillStar{
+  color: var(--color-primary)
+}
+
+.container__productDetail-box{
+  display: flex;
+  flex-direction: row;
+}

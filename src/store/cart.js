@@ -6,9 +6,9 @@ export const initialState = {
 };
 
 /*
-Esperamos que en las actioncreator donde manden producto y cantidad sean mandados
+Esperamos que en las action creator donde manden producto y cantidad sean mandados
 : 
-{  id:id prtoducto, qty: cantidad} */
+{  id:id producto, qty: cantidad} */
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -37,11 +37,14 @@ export const cartSlice = createSlice({
       const filter = state.cart.filter((e) => e.id !== action.payload.id);
       return { ...state, cart: filter };
     },
+    reset: (state) =>{
+      return {...state, cart:[]}
+    }
   },
 });
 
 export const selectCarts = (state) => state.cart.cart;
 
-export const { setItem, deleteItem, updateItemQty } = cartSlice.actions;
+export const { setItem, deleteItem, updateItemQty, reset } = cartSlice.actions;
 
 export default cartSlice.reducer;

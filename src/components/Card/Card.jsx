@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCarts } from "../../store/cart";
 import { useNavigate, Link } from "react-router-dom";
 import "./card.css";
-import {setItem} from "../../store/cart"
+import { setItem, deleteItem } from "../../store/cart";
 
 const Card = ({
   id,
@@ -15,15 +16,46 @@ const Card = ({
   categoriesName,
   isCreated = false,
   handleDelete,
+  rol,
 }) => {
   const [imgIndex, setImgIndex] = useState(0);
   const dispatch = useDispatch();
+  const cart = useSelector(selectCarts);
   const image = images
     ?.filter((e) => e.image !== null)
     .map((e) => <img src={e.image} alt="image" />);
-    function addToChart(){
-      dispatch(setItem({id, images, name,price,description,stock,categoriesId,categoriesName, qty:1}))
+
+  useEffect(() => {}, [cart]);
+
+  function handlerButtonCart(e) {
+    if (e.target.value === "Add to cart") {
+      return addToChart();
     }
+    if (e.target.value === "Remove from cart") {
+      return removeFromChart();
+    }
+  }
+
+  function addToChart() {
+    dispatch(
+      setItem({
+        id,
+        images,
+        name,
+        price,
+        description,
+        stock,
+        categoriesId,
+        categoriesName,
+        qty: 1,
+      })
+    );
+  }
+
+  function removeFromChart() {
+    dispatch(deleteItem({ id }));
+  }
+
   return (
     <article className="box card">
       {false && //negué la condición para desaparece el slider de imágenes
@@ -86,9 +118,22 @@ const Card = ({
           );
         })}
       {isCreated && <p>Description: {description}</p>}
-      <button className="btn" onClick={() => {addToChart(id)}}>
-        Add to cart
-      </button>
+      
+      <input
+        type="button"
+        className={
+          cart.findIndex((i) => i.id === id) !== -1 ? "btn-remove" : "btn"
+        }
+        value={ rol[0] !== "Admin" ?
+          cart.findIndex((i) => i.id === id) !== -1
+            ? "Remove from cart"
+            : "Add to cart"
+        :"Disabled for Admin"}
+        onClick={(e) => {
+          handlerButtonCart(e);
+        }}
+        disabled={rol[0] === "Admin" ? true : false}
+      ></input>
     </article>
   );
 };

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api, { endPoint } from "../lib/api";
 
 const initialState = {
   comments: [{ toBeField: true }],
@@ -9,9 +9,7 @@ export const getComments = createAsyncThunk(
   "comments/getComments",
   async () => {
     try {
-      const response = await axios.get(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/comments`
-      );
+      const response = await api.get(endPoint.comments);
       return response.data;
     } catch (error) {
       console.error(error);
