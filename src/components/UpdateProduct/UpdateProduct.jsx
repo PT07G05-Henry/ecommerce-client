@@ -12,6 +12,7 @@ import validate from "./validate";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./UpdateProduct.css";
+import api, { endPoint } from "../../lib/api";
 
 const UpdateProduct = () => {
   const dispatch = useDispatch();
@@ -209,6 +210,7 @@ const UpdateProduct = () => {
               }/products?sid=${sid}`,
               input
             )
+          //api.put(endPoint.products, {input})
             .then((res) => {
               setUpdate({
                 name: res.data.name,
