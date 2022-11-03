@@ -149,10 +149,14 @@ const UpdateProduct = () => {
   function handleClick(e) {
     setCat(
       cat.filter( c => c !== e.target.value));
-      let id = categories.indexOf(e.target.value) + 1;
-      console.log(id)
-      console.log('in', input)
-};
+      let id = categories.map(c => c.name).indexOf(e.target.value) + 1;
+      setInput({
+        ...input,
+        categories:  input.categories.filter(c => c !== id)
+      });
+      console.log(cat, 'cat')
+      console.log('in', input.categories);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
