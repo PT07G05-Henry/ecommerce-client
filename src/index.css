@@ -22,6 +22,8 @@
 
   --transition: all 200ms ease-in-out;
 
+  --duration: 4s;
+
   --container-width-lg: 75%;
   --container-width-md: 86%;
   --container-width-sm: 90%;
@@ -134,7 +136,6 @@ img {
   overflow: hidden;
   cursor: pointer;
   border-radius: 9999px;
-  border: 1px solid transparent;
   transition: var(--transition);
 }
 
