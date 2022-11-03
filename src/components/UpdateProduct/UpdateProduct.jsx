@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getProductById,
   selectProduct,
-  getCategories,
   selectCategories,
 } from "../../store/api";
 import axios from "axios";
@@ -83,13 +82,19 @@ const UpdateProduct = () => {
 
   let concatCat = "";
 
-  if (product.categories) {
+  if (update.categories) {
+    for (let i = 0; i < update.categories.length; i++) {
+      if (i < update.categories.length - 1) {
+        concatCat = concatCat.concat(update.categories[i], ", ");
+      } else concatCat = concatCat.concat(update.categories[i]);
+    }
+  } else if (product.categories) {
     for (let i = 0; i < product.categories.length; i++) {
       if (i < product.categories.length - 1) {
         concatCat = concatCat.concat(product.categories[i].name, ", ");
       } else concatCat = concatCat.concat(product.categories[i].name);
     }
-  };
+  }
 
   const handleHidden = (e) => {
     e.preventDefault();
@@ -140,23 +145,22 @@ const UpdateProduct = () => {
     const newCategorie = e.target.value;
     const select = document.getElementById("selectId");
     const id = select.options[select.selectedIndex].id;
-    if (!input.categories.includes(id)) {
+    if (input.categories.length >= 3)
+      return alert("Maximum 3 categories per product.");
+    if (!input.categories.includes(parseInt(id))) {
       setCat([...cat, newCategorie]);
-      setInput({ ...input, categories: [...input.categories, id] });
-    }
+      setInput({ ...input, categories: [...input.categories, parseInt(id)] });
+    } else alert(`The ${newCategorie} category is already selected`);
   };
 
   function handleClick(e) {
-    setCat(
-      cat.filter( c => c !== e.target.value));
-      let id = categories.map(c => c.name).indexOf(e.target.value) + 1;
-      setInput({
-        ...input,
-        categories:  input.categories.filter(c => c !== id)
-      });
-      console.log(cat, 'cat')
-      console.log('in', input.categories);
-  };
+    setCat(cat.filter((c) => c !== e.target.value));
+    let id = categories.map((c) => c.name).indexOf(e.target.value) + 1;
+    setInput({
+      ...input,
+      categories: input.categories.filter((c) => c !== id),
+    });
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -166,13 +170,37 @@ const UpdateProduct = () => {
         if (input.images && input.images.length === 0)
           setInput(delete input.images);
         if (
+          JSON.stringify(input.categories) ===
+          JSON.stringify(product.categories.map((c) => c.id))
+        )
+          setInput(delete input.categories);
+        if (
           !input.images &&
           !input.name &&
           !input.price &&
           !input.description &&
-          !input.stock
-        )
+          !input.stock &&
+          !input.categories
+        ) {
+          setInput({
+            id: id,
+            images: [],
+            categories: product.categories
+              ? [...product.categories.map((c) => c.id)]
+              : [],
+          });
           return alert("No values ​​to update");
+        } else if (input.categories && input.categories.length === 0) {
+          setInput({
+            id: id,
+            images: [],
+            categories: product.categories
+              ? [...product.categories.map((c) => c.id)]
+              : [],
+          });
+          setCat([...product.categories.map(c => c.name)]);
+          return alert("Select at least one category");
+        }
         try {
           axios
             .put(
@@ -188,6 +216,14 @@ const UpdateProduct = () => {
                 description: res.data.description,
                 stock: res.data.stock,
                 images: res.data.images,
+                categories: res.data.categories.map((c) => c.name),
+              });
+              setInput({
+                id: id,
+                images: [],
+                categories: res.data.categories
+                  ? [...res.data.categories.map((c) => c.id)]
+                  : [],
               });
               alert("Product updated successfully");
             });
@@ -204,20 +240,21 @@ const UpdateProduct = () => {
       images: "hidden",
       categories: "hidden",
     });
-    setInput({
-      id: id,
-      images: [],
-    });
   };
 
   useEffect(() => {
     dispatch(getProductById(id));
-    setInput({...input, categories: product.categories ? [...product.categories] : []})
   }, [dispatch]);
 
   useEffect(() => {
-    setInput({...input, categories: product.categories ? [...product.categories] : []})
-    if (concatCat && !cat.includes(concatCat.split(','))) setCat(concatCat.split(','))
+    setInput({
+      ...input,
+      categories: product.categories
+        ? [...product.categories.map((c) => c.id)]
+        : [],
+    });
+    if (concatCat && !cat.includes(concatCat.split(",")))
+      setCat(concatCat.split(","));
   }, [product]);
 
   return (
@@ -352,7 +389,6 @@ const UpdateProduct = () => {
               name="select_categories"
               onChange={handleCategories}
             >
-              <option value="" disabled selected></option>
               {categories.length > 1 ? (
                 categories.map((e) => (
                   <option key={e.id} id={e.id} value={e.name}>
@@ -364,12 +400,16 @@ const UpdateProduct = () => {
               )}
             </select>
             <div className="selectedOptions">
-                    {cat && cat.map((c, index) =>
-                        <div key={index}>
-                            <p>{c}</p>
-                            <button type='button' value={c} onClick={ handleClick }>x</button>
-                        </div>)}
-                </div>
+              {cat &&
+                cat.map((c, index) => (
+                  <div key={index} className="option">
+                    <p>{c}</p>
+                    <button type="button" value={c} onClick={handleClick}>
+                      x
+                    </button>
+                  </div>
+                ))}
+            </div>
           </div>
           <input type="submit" value="Update" />
         </form>
