@@ -116,10 +116,10 @@ export default function DashBoard() {
     return (
       <div className="component">
         <div className="options">
-          <button value="profile" onClick={handleClick}>
+          <button className="btn btn-primary" value="profile" onClick={handleClick}>
             Profile
           </button>
-          <button value="history" onClick={handleClick}>
+          <button className="btn btn-primary" value="history" onClick={handleClick}>
             History
           </button>
         </div>
@@ -132,16 +132,16 @@ export default function DashBoard() {
     return (
       <div className="component">
         <div className="options">
-          <button value="products" onClick={handleClick}>
+          <button className="btn btn-primary" value="products" onClick={handleClick}>
             Products
           </button>
-          <button value="createProduct" onClick={handleClick}>
+          <button className="btn btn-primary" value="createProduct" onClick={handleClick}>
             Create Product
           </button>
-          <button value="createCategory" onClick={handleClick}>
+          <button className="btn btn-primary" value="createCategory" onClick={handleClick}>
             Create Category
           </button>
-          <button value="orders" onClick={handleClick}>
+          <button className="btn btn-primary" value="orders" onClick={handleClick}>
             Orders
           </button>
         </div>
@@ -154,19 +154,19 @@ export default function DashBoard() {
     //Superadmin
     <div className="component">
       <div className="options">
-        <button value="products" onClick={handleClick}>
+        <button className="btn btn-primary" value="products" onClick={handleClick}>
           Products
         </button>
-        <button value="createProduct" onClick={handleClick}>
+        <button className="btn btn-primary" value="createProduct" onClick={handleClick}>
           Create Product
         </button>
-        <button value="createCategory" onClick={handleClick}>
+        <button className="btn btn-primary" value="createCategory" onClick={handleClick}>
           Create Category
         </button>
-        <button value="users" onClick={handleClick}>
+        <button className="btn btn-primary" value="users" onClick={handleClick}>
           Users
         </button>
-        <button value="orders" onClick={handleClick}>
+        <button className="btn btn-primary" value="orders" onClick={handleClick}>
           Orders
         </button>
       </div>
