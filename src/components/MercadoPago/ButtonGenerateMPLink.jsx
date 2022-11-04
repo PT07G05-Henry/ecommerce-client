@@ -19,7 +19,7 @@ export default function ButtonGenerateMPLink({totalPrice, cart}) {
   });
 
   function findLinkMP() {
-    api.post(endPoint.mercado,{data: {total_price: totalPrice,
+    api.post(endPoint.orders,{data: {total_price: totalPrice,
       products: products, }}).then(r=>{console.log(r);window.open(r.data, '_blank')})
   }
 
