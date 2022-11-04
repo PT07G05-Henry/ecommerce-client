@@ -11,6 +11,7 @@ import OrderDetail from "../src/components/OrderDetail/OrderDetail";
 import DashBoard from "./components/DashBoard/DashBoard";
 import Cart from "../src/components/Cart/Cart";
 import Orders from "../src/components/Orders/Orders";
+import Payment from "../src/components/Payment/Payment"
 import { selectThisUserRoles } from "./store/thisUser";
 import { useSelector } from "react-redux";
 import Redirect from "./components/Redirect/Redirect";
@@ -37,6 +38,7 @@ function App() {
       <Routes>
         <Route path="/" element={<WebFrame />}>
           <Route index element={<Home />} />
+          {!(access()=== "Admin") && <Route path="/payment" element={<Payment />} />}
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/productsByName/:name" element={<SearchByName />} />
           <Route path="/products/:id" element={<ProductDetail />} />
