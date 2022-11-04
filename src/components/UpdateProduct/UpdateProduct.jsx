@@ -190,7 +190,7 @@ const UpdateProduct = () => {
               ? [...product.categories.map((c) => c.id)]
               : [],
           });
-          return alert("No values ​​to update");
+          return alert("No values to update");
         } else if (input.categories && input.categories.length === 0) {
           setInput({
             id: id,

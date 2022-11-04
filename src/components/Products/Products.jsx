@@ -1,18 +1,43 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, selectProducts } from "../../store/api";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import Paginated from "../Paginated/Paginated.jsx";
+import api from "../../lib/api";
 
 export default function Orders() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
-  
+
+  const handleDelete = async function (e) {
+    const id = e.target.value;
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        await api.delete("products", {
+          params: { id: id },
+        });
+        alert("Product deleted succesfully");
+        setTimeout((flags) => {
+          dispatch(getProducts(flags));
+        }, 1000);
+      } catch (e) {
+        alert("Error " + e.message);
+      }
+    }
+  };
+
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
   return (
     <>
+      <Paginated
+        data={products}
+        dispatch={(flags) => {
+          dispatch(getProducts(flags));
+        }}
+      />
       <table>
         <tbody>
           <tr>
@@ -20,6 +45,7 @@ export default function Orders() {
             <th>Name</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Delete</th>
           </tr>
         </tbody>
         {products.results &&
@@ -31,7 +57,18 @@ export default function Orders() {
                 <td>${product.price}</td>
                 <td>{product.stock}</td>
                 <td>
-                  <Link to={`/update/product/${product.id}`}>Update</Link> 
+                  {product.id && (
+                    <button
+                      className="btn"
+                      value={product.id}
+                      onClick={handleDelete}
+                    >
+                      X
+                    </button>
+                  )}
+                </td>
+                <td>
+                  <Link to={`/update/product/${product.id}`}>Update</Link>
                 </td>
               </tr>
             </tbody>
