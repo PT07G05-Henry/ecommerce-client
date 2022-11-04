@@ -110,7 +110,7 @@
   }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 1024px) {
   .nav {
     bottom: 7rem;
   }

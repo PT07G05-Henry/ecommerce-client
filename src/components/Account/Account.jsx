@@ -22,7 +22,6 @@ const Account = () => {
       getIdTokenClaims()
         .then((response) => {
           const { sid } = response;
-          console.log("sid", sid);
           dispatch(getThisUser({ user: user, sid: sid }));
         })
         .catch((error) => {
@@ -30,9 +29,6 @@ const Account = () => {
         });
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("roles", roles);
-  }, [roles]);
   return (
     <>
       <div

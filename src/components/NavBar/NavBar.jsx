@@ -14,7 +14,6 @@ import { selectThisUserRoles } from "../../store/thisUser";
 export default function NavBar() {
   const cart = useSelector(selectCarts);
   const { pathname } = useLocation();
-  console.log(pathname);
   const navigate = useNavigate();
   const rol = useSelector(selectThisUserRoles);
   const { isAuthenticated } = useAuth0();

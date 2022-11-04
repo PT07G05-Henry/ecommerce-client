@@ -31,6 +31,8 @@
   --border: 2px solid var(--color-primary);
   --border-bright: 2px solid var(--color-white);
   --radius: 2rem;
+
+  --swiper-theme-color: var(--color-primary);
 }
 
 html {

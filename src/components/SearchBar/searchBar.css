@@ -6,9 +6,10 @@
 
 .searchBar__flex{
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   align-content: center;
+  width: 100%;
 }
 
 .searchBar__buttonPlace{
@@ -32,6 +33,10 @@
   animation-name: searchBar__button;
   animation-duration: var(--duration);
   animation-iteration-count: infinite;
+}
+
+.searchBar__backButton{
+  right: -3vw;
 }
 
 @keyframes searchBar__button {

@@ -19,14 +19,20 @@ import {
   selectCategories,
 } from "../../store/api";
 import { useDispatch, useSelector } from "react-redux";
-import {selectThisUserRoles} from "../../store/thisUser";
+import { selectThisUserRoles } from "../../store/thisUser";
 import "./cards.css";
 import { ImFilter } from "react-icons/im";
+import { selectWindowSize } from "../../store/window";
 
 const REMOVE = "remove";
 
 const Cards = ({ products, dispatch }) => {
-  const rol = useSelector(selectThisUserRoles)
+  const rol = useSelector(selectThisUserRoles);
+  const windowSize = useSelector(selectWindowSize);
+  const [mobile, setMobile] = useState(true);
+  useEffect(() => {
+    setMobile(windowSize.width < 630);
+  }, [windowSize]);
   const internalDispatch = useDispatch();
   const [controller, setController] = useState(products.query);
   const categoriesList = useSelector(selectCategories);
@@ -183,13 +189,11 @@ const Cards = ({ products, dispatch }) => {
       name: "Order by",
       key: ORDERBY,
       values: [
-        { [ORDERBY]: ID, label: "Id" },
         { [ORDERBY]: NAME, label: "Name" },
         { [ORDERBY]: PRICE, label: "Price" },
         { [ORDERBY]: DESCRIPTION, label: "Description" },
         { [ORDERBY]: STOCK, label: "Stock" },
         { [ORDERBY]: RATING, label: "Rating" },
-        { [ORDERBY]: USER_ROL_ID, label: "CreatedBy" },
       ],
     },
     {
@@ -247,7 +251,10 @@ const Cards = ({ products, dispatch }) => {
 
     return (
       <div className="filters__flex">
-        <div className="filters__buttonPlace">
+        <div
+          className="filters__buttonPlace"
+          style={mobile ? undefined : { display: "none" }}
+        >
           <button
             className="btn-rounded filters__btn"
             onClick={() => {
@@ -257,11 +264,11 @@ const Cards = ({ products, dispatch }) => {
             <ImFilter size={24} />
           </button>
         </div>
-        <div className="filters__box">
+        <div className={mobile ? "filters__box-mobile" : "filters__box"}>
           <form
             action=""
-            className="box"
-            style={show ? undefined : { display: "none" }}
+            className={mobile ? "box" : "box-dry"}
+            style={show || !mobile ? undefined : { display: "none" }}
             onSubmit={(e) => {
               e.preventDefault();
             }}
