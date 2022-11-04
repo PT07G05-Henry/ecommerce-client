@@ -141,7 +141,7 @@ const UpdateProduct = () => {
       images: "hidden",
     });
     setInput({
-      id: id,
+      id: id,  
     });
   };
 
