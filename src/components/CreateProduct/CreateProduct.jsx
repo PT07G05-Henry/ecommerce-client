@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories, selectCategories, postProducts } from "../../store/api";
+import { selectThisUser } from "../../store/thisUser";
 import validate from "./validate";
 import { useAuth0 } from "@auth0/auth0-react";
 import Card from "../Card/Card";
@@ -11,6 +12,7 @@ import "./createProduct.css";
 const CreateProduct = () => {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
+  let userData = useSelector(selectThisUser);
   const ref = React.createRef();
   const [cat, setCat] = useState([]);
   const [error, setError] = useState({});
@@ -28,7 +30,6 @@ const CreateProduct = () => {
   }, [dispatch]);
 
   const {getIdTokenClaims} = useAuth0()
-
 
   const handleImageSubmit = () => {
     const image = ref.current.value;
@@ -202,7 +203,7 @@ const CreateProduct = () => {
         </form>
       </div>
       <div className="createdProduct__exampleCard">
-        {input && (
+        {input && userData.roles && (
           <Card
             id={input.id}
             images={input.images}
@@ -213,6 +214,7 @@ const CreateProduct = () => {
             categoriesName={cat}
             isCreated={true}
             handleDelete={handleDelete}
+            rol={userData.roles[0]}
           />
         )}
       </div>
