@@ -20,7 +20,7 @@ export default function Cart() {
   const rol = useSelector(selectThisUserRoles);
   const [totalPrice, setTotalPrice] = useState();
   const [totalItems, setTotalItems] = useState();
-  const [userId, setUserId] = useState(0);
+  const [userId, setUserId] = useState();
   const [items, setItems] = useState(
     JSON.parse(localStorage.getItem(`User${userId}`))
   );
@@ -36,12 +36,12 @@ export default function Cart() {
   useEffect(() => {
     getIdTokenClaims()
       .then((r) => r.sid)
-      .then((sid) => axios.get(`https://localhost:3001/users/sid?sid=${sid}`))
-      .then((r) => setUserId(r.data[0].id));
+      .then((sid) => axios.get(`https://localhost:3001/users?sid=${sid}`))
+      .then((r) =>{setUserId(r.data.id)});
     if (rol[0] === "User") {
       setItems(JSON.parse(localStorage.getItem(`User${userId}`)));
     }
-  }, []);
+  }, [rol[0]]);
 
   useEffect(() => {
     console.log(
