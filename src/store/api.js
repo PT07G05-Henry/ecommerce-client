@@ -33,7 +33,6 @@ import {
     getProducts as newGetProducts,
     selectProducts as newSelectProducts,
     postProducts as newPostProducts, 
-    updateProduct as newUpdateProduct,
 } from "./products";
 import { getProductsByName as newGetProductsByName, selectProductsByName as newSelectProductsByName } from "./productsByName";
 import { getProductById as newGetProductById, selectProductsById as newSelectProductsById } from "./productById";
@@ -66,7 +65,6 @@ export const STOCK = NEW_STOCK;
 export const RATING = NEW_RATING;
 export const USER_ROL_ID = NEW_USER_ROL_ID;
 export const postProducts = newPostProducts;
-export const updateProduct = newUpdateProduct;
 export const getProducts = newGetProducts;
 export const selectProducts = newSelectProducts;
 export const getProductsByName = newGetProductsByName;
@@ -77,3 +75,4 @@ export const getUsers = newGetUsers;
 export const selectUser = newSelectUser;
 export const getUsersById = newGetUsersById;
 export const selectUsers = newSelectUserById;
+

@@ -3,7 +3,9 @@ import { selectThisUserSid } from "../store/thisUser"
 import { store } from "../store/store"
 
 export const endPoint = {
+
     categories: "categories", comments: "comments", deliveries: "deliveries", orders: "orders", allOrders: "orders/all", payments: "payments", products: "products", postProducts: "products/postProducts", thisUser: "users/auth0", users: "users"
+
 }
 
 export const query = {
@@ -29,7 +31,6 @@ class Api {
                 config && config.data && (request.data = config.data)
                 config && config.params && (request.params = config.params)
                 sid && (request.params ? (request.params = { ...request.params, sid: sid }) : (request.params = { sid: sid }))
-                console.log(request);
                 return axios(request);
             }
         })

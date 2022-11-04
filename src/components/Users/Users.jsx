@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, selectUser } from "../../store/api";
 import Paginated from "../Paginated/Paginated.jsx";
-import { useAuth0 } from "@auth0/auth0-react";
 import "./users.css";
+import api, { endPoint } from "../../lib/api";
 export default function Users() {
   const dispatch = useDispatch();
-  const { getIdTokenClaims } = useAuth0();
   const users = useSelector(selectUser);
   const [filteredUsers, setFilteredUsers] = useState("All");
 
@@ -17,27 +16,47 @@ export default function Users() {
 
   useEffect(() => {
     console.log(users);
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) => {
-        dispatch(
-          getUsers({
-            rol: filteredUsers,
-            sid,
-          })
-        );
-      });
+    dispatch(
+      getUsers({
+        rol: filteredUsers,
+      })
+    );
   }, [dispatch, filteredUsers]);
 
+  function changeRol(id, rol) {
+    api.put(`${endPoint.users}/${id}`, {data: rol})
+    .then((res) => {
+      alert('Successfully Changed Role')
+      dispatch(
+        getUsers({
+          rol: filteredUsers,
+        })
+      );
+    });
+  }
+
   function handlerRolSwitch(id, rol) {
-    /*aqui va la logica de acceder al backend como superadmin
-    y poder cambiar el rol de User a Admin o viceversa
-    los Superadmin no deberian cambiar de rol
-    pasar id del User o Admin y cambiar su rol
-    */
-    console.log(
-      `${rol} with ID: ${id} is change to 
-      ${rol === "Admin" ? "User" : "Admin"} (falta la logica en la funcion)`
+    console.log(id, rol)
+    if(rol === 'Superadmin') {
+      alert('Role SUPERADMIN cannot be changed')
+    } else {
+      try {
+        rol === 'Admin' 
+        ? changeRol(id, {rol: 2}) //Id de roles en DB 1-Admin, 2-User, 3-Superadmin
+        : changeRol(id, {rol: 1})
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+  }
+
+  function handleClick(e) {
+    const id = e.target.value;
+    api.delete(endPoint.users, {params: {id:id}})
+      .then(alert("User deleted successfully"))
+      .catch((err) => err.message);
+    setFilteredUsers(
+      filteredUsers.filter((user) => user.id !== parseInt(id))
     );
   }
 
@@ -80,34 +99,21 @@ export default function Users() {
                     </td>
                     <td>{user.email}</td>
                     <td>
-                      {user.rols && user.rols.length === 3
-                        ? "Superadmin"
-                        : user.rols[0].type}
+                      {user.rols[0].type}
                     </td>
                     <td>
-                      {user.rols && user.rols.length === 3 ? (
-                        ""
-                      ) : (
-                        <label class="switch">
-                          <input
-                            type="checkbox"
-                            onChange={() => {
-                              handlerRolSwitch(user.id, user.rols[0].type);
-                            }}
-                            checked={user.rols[0].type === "Admin"}
-                          />
-                          <span class="slider round"></span>
-                        </label>
-                      )}
+                      <button className="btn"
+                        onClick={() => {
+                          handlerRolSwitch(user.id, user.rols[0].type);
+                        }}
+                      >
+                        Change Rol
+                      </button>
                     </td>
                     <td>
                       {user.id && (
-                        <button
-                          className="btn"
-                          value={user.id}
-                          onClick={() => {}}
-                        >
-                          X
+                        <button className="btn" value={user.id} onClick={handleClick}>
+                        X
                         </button>
                       )}
                     </td>

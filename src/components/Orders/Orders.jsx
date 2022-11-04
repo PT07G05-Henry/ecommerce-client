@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-git commitimport SortButton from "./SortButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getAllOrders, selectAllOrders } from "../../store/allOrders";
+import SortButton from "./SortButton";
 import Paginated from "./Paginated";
 import { Doughnut, Bar } from "react-chartjs-2"
 import {

@@ -2,19 +2,23 @@
   position: fixed;
   display: flex;
   justify-content: center;
-  bottom: 0;
+  bottom: -5rem;
   width: 100%;
 }
 
 .nav {
   --radius: 1.5rem;
   position: relative;
-  bottom: 7rem;
+  bottom: 12rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: .1rem 1rem;
-  background: linear-gradient(0deg,rgba(var(--color-secondary-rgb), 0.5) 0%,rgba(var(--color-black-rgb), 0.5) 100%);
+  padding: 0.1rem 1rem;
+  background: linear-gradient(
+    0deg,
+    rgba(var(--color-secondary-rgb), 0.5) 0%,
+    rgba(var(--color-black-rgb), 0.5) 100%
+  );
   border-bottom: var(--border);
   border-left: var(--border);
   border-right: var(--border);
@@ -29,46 +33,85 @@
   width: 100px;
 }
 
-.nav__button{
+.nav__button {
   background: transparent;
-  padding: .25rem .75rem ;
+  padding: 0.25rem 0.75rem;
   color: var(--color-primary);
   transition: var(--transition);
   cursor: pointer;
 }
 
 .nav__button > svg {
-  filter: drop-shadow(0px 0px 15px rgb( var(--color-black-rgb) ));
+  filter: drop-shadow(0px 0px 15px rgb(var(--color-black-rgb)));
   transition: var(--transition);
 }
 
-.nav__button:hover{
+.nav__button:hover {
   color: var(--color-white);
 }
 
 .nav__button:hover > svg {
-  filter: drop-shadow(0px 0px 15px rgb( var(--color-primary-rgb) ));
+  filter: drop-shadow(0px 0px 15px rgb(var(--color-primary-rgb)));
 }
 
-.nav__middleSpace{
-  display: block;
+.nav__middleSpace {
+  display: flex;
   width: 5rem;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
 }
 
-.tooltip__cart .tooltiptext {
-  visibility: visible;
-  width: 1rem;
-  background-color: rgba(0, 0, 0, 0.242);
-  color: var(--color-primary);
-  text-align: center;
-  border-radius: 6px;
-  padding: 0px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
+.nav__cart-counter {
+  --box: .75rem;
+  font-size: var(--box);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  width: var(--box);
+  height: var(--box);
+  padding: .65rem;
+  z-index: 10;
+  left: 5.25rem;
+  bottom: .7rem;
+  background-color: rgba(var(--color-secondary-rgb),.75);
+  border: 1px solid var(--color-primary);
+  border-radius: 9999px;
+  animation-name: nav__cart-counter;
+  animation-duration: .5s;
+  animation-iteration-count: 1;
 }
 
-.tooltip__cart:hover .tooltiptext {
-  visibility: hidden;
+@keyframes nav__cart-counter {
+  0%{
+    background-color: var(--color-primary);
+    box-shadow: 0px 0px 10px 10px rgba(var(--color-white-rgb), 0.75);
+  }
+  
+}
+
+.nav__active > svg {
+  color: var(--color-secondary);
+  filter: drop-shadow(0px 0px 15px rgb(var(--color-black-rgb)));
+  animation-name: nav__button-active;
+  animation-duration: var(--duration);
+  animation-iteration-count: infinite;
+
+}
+
+@keyframes nav__button-active {
+  50% {
+    filter: drop-shadow(0px 0px 15px rgb(var(--color-white-rgb)));
+    color: var(--color-white);
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav {
+    bottom: 7rem;
+  }
 }

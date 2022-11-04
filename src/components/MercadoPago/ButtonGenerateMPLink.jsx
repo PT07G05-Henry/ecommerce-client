@@ -2,9 +2,12 @@ import axios from "axios";
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./buttongeneratemplink.css"
+import api, { endPoint } from "../../lib/api";
+import { useState } from "react";
 
 export default function ButtonGenerateMPLink({totalPrice, cart}) {
   const { getIdTokenClaims } = useAuth0();
+  const [sended, setSended] = useState(false)
   const products = cart.map(({name, qty, price, id})=>({id, name, qty, price }));
   products.forEach(e => {
     e["title"] = e["name"];
@@ -15,19 +18,10 @@ export default function ButtonGenerateMPLink({totalPrice, cart}) {
     delete e["price"];
     e["currency_id"] = "ARS"
   });
+
   function findLinkMP() {
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) =>
-        axios({
-          method: "post",
-          url: `https://${process.env.REACT_APP_DEV_API || document.domain}/mercado?sid=${sid}`,
-          data: {
-            total_price: totalPrice,
-            products: products,
-          },
-        }).then(r=>{console.log(r.data);window.open(r.data, '_blank', "top=200,left=400,width=1000,height=700");})
-      );
+    api.post(endPoint.mercado,{data: {total_price: totalPrice,
+      products: products, }}).then(r=>window.open(r.data, '_blank', "top=200,left=400,width=1000,height=700"))
   }
 
   return (

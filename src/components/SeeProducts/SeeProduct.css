@@ -1,10 +1,16 @@
-.title{
-    display: flexbox;
-    margin: 10px 30px; 
-    text-align: center;   
+.title {
+  display: flexbox;
+  margin: 10px 30px;
+  text-align: center;
 }
 
-.swiper-button-prev,
-.swiper-button-next{
-    color: var(--color-primary);
+.seeProduct__title {
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.seeProduct__title:hover {
+    color: var(--color-white);
+    text-shadow: 0 0 10px var(--color-primary);
 }
