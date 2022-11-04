@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CardCart from "../CardCart/CardCart";
 import "./cart.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { selectThisUserRoles } from "../../store/thisUser";
 import ButtonGenerateMPLink from "../MercadoPago/ButtonGenerateMPLink";
@@ -21,8 +21,8 @@ export default function Cart() {
   const [totalPrice, setTotalPrice] = useState();
   const [totalItems, setTotalItems] = useState();
   const [userId, setUserId] = useState();
-  const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem(`User${userId}`))
+  const [items, setItems] = useState(  userId ? JSON.parse(localStorage.getItem(`User${userId}`)) : JSON.parse(localStorage.getItem(`User${userId}`))
+
   );
   const [button, setButton] = useState(false);
   const [urlMP, setUrlMP] = useState("");
@@ -32,6 +32,18 @@ export default function Cart() {
   const remove = (idValue) => {
     setItems(items.filter((e) => e.id !== idValue));
   };
+
+  const {status, orderId} = useParams();
+
+  useEffect(()=>{
+    status && (
+      console.log(`Status ${status}`)
+    )
+    orderId && (
+      console.log(`orderId ${orderId}`)
+    )
+
+  },[status, orderId])
 
   useEffect(() => {
     getIdTokenClaims()
