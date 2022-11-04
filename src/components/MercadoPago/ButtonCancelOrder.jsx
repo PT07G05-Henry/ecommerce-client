@@ -15,7 +15,8 @@ export default function ButtonGenerateOrder({userId, setItems}) {
     console.log("userId",userId)
     dispatch(reset())
     setItems([])
-    localStorage.setItem(`User${userId}`, JSON.stringify([]))
+    localStorage.removeItem(`User${userId}`)
+    localStorage.removeItem(`Userundefined`)
   }
 
   return (
