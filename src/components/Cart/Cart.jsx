@@ -85,7 +85,7 @@ export default function Cart() {
                   loginWithPopup();
                 }}
               ></input>
-            ) : !button ? (
+            ) : button ? (
               <ButtonGenerateOrder
                 setButton={setButton}
                 cart={cart}
@@ -98,7 +98,7 @@ export default function Cart() {
                   totalPrice={Number(totalPrice).toFixed(2)}
                   cart={cart}
                 />{" "}
-                <ButtonCancelOrder userId={userId} />
+                <ButtonCancelOrder userId={userId} setItems={setItems}/>
               </div>
             )}
             {button && (
