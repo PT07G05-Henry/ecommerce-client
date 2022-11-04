@@ -1,7 +1,7 @@
 .nav__user-image {
   --box: 4rem;
   position: relative;
-  bottom: 7.5rem;
+  bottom: 12.5rem;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -24,7 +24,21 @@
   box-shadow: 0px 0px 59px 10px rgba(var(--color-primary-rgb), 0.75);
 }
 
-.nav__user-menu {  
+.nav__user-imageActive {
+  box-shadow: 0px 0px 59px 10px rgba(var(--color-secondary-rgb), 0.75);
+  border: 2px solid var(--color-white);
+  animation-name: nav__user-imageActive;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes nav__user-imageActive {
+  50% {
+    box-shadow: 0px 0px 59px 10px rgba(var(--color-white-rgb), 0.75);
+  }
+}
+
+.nav__user-menu {
   position: fixed;
   bottom: 12rem;
   left: auto;
@@ -40,4 +54,25 @@
   display: flex;
   height: var(--box);
   width: var(--box);
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  color: var(--color-primary);
+  transition: var(--transition);
+}
+
+.nav__logo > svg {
+  filter: drop-shadow(0px 0px 3px rgb(var(--color-secondary-rgb)));
+  transition: var(--transition);
+}
+
+.nav__logo > svg :hover {
+  filter: drop-shadow(0px 0px 3px rgb(var(--color-white-rgb)));
+}
+
+@media (max-width: 1024px) {
+  .nav__user-image {
+    bottom: 7.5rem;
+  }
 }

@@ -12,6 +12,7 @@
 }
 
 .filters__flex {
+  position: relative;
   display: flex;
   align-items: center;
   align-content: center;
@@ -35,6 +36,22 @@
 }
 
 .filters__box {
+  display: flex;
+  width: 100%;
+}
+
+.filters__box > form {
+  border: var(--border);
+  border-radius: var(--radius);
+  margin: 1rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%;
+  padding: 1rem;
+}
+
+.filters__box-mobile {
   display: inline;
   position: relative;
   overflow: visible;
@@ -43,19 +60,22 @@
   bottom: 8rem;
 }
 
-.filters__box > form {
+.filters__box-mobile > form {
   padding: 1rem;
   width: fit-content;
 }
 
 .filter {
   display: flex;
-  width: 100%;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
 }
 
 .filter > select {
-  background-color: rgba(var(--color-secondary-rgb), 0.25);
-  backdrop-filter: blur(2px);
+  background-color: transparent;
+  border-bottom: var(--border);
   color: var(--color-white);
   margin: 0.25rem;
 }
@@ -92,5 +112,20 @@
 @media (max-width: 580px) {
   .cards__grid {
     grid-template-columns: 1fr;
+  }
+  .filters__flex {
+    right: 1.35rem;
+  }
+}
+
+@media (max-width: 630px) {
+  .filter {
+    width: 100%;
+  }
+  .filter > select {
+    background-color: rgba(var(--color-secondary-rgb), 0.25);
+    backdrop-filter: blur(2px);
+    color: var(--color-white);
+    margin: 0.25rem;
   }
 }

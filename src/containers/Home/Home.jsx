@@ -1,34 +1,37 @@
-import React from "react";
-import SeeProduct from "../../components/SeeProducts/SeeProduct";
+import React, { useEffect, useState } from "react";
 import "./home.css";
-import Banner from "./Banner";
-
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories, selectCategories } from "../../store/categories";
+import SeeProduct from "../../components/SeeProducts/SeeProduct";
+import Banner from "./Banner";
 import Loading from "../../components/loading/Loading";
-import { useState } from "react";
 
 const Home = () => {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
-  const category = categories.slice(0, 5);
-  const [loaded, setLoaded] = useState(false);
-
+  const getRandomSort = () => {
+    return Math.floor(Math.random() * 3) - 1;
+  };
+  const getRandomSlice = (array) => {
+    let slice = structuredClone(array);
+    return slice.sort(getRandomSort).slice(0, 5);
+  };
+  const [toBeRender, setToBeRender] = useState(<Loading />);
   useEffect(() => {
-    !loaded && dispatch(getCategories());
-  }, [loaded]);
+    (categories[0].toBeField || categories[0].error) &&
+      dispatch(getCategories());
+    categories[0].id &&
+      setToBeRender(
+        getRandomSlice(categories).map((e) => (
+          <SeeProduct key={`cat${e.id}`} category={e.id} name={e.name} />
+        ))
+      );
+  }, [categories]);
 
   return (
     <section className="container home__container">
       <Banner />
-      {category[0].id ? (
-        category.map((e) => (
-          <SeeProduct key={`cat${e.id}`} category={e.id} name={e.name} />
-        ))
-      ) : (
-        <Loading />
-      )}
+      {toBeRender}
     </section>
   );
 };

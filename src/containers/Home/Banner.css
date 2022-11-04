@@ -4,8 +4,8 @@
   height: 250px;
 }
 .image__banner {
+  padding: 2rem;
   display: flex;
   margin: auto auto;
-  width: 400px;
-  height: 210px;
+  height: 14rem;
 }

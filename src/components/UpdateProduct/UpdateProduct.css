@@ -10,3 +10,12 @@
     display: flex;
     width: 15rem;
 }
+
+.selectedOptions {
+    display: flex;
+    justify-content: center;
+}
+
+.option {
+    display: flex;
+}

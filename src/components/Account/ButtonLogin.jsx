@@ -1,13 +1,13 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import LOGO from "../../assets/Logo.svg";
+import { AiOutlineUser } from "react-icons/ai"
 
 const ButtonLogin = () => {
   const { loginWithPopup } = useAuth0();
   return (
-    <div className="nav__user-image">
-      <div className="nav__logo">
-        <img src={LOGO} alt="logo" onClick={() => loginWithPopup()} />
+    <div title="Log In" className="nav__user-image">
+      <div className="nav__logo" onClick={() => loginWithPopup()} >
+        <AiOutlineUser size={48}/>
       </div>
     </div>
   );

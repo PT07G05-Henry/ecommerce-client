@@ -1,20 +1,18 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import "./OrderDetail.css";
+import api, { endPoint } from "../../lib/api";
 
 const OrderDetail = (props) => {
+  const dispatch = useDispatch();
   const { id } = useParams();
-
   const [order, setOrder] = React.useState({});
 
   async function getOrder(id) {
+    console.log('orderdetail')
     try {
-      const orderDetail = await axios(
-        `https://${
-          process.env.REACT_APP_DEV_API || document.domain
-        }/orders/${id}`
-      );
+      const orderDetail = await api.get(`${endPoint.orders}/${id}`)
       setOrder(orderDetail.data);
     } catch (err) {
       console.log(err.message);
@@ -72,7 +70,7 @@ const OrderDetail = (props) => {
                 <td>{product.orders_products.product_quantity}</td>
                 <td>${product.price}</td>
                 <td>
-                  ${product.price * product.orders_products.product_quantity}{" "}
+                  ${(product.price * product.orders_products.product_quantity).toFixed(2)}{" "}
                 </td>
               </tr>
             </tbody>
