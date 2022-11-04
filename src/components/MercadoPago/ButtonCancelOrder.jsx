@@ -8,20 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {selectCarts} from "../../store/cart"
 import { useEffect } from "react";
 
-export default function ButtonGenerateOrder({userId, setCondition}) {
+export default function ButtonGenerateOrder({userId, setItems}) {
   const carrito = useSelector(selectCarts)
   const dispatch = useDispatch()
   function handler(){
-    setCondition(false)
+    console.log("userId",userId)
     dispatch(reset())
+    setItems([])
     localStorage.setItem(`User${userId}`, JSON.stringify([]))
-    console.log(localStorage.getItem(`User${userId}`))
   }
 
-  useEffect(()=>{
-    console.log("carrito",carrito)
-    
-  },[carrito])
   return (
     <>
       <input
