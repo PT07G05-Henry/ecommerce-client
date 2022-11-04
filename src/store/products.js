@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { endPoint } from "../lib/api";
+import axios from "axios";
 
 // Constantes para usar las queries de getProducts
 export const NAME = "name";

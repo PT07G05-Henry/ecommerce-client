@@ -6,3 +6,12 @@
     color: green !important;
     background-color: rgba(0,0,0,0.5) !important;
 }
+
+.cart__btn-cancel{
+    background-color: red !important;
+}
+
+.cart__btn-cancel:hover{
+    color: red !important;
+    background-color: rgba(0,0,0,0.5) !important;
+}
