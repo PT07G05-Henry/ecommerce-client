@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getOrders, selectOrders } from "../../store/api";
+import { getAllOrders, selectAllOrders } from "../../store/allOrders";
 import SortButton from "./SortButton";
 import Paginated from "./Paginated";
 import { Doughnut, Bar } from "react-chartjs-2"
@@ -28,7 +28,7 @@ ChartJS.register(
 
 export default function Orders() {
   const dispatch = useDispatch();
-  const orders = useSelector(selectOrders);
+  const orders = useSelector(selectAllOrders);
   const [filteredOrders, setFilteredOrders] = useState([]);
 
   function handleChange(e) {
@@ -177,7 +177,7 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    dispatch(getOrders());
+    dispatch(getAllOrders());
   }, [dispatch]);
 
   useEffect(() => {
