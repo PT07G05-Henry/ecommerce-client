@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, selectProducts } from "../../store/api";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import Paginated from "../Paginated/Paginated.jsx";
 import api from "../../lib/api";
 
@@ -9,18 +9,23 @@ export default function Orders() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
 
-  const handleDelete = async function(e) {
+  const handleDelete = async function (e) {
     const id = e.target.value;
-    try {
-      await api.delete("products", {
-        params: { id: id }
-      });
-      alert('Product deleted succesfully')
-    } catch(e) {
-      alert('Error ' + e.message);
-    };
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        await api.delete("products", {
+          params: { id: id },
+        });
+        alert("Product deleted succesfully");
+        setTimeout((flags) => {
+          dispatch(getProducts(flags));
+        }, 1000);
+      } catch (e) {
+        alert("Error " + e.message);
+      }
+    }
   };
-  
+
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -30,7 +35,7 @@ export default function Orders() {
       <Paginated
         data={products}
         dispatch={(flags) => {
-          dispatch(getProducts(flags))
+          dispatch(getProducts(flags));
         }}
       />
       <table>
@@ -61,9 +66,9 @@ export default function Orders() {
                       X
                     </button>
                   )}
-                </td> 
+                </td>
                 <td>
-                  <Link to={`/update/product/${product.id}`}>Update</Link> 
+                  <Link to={`/update/product/${product.id}`}>Update</Link>
                 </td>
               </tr>
             </tbody>
