@@ -1,0 +1,20 @@
+.container__table{
+    width: 50%;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+.container__table td {  
+  width: 50%;
+  border-radius: 10px
+}
+
+.container__table th {  
+    border-radius: 10px
+  }
+
+
+.divCenter{
+    display: flex;
+    justify-content: center;
+}
