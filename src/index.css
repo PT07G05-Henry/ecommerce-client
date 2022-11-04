@@ -22,6 +22,8 @@
 
   --transition: all 200ms ease-in-out;
 
+  --duration: 4s;
+
   --container-width-lg: 75%;
   --container-width-md: 86%;
   --container-width-sm: 90%;
@@ -29,6 +31,8 @@
   --border: 2px solid var(--color-primary);
   --border-bright: 2px solid var(--color-white);
   --radius: 2rem;
+
+  --swiper-theme-color: var(--color-primary);
 }
 
 html {
@@ -134,7 +138,6 @@ img {
   overflow: hidden;
   cursor: pointer;
   border-radius: 9999px;
-  border: 1px solid transparent;
   transition: var(--transition);
 }
 

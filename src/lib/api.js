@@ -29,7 +29,6 @@ class Api {
                 config && config.data && (request.data = config.data)
                 config && config.params && (request.params = config.params)
                 sid && (request.params ? (request.params = { ...request.params, sid: sid }) : (request.params = { sid: sid }))
-                console.log(request);
                 return axios(request);
             }
         })

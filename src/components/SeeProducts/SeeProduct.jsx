@@ -5,7 +5,7 @@ import { useState } from "react";
 import Card from "../Card/Card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, EffectCoverflow } from "swiper";
-import {getThisUser, selectThisUserRoles} from "../../store/thisUser";
+import { getThisUser, selectThisUserRoles } from "../../store/thisUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from "react-redux";
 import "./SeeProduct.css";
@@ -13,12 +13,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import { getProducts, CATEGORY } from "../../store/products";
+import { useNavigate } from "react-router-dom";
+
 const SeeProduct = ({ category, name }) => {
   const [products, setProducts] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  const {user, getIdTokenClaims} = useAuth0();
+  const rol = useSelector(selectThisUserRoles);
   const dispatch = useDispatch();
-  const rol = useSelector(selectThisUserRoles)
+  const navigate = useNavigate();
   useEffect(() => {
     !loaded &&
       axios
@@ -32,14 +35,19 @@ const SeeProduct = ({ category, name }) => {
         });
   }, [loaded]);
 
-  useEffect(()=>{
-    getIdTokenClaims().then(r=>r.sid).then(sid=>dispatch(getThisUser({user, sid})))
-  },[])
+
 
   return (
     <div className="title">
-      <h1>{name}</h1>
-
+      <h1
+        className="seeProduct__title"
+        onClick={() => {
+          dispatch(getProducts({ [CATEGORY]: category }));
+          navigate("/catalog");
+        }}
+      >
+        {name}
+      </h1>
       <div className="seeProduct__container">
         <Swiper
           loop={true}

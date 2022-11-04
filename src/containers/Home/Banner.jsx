@@ -17,7 +17,7 @@ import "./Banner.css";
 
 const Banner = () => {
   return (
-    <div className="container">
+    <div className="box-dry" style={{ margin: "4rem" }}>
       <>
         <Swiper
           spaceBetween={30}
