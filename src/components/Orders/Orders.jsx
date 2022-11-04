@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrders, selectOrders } from "../../store/api";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getAllOrders, selectAllOrders } from "../../store/allOrders";
 import SortButton from "./SortButton";
 import Paginated from "./Paginated";
 import { Doughnut, Bar } from "react-chartjs-2"
@@ -27,7 +28,7 @@ ChartJS.register(
 
 export default function Orders() {
   const dispatch = useDispatch();
-  const orders = useSelector(selectOrders);
+  const orders = useSelector(selectAllOrders);
   const [filteredOrders, setFilteredOrders] = useState([]);
 
   function handleChange(e) {
@@ -41,7 +42,6 @@ export default function Orders() {
 
 
   function countOrders(orders) {
-
     let data = {
       acceptedOrders: 0,
       pendingdOrders: 0,
@@ -84,7 +84,7 @@ export default function Orders() {
     { user: '', total: 0 }
   ];
 
-  if (orders[0].id) {
+  if (orders && orders[0].id) {
     valuesOrders = countOrders(orders)
     valuesUser = countUsers(orders)
   }
@@ -135,7 +135,17 @@ export default function Orders() {
         }
       }
     })
-    return data.sort(((a, b) => b.total - a.total));
+    data.sort(((a, b) => b.total - a.total));
+    //For en caso de que no se completen los 5 necesarios para el grafico se completa con 0 para que no rompa
+    for (let i = 0; i < 5; i++) {
+      if(!data[i]) {
+        data[i] = {
+          user: 'No information',
+          total: 0
+        }
+      }   
+    }
+    return data;
   }
 
   let dataUsers = {
@@ -167,8 +177,12 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    dispatch(getOrders());
+    dispatch(getAllOrders());
   }, [dispatch]);
+
+  useEffect(() => {
+    setFilteredOrders(orders)
+  },[orders])
 
   return (
     <>

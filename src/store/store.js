@@ -11,6 +11,8 @@ import userByIdReducer from "./userById"
 import usersReducer from "./users"
 import cartReducer from "./cart"
 import thisUserReducer from "./thisUser"
+import allOrdersReducer from './allOrders'
+import windowReducer from "./window"
 
 export const store = configureStore({
   reducer: {
@@ -26,5 +28,7 @@ export const store = configureStore({
     users: usersReducer,
     cart: cartReducer,
     thisUser: thisUserReducer,
+    allOrders: allOrdersReducer,
+    window: windowReducer,
   },
 });

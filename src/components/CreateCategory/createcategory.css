@@ -29,15 +29,3 @@ display: flex;
 .formControled__centeredForm{
     border-radius: 25px 0px;
 }
-
-input[type=text]{
-    border-top: var(--border);
-    border-left: var(--border);
-    border-top-left-radius: 10px;
-    text-align: center;
-    border-bottom-right-radius: 10px;
-    background-color: rgba(var(--color-secondary-rgb), 0.25);
-    backdrop-filter: blur(3px);
-    color:var(--color-white);
-    margin-left: 0.5rem
-}
