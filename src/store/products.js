@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { endPoint } from "../lib/api";
+import axios from "axios";
 
 // Constantes para usar las queries de getProducts
 export const NAME = "name";
@@ -40,10 +41,10 @@ export const postProducts = createAsyncThunk(
   async ({ input }) => {
     try {
       const response = await api.post(postProducts, { data: input });
-      alert('Product created successfully');
+      alert("Product created successfully");
       return response.data;
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert("Error: " + error.message);
       console.error(error);
     }
   }
@@ -53,21 +54,25 @@ export const updateProduct = createAsyncThunk(
   "products/updateProdcuts",
   async ({ input, sid, setUpdate }) => {
     try {
-      axios.put(
-        `https://${process.env.REACT_APP_DEV_API || document.domain}/products?sid=${sid}`,
-        input
-      ).then((res) => {
-        setUpdate({
-          name: res.data.name,
-          price: res.data.price,
-          description: res.data.description,
-          stock: res.data.stock,
-          images: res.data.images
-        })
-        alert('Product updated successfully');
-      });
+      axios
+        .put(
+          `https://${
+            process.env.REACT_APP_DEV_API || document.domain
+          }/products?sid=${sid}`,
+          input
+        )
+        .then((res) => {
+          setUpdate({
+            name: res.data.name,
+            price: res.data.price,
+            description: res.data.description,
+            stock: res.data.stock,
+            images: res.data.images,
+          });
+          alert("Product updated successfully");
+        });
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert("Error: " + error.message);
       console.error(error);
     }
   }
