@@ -7,7 +7,7 @@ import ProductDetail from "./components/ProductDetail/ProductDetail";
 import SearchByName from "./containers/SearchByName/SearchByName";
 import UpdateProduct from "../src/components/UpdateProduct/UpdateProduct";
 import OrderDetail from "../src/components/OrderDetail/OrderDetail";
-import DashBoard from "./components/DashBoard/DashBoard";
+import DashBoard from "./containers/DashBoard/DashBoard";
 import Cart from "../src/components/Cart/Cart";
 import Payment from "../src/components/Payment/Payment"
 import Redirect from "./components/Redirect/Redirect";
