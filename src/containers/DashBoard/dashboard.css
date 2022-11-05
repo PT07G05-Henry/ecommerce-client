@@ -1,0 +1,111 @@
+.dashBoard__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.dashBoard__menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.dashBoard__menu-tabs {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  max-width: 90%;
+}
+
+.dashBoard__tabBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+  padding: 0.25rem 1rem;
+  border-top: var(--border);
+  border-left: var(--border);
+  border-right: var(--border);
+  margin: 0 0.1rem;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  color: var(--color-white);
+  background-color: rgba(var(--color-secondary-rgb), 0.1);
+  backdrop-filter: blur(2px);
+  transition: var(--transition);
+}
+
+.dashBoard__tabBtn:hover,
+.dashBoard__tabBtn-active {
+  background-color: rgba(var(--color-secondary-rgb), 0.2);
+  border-top: var(--border-bright);
+  border-left: var(--border-bright);
+  border-right: var(--border-bright);
+  animation-name: dashBoard__tabBtn-active;
+  animation-duration: var(--duration);
+  animation-iteration-count: infinite;
+}
+
+.dashBoard__tabBtn-active{
+    order: -1;
+}
+
+@keyframes dashBoard__tabBtn-active {
+  50% {
+    text-shadow: 0 0 5px var(--color-primary), 0 0 5px var(--color-primary);
+  }
+}
+
+.dashBard__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 50vh;
+  min-width: 75%;
+  padding: 0.75rem;
+  background-color: rgba(var(--color-secondary-rgb), 0.2);
+  backdrop-filter: blur(2px);
+  border-radius: var(--radius);
+  border: var(--border-bright);
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1360px) {
+    .dashBard__tab{
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 1135px) {
+    .dashBard__tab{
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 950px) {
+    .dashBoard__menu-tabs{
+        border-top: var(--border);
+        border-left: var(--border);
+        border-right: var(--border);
+        border-top-left-radius: var(--radius);
+        border-top-right-radius: var(--radius);
+        background-color: rgba(var(--color-secondary-rgb), 0.1);
+        backdrop-filter: blur(2px);
+        padding: 0 .5rem;
+        padding-top: .5rem;
+    }
+    .dashBard__tab{
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+    .dashBoard__tabBtn{
+        background-color: transparent;
+        backdrop-filter:unset;
+    }
+}
+
