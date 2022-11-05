@@ -14,3 +14,9 @@
     color: var(--color-white);
     text-shadow: 0 0 10px var(--color-primary);
 }
+
+.seeProduct__carousel{
+  display: flex;
+  height: 22rem;
+  width: 100%;
+}
