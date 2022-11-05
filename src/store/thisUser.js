@@ -76,6 +76,9 @@ export const selectThisUser = (state) => state.thisUser.user;
 export const selectThisUserRoles = (state) => {
   return state.thisUser.user.roles ? state.thisUser.user.roles : ["Guest"];
 };
+export const selectThisUserId = (state) => {
+  return state.thisUser.user.userDb && state.thisUser.user.userDb.id ? state.thisUser.user.userDb.id : -1;
+};
 export const selectThisUserSid = (state) => {
   return (state.thisUser.user && state.thisUser.user.userDb && state.thisUser.user.userDb.sid) ? state.thisUser.user.userDb.sid : undefined;
 }

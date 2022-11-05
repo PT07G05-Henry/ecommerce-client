@@ -6,7 +6,7 @@
 
 ## ¿Por qué?
 
-La idea es evitar los posibles errores a la hora de usar los endpoints del API-Rest que se está implementando por lo que la idea es deja en un solo lugar el como se comporta y como se lo llama. para no estar chequeando si se escribió mal o se olvido de algo.
+La idea es evitar los posibles errores a la hora de usar los endpoints del API-Rest que se está implementando por lo que se deja en un solo lugar el como se comporta y como se lo llama para no estar chequeando si se escribió mal o se olvido de algo.
 
 ## ¿Qué soluciona de por sí?
 
