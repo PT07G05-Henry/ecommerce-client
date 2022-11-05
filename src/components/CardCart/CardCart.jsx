@@ -118,7 +118,6 @@ export default function CardCart({
               className="removeProduct"
               onClick={() => {
                 removeProduct();
-                remove(id)
               }}
               value={"Remove this product"}
             ></input>

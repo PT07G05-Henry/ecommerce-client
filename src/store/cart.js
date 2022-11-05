@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export const initialState = {
   cart: [],
@@ -39,12 +38,15 @@ export const cartSlice = createSlice({
     },
     reset: (state) =>{
       return {...state, cart:[]}
-    }
+    },
+    dataBaseValue: (state, action)=>{
+      return {...state, cart:action.payload}
+    },
   },
 });
 
 export const selectCarts = (state) => state.cart.cart;
 
-export const { setItem, deleteItem, updateItemQty, reset } = cartSlice.actions;
+export const { setItem, deleteItem, updateItemQty, reset, dataBaseValue } = cartSlice.actions;
 
 export default cartSlice.reducer;

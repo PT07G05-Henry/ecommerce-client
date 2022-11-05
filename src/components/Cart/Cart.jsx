@@ -1,63 +1,37 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CardCart from "../CardCart/CardCart";
 import "./cart.css";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { selectThisUserRoles } from "../../store/thisUser";
+import { selectThisUserRoles, selectThisUser } from "../../store/thisUser";
 import ButtonGenerateMPLink from "../MercadoPago/ButtonGenerateMPLink";
-import { setItem } from "../../store/cart";
+import { selectCarts } from "../../store/cart";
 import OrderResum from "../MercadoPago/OrderResum";
-import products from "../../store/products";
+
 import ButtonGenerateOrder from "../MercadoPago/ButtonGenerateOrder";
 import ButtonCancelOrder from "../MercadoPago/ButtonCancelOrder";
-import axios from "axios";
 
-export default function Cart() {
-  const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.cart);
+
+export default function CartTest() {
+
+  const cart = useSelector(selectCarts);
   const rol = useSelector(selectThisUserRoles);
+  const user = useSelector(selectThisUser);
   const [totalPrice, setTotalPrice] = useState();
   const [totalItems, setTotalItems] = useState();
-  const [userId, setUserId] = useState();
-  const [items, setItems] = useState(  userId ? JSON.parse(localStorage.getItem(`User${userId}`)) : JSON.parse(localStorage.getItem(`User${userId}`))
-
-  );
   const [button, setButton] = useState(false);
   const [urlMP, setUrlMP] = useState("");
 
-  const { loginWithPopup, getIdTokenClaims } = useAuth0();
-
-  const remove = (idValue) => {
-    setItems(items.filter((e) => e.id !== idValue));
-  };
+  const { loginWithPopup } = useAuth0();
 
   useEffect(() => {
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) => axios.get(`https://localhost:3001/users?sid=${sid}`))
-      .then((r) =>{setUserId(r.data.id)});
-    if (rol[0] === "User") {
-      setItems(JSON.parse(localStorage.getItem(`User${userId}`)));
-    }
-  }, [rol[0]]);
-
-  useEffect(() => {
-    console.log(
-      "revisar esto",
-      JSON.parse(localStorage.getItem(`User${userId}`))
-    );
-
-    localStorage.setItem(`User${userId}`, JSON.stringify(cart));
-    items?.map((e) => dispatch(setItem(e)));
-
     const value = cart.reduce((accumulator, object) => {
       return accumulator + Number(object.price) * Number(object.qty);
     }, 0);
-
-    setTotalPrice(value);
     const numItems = cart.length;
+    setTotalPrice(value);
     setTotalItems(numItems);
   }, [cart]);
 
@@ -98,7 +72,7 @@ export default function Cart() {
                   totalPrice={Number(totalPrice).toFixed(2)}
                   cart={cart}
                 />{" "}
-                <ButtonCancelOrder userId={userId} setItems={setItems}/>
+                <ButtonCancelOrder userId={user.userDb.id}/>
               </div>
             )}
             {button && (
@@ -133,7 +107,6 @@ export default function Cart() {
               categoriesName={c.categoriesName}
               isCreated={true}
               handleDelete={""}
-              remove={remove}
               qty={c.qty}
             />
           </div>
