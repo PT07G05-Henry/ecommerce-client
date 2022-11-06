@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Paginated from "./Paginated.jsx";
-import { getOrders, selectOrders } from "../../store/orders";
+import { getOrders, selectOrders } from "../../store/api";
 import { Link } from "react-router-dom";
 import Loading from "../loading/Loading.jsx";
 
@@ -12,24 +12,26 @@ export default function History() {
 
   function handleChange(e) {
     const value = e.target.value;
-    if (value === "All") {
-      setFilteredOrders(orders);
+    if(value === "All"){
+      setFilteredOrders(orders)
     } else {
-      const filtered = orders.filter((o) => o.status === value);
-      setFilteredOrders(filtered);
+      const filtered = orders.filter(o => o.status === value);
+      setFilteredOrders(filtered)
     }
   }
 
   useEffect(() => {
-    orders && (orders[0].toBeField || orders[0].error) && dispatch(getOrders());
-  }, [orders]);
-
+    dispatch(getOrders())
+  }, [dispatch])
+  
   useEffect(() => {
-    setFilteredOrders(orders);
-  }, [orders]);
+    setFilteredOrders(orders)
+  },[orders])
 
-  if (orders[0].toBeField || orders[0].error) return <Loading />;
-  if (orders[0].id) {
+  if(typeof(orders[0]) === "object") {
+    return (<Loading/>)
+  }
+  else if(orders.length) {
     return (
       <>
         <div>
@@ -49,16 +51,16 @@ export default function History() {
         </div>
       </>
     );
-  } else {
+  } 
+  else {
     return (
       <>
         <div>
           <h1>You must make a purchase to view order history</h1>
-          <Link to="/catalog">
-            <h2 className="btn primary">Make a Purchase</h2>
-          </Link>
+          <Link to="/catalog"><h2 className="btn primary">Make a Purchase</h2></Link>
         </div>
       </>
-    );
+    )
   }
+  
 }
