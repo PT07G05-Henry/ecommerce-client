@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, selectProducts } from "../../store/api";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Paginated from "../Paginated/Paginated.jsx";
 import api from "../../lib/api";
+import Loading from "../loading/Loading";
+import "./products.css";
 
 export default function Orders() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
 
@@ -16,7 +19,7 @@ export default function Orders() {
         await api.delete("products", {
           params: { id: id },
         });
-        alert("Product deleted succesfully");
+        alert("Product deleted successfully");
         setTimeout((flags) => {
           dispatch(getProducts(flags));
         }, 1000);
@@ -30,7 +33,7 @@ export default function Orders() {
     dispatch(getProducts());
   }, [dispatch]);
 
-  return (
+  return products.results ? (
     <>
       <Paginated
         data={products}
@@ -38,42 +41,26 @@ export default function Orders() {
           dispatch(getProducts(flags));
         }}
       />
-      <table>
-        <tbody>
-          <tr>
-            <th>Product number</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Delete</th>
-          </tr>
-        </tbody>
-        {products.results &&
-          products.results.map((product, index) => (
-            <tbody key={index}>
-              <tr>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>${product.price}</td>
-                <td>{product.stock}</td>
-                <td>
-                  {product.id && (
-                    <button
-                      className="btn"
-                      value={product.id}
-                      onClick={handleDelete}
-                    >
-                      X
-                    </button>
-                  )}
-                </td>
-                <td>
-                  <Link to={`/update/product/${product.id}`}>Update</Link>
-                </td>
-              </tr>
-            </tbody>
-          ))}
-      </table>
+      <ul className="products__list">
+        {products.results.map(({ id, name, price, stock }) => (
+          <li key={`Product_${id}`} className="products__list-item">
+            <button
+              className="btn"
+              onClick={() => {
+                navigate(`/update/product/${id}`);
+              }}
+            >
+              Update
+            </button>
+            <p>{`Stock: ${stock}`}</p>
+            <p>{`Price: $${price}`}</p>
+            <p>{`Name: ${name}`}</p>
+            <p>{`ID: ${id}`}</p>
+          </li>
+        ))}
+      </ul>
     </>
+  ) : (
+    <Loading />
   );
 }

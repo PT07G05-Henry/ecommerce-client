@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Card from "../Card/Card";
-import { PAGE} from "../../store/api";
-//import "./cards.css";
+import { PAGE } from "../../store/api";
+import { useAuth0 } from "@auth0/auth0-react";
+import "./paginated.css";
 
-const Cards = ({ products, dispatch }) => {
-  const [controller, setController] = useState(products.query);
-  const [arrayPag, setArrayPag] = useState([]);
+const Paginated = ({ data, dispatch, setFilteredUsers, filteredUsers }) => {
+  const [controller, setController] = useState(data.query);
   const [change, setChange] = useState(false);
-
+  const { getIdTokenClaims } = useAuth0();
   const addToController = (flag) => {
     setController({ ...controller, ...flag });
     setChange(!change);
@@ -15,208 +14,241 @@ const Cards = ({ products, dispatch }) => {
 
   useEffect(() => {
     change && dispatch(controller);
-    console.log(products.page)
-
     const array = [];
-    for (let i = 1; i <= products.totalPage; i++) {
+    for (let i = 1; i <= data.totalPage; i++) {
       array.push(i);
     }
-    paginate(array, products.page, 5, products.totalPage);
-    console.log(products.page)
-    arrayLeftSM(products.page);
-    arrayLeftMD(products.page);
-    arrayLeftLG(products.page);
-    arrayRightSM(products.page);
-    arrayRightMD(products.page);
-    arrayRightLG(products.page);
-
+    arrayLeftSM(data.page);
+    arrayLeftMD(data.page);
+    arrayLeftLG(data.page);
+    arrayRightSM(data.page);
+    arrayRightMD(data.page);
+    arrayRightLG(data.page);
   }, [controller]);
 
-  useEffect(()=>{
-    console.log("holis")
-  },[arrayPag])
+  function arrayLeftSM(page) {
+    if (page <= 2) {
+      if (page <= 1) {
+        return [];
+      }
+      return [1];
+    }
+    const array = [];
+    page = Number(page);
+    for (let i = page - 1; i > page - 3; i--) {
+      array.unshift(i);
+    }
+    return array;
+  }
 
+  function arrayLeftMD(page) {
+    if (page <= 4) {
+      if (page <= 3) {
+        return [];
+      }
+      return [1];
+    }
+    const array = [];
+    page = Number(page);
+    for (let i = page - 3; i > page - 5; i--) {
+      array.unshift(i);
+    }
+    return array;
+  }
+  function arrayLeftLG(page) {
+    if (page <= 6) {
+      if (page <= 5) {
+        return [];
+      }
+      return [1];
+    }
+    const array = [];
+    page = Number(page);
+    for (let i = page - 5; i > page - 7; i--) {
+      array.unshift(i);
+    }
+    return array;
+  }
 
-  function paginate(array, pageNumber, separation, totalPage) {
-    if (totalPage - pageNumber < 5) {
-      setArrayPag(array.slice(-10));
-      return;
+  function arrayRightSM(page) {
+    if (data.totalPage - page < 2) {
+      if (data.totalPage - page < 1) {
+        return [];
+      }
+      return [data.totalPage];
     }
-    if (pageNumber < 5) {
-      setArrayPag(array.slice(0, 10));
-      return;
+    const array = [];
+    page = Number(page);
+    for (let i = page + 1; i < page + 3; i++) {
+      array.push(i);
     }
-    setArrayPag(
-      array.slice(
-        Number(pageNumber) - Number(separation) < 0
-          ? 0
-          : Number(pageNumber) - Number(separation),
-        Number(pageNumber) + Number(separation)
-      )
-    );
-  };
+    return array;
+  }
 
-    function arrayLeftSM(page){ //1 Mobil 10
-        const array = [];
-        page = Number(page)
-        for(let i = page-1; i > page-3 ; i--){ //Page = 10; i = 9 i = 8
-            array.unshift(i); //[8,9]
-        }
-        console.log(array)
-        return array;
+  function arrayRightMD(page) {
+    if (data.totalPage - page < 4) {
+      if (data.totalPage - page < 3) {
+        return [];
+      }
+      return [data.totalPage];
     }
-
-    function arrayLeftMD(page){ //2 Tablet
-        const array = [];
-        page = Number(page);
-        for(let i = page-3; i > page-5 ; i--){ //Page = 10; i = 7 i = 6
-            array.unshift(i); //[6,7]
-        }
-        console.log(array)
-        return array;
+    const array = [];
+    page = Number(page);
+    for (let i = page + 3; i < page + 5; i++) {
+      array.push(i);
     }
-    function arrayLeftLG(page){ //3 Desktop
-        const array = [];
-        page = Number(page)
-        for(let i = page-5; i > page-7 ; i--){ //Page = 10; i = 7 i = 6
-            array.unshift(i); //[6,7]
-        }
-        console.log(array)
-        return array;
+    return array;
+  }
+  function arrayRightLG(page) {
+    if (data.totalPage - page < 6) {
+      if (data.totalPage - page < 5) {
+        return [];
+      }
+      return [data.totalPage];
     }
-
-    function arrayRightSM(page){ //1 Mobil
-        const array = [];
-        page = Number(page)
-        for(let i = page+1; i < page+3 ; i++){ //Page = 10; i = 11 i = 12
-            array.push(i); //[11,12]
-        }
-        console.log(array)
-        return array;
+    page = Number(page);
+    const array = [];
+    for (let i = page + 5; i < page + 7; i++) {
+      array.push(i);
     }
-
-    function arrayRightMD(page){ //2 Tablet
-        const array = [];
-        page = Number(page)
-        for(let i = page+3; i < page+5 ; i++){ //Page = 10; i = 13 i = 14
-            array.push(i); //[13,14]
-        }
-        console.log(array)
-        return array;
-    }
-    function arrayRightLG(page){ //3 Desktop
-        const array = [];
-        page = Number(page)
-        for(let i = page+5; i < page+7 ; i++){ //Page = 10; i = 15 i = 16
-            array.push(i); //[16,17]
-        }
-        console.log(array)
-        return array;
-    }
-
+    return array;
+  }
 
   function pag(a) {
     return (
       <input
         key={a}
         id={"paginadoNum" + a}
-        className={`${Number(products.page) === Number(a) ? "active" : ""} btn`}
+        className={`${Number(data.page) === Number(a) ? "active" : ""} btn`}
         type="button"
-        onClick={(e) => todo(e)} //cambiar esto
+        onClick={(e) => todo(e)}
         value={a}
-        disabled={products.page === a.toString()}
+        disabled={data.page === a.toString()}
       />
     );
   }
 
   function todo(e) {
     if (e.target.value === "PrevPag") {
-      window.location.hash = `#${products.page}`;
-      dispatch(products.prev);
+      window.location.hash = `#${data.page}`;
+      dispatch(data.prev);
       return;
-      // setCurrentPage(products.page - 1)
     }
     if (e.target.value === "NextPag") {
-      window.location.hash = `#${products.page}`;
-      dispatch(products.next);
+      window.location.hash = `#${data.page}`;
+      dispatch(data.next);
       return;
     }
     window.location.hash = `#${e.target.value}`;
-    const flag = { [PAGE]: e.target.value.toString() };
-    addToController(flag);
-    // setCurrentPage(Number(e.target.value))
+    getIdTokenClaims()
+      .then((r) => r.sid)
+      .then((sid) =>
+        dispatch({
+          ...controller,
+          [PAGE]: e.target.value.toString(),
+          rol: filteredUsers,
+          sid: sid,
+        })
+      );
   }
   return (
     <>
-      <div className="divBlack">
-        {}
+      <div className="divCenter">
         <div className="cards__controller">
-        <div className="cards__controller-filters"></div>
-          <div className="cards__controller-pager">
-            {/* botton prev */}
-            <button
-              className="btn"
-              value="PrevPag"
-              onClick={(e) => {
-                todo(e);
-              }}
-              style={!products.prev ? { display: "none" } : undefined}
-            >
-              {"<<"}
-            </button>
-
-            {/* {buttons} */}
-            {/* paginado numerado */}
-            {products.page > 5 && pag(1)}
-            {products.page > 5 && (
-              <input
-                type="button"
-                className="btnDots"
-                value={"..."}
-                disabled
-              ></input>
-            )}
-
-            {arrayPag.length !== 0 ?
-              arrayPag.map((a) => {
+          <div className="cards__controller-pagerL">
+            <div className="pager___button-lg">
+              {arrayLeftLG(data.page).map((a) => {
                 return pag(a);
-              }):"hola"}
-            {products.totalPage - products.page > 5 && (
-              <input
-                type="button"
-                className="btnDots"
-                value={"..."}
-                disabled
-              ></input>
-            )}
-            {products.totalPage - products.page > 5 && pag(products.totalPage)}
+              })}
+            </div>
+            <div className="pager___button-md">
+              {arrayLeftMD(data.page).map((a) => {
+                return pag(a);
+              })}
+            </div>
+            <div className="pager___button-sm">
+              {arrayLeftSM(data.page).map((a) => {
+                return pag(a);
+              })}
+            </div>
+            {/* botton prev */}
+            <div className="pager___button-prev">
+              <button
+                className="btn"
+                value="PrevPag"
+                onClick={(e) => {
+                  todo(e);
+                }}
+                style={!data.prev ? { display: "none" } : undefined}
+              >
+                {"<<"}
+              </button>
+            </div>
+          </div>
+          <div className="pager___button-page">
+            {data.page + "/" + data.totalPage}
+          </div>
+          <div className="cards__controller-pagerR">
             {/* botton next */}
-            <button
-              className="btn"
-              value="NextPag"
-              onClick={(e) => {
-                todo(e);
-              }}
-              style={!products.next ? { display: "none" } : undefined}
-            >
-              {">>"}
-            </button>
+            <div className="pager___button-next">
+              <button
+                className="btn"
+                value="NextPag"
+                onClick={(e) => {
+                  todo(e);
+                }}
+                style={!data.next ? { display: "none" } : undefined}
+              >
+                {">>"}
+              </button>
+            </div>
+            <div className="pager___button-sm">
+              {arrayRightSM(data.page).map((a) => {
+                return pag(a);
+              })}
+            </div>
+            <div className="pager___button-md">
+              {arrayRightMD(data.page).map((a) => {
+                return pag(a);
+              })}
+            </div>
+            <div className="pager___button-lg">
+              {arrayRightLG(data.page).map((a) => {
+                return pag(a);
+              })}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="cards__grid">
-        {products.results?.map((el) => (
-          <Card
-            key={`product_${el.id}`}
-            id={el.id}
-            images={el.images}
-            name={el.name}
-            price={el.price}
-          />
-        ))}
       </div>
     </>
   );
 };
 
-export default Cards;
+export default Paginated;
+
+// import React, { useEffect }  from "react";
+// import "./home.css";
+// import { useDispatch, useSelector } from "react-redux";
+// import Paginated from "../../components/Paginated/Paginated"
+// import { getProducts, selectProducts } from "../../store/api";
+// import Loading from "../../components/loading/Loading";
+
+// const Home = () => {
+//   const dispatch = useDispatch();
+//   const products = useSelector(selectProducts);
+//   useEffect(() => {
+//     products &&
+//       (products.toBeField || products.error) &&
+//       dispatch(getProducts());
+//   }, [products]);
+//   return (
+//     <section className="container home__container">
+//       <h1>Home!</h1>
+//       {products.results ? <Paginated data={products} dispatch={(flags) => {
+//             dispatch(getProducts(flags));}}/>: <Loading />}
+
+//     </section>
+//   );
+// };
+
+// export default Home;
