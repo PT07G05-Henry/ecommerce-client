@@ -1,4 +1,22 @@
 .profPic{
-    width: 20%;
-    border-radius: 1500px; 
+    --box: 8rem;
+    height: var(--box);
+    width: var(--box);
+    border-radius: 9999px; 
+    margin-bottom: 8px;
+}
+.pi{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+.input{
+    background: transparent;
+  color: var(--color-white);
+  border-bottom: 2px solid rgba(var(--color-primary-rgb), .5);
+  color: var(--color-primary);
+  
 }
