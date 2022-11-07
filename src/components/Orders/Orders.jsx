@@ -38,7 +38,6 @@ export default function Orders() {
     }
     setFilteredOrders(orders.filter((order) => order.status === value));
   }
-  console.log(orders)
 
   function countOrders(orders) {
     let data = {
