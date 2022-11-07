@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { endPoint } from "../lib/api";
 
 const initialState = {
-  users: [{ toBeField: true }],
+  users: { toBeField: true },
 };
 
 
@@ -20,16 +20,16 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     start: (state) => {
-      state.users = [{ toBeField: true }];
+      state.users = { toBeField: true };
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.pending, (state) => {
-        state.users = [{ idle: true }];
+        state.users = { idle: true };
       })
       .addCase(getUsers.rejected, (state) => {
-        state.users = [{ error: "Something went wrong" }];
+        state.users = { error: "Something went wrong" };
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.users = action.payload;

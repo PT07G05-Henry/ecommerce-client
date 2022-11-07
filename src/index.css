@@ -88,6 +88,24 @@ img {
   object-fit: contain;
 }
 
+select {
+  background-color: transparent;
+  border-bottom: var(--border);
+  color: var(--color-white);
+  margin: 0.25rem;
+}
+
+option {
+  background-color: var(--color-black);
+  color: var(--color-secondary);
+}
+
+input[type=text]{
+    background: transparent;
+    color: var(--color-white);
+    border-bottom: var(--border)
+}
+
 .btn {
   --radius: 0.75rem;
   width: max-content;
@@ -237,8 +255,8 @@ img {
   width: 100%;
 }
 
-.swiper{
-  z-index: 0 ;
+.swiper {
+  z-index: 0;
 }
 
 /* Media Queries (Pager) */

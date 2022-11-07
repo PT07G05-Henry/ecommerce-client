@@ -4,11 +4,7 @@ import ButtonLogOut from "./ButtonLogOut";
 import "./account.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getThisUser,
-  selectThisUserRoles,
-  selectThisUser,
-} from "../../store/thisUser";
+import { getThisUser, selectThisUserRoles } from "../../store/thisUser";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -59,7 +55,10 @@ const Account = () => {
         {!(roles.find((r) => r === "Guest") === "Guest") && (
           <button
             className="btn btn-primary"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => {
+              navigate("/dashboard");
+              setShow(false);
+            }}
           >
             Dashboard
           </button>
@@ -71,14 +70,3 @@ const Account = () => {
 };
 
 export default Account;
-
-{
-  /* {(roles.find((r)=>r === "Admin") === "Admin" || roles.find((r)=>r==="Superadmin") === "Superadmin") && (
-  <button
-    className="btn btn-primary"
-    onClick={() => navigate("/create/product")}
-  >
-    Create Product
-  </button>
-)} */
-}
