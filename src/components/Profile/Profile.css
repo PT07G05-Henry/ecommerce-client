@@ -1,5 +1,5 @@
 .profPic{
-    --box: 8rem;
+    --box: 15rem;
     height: var(--box);
     width: var(--box);
     border-radius: 9999px; 
