@@ -75,4 +75,7 @@
   .nav__user-image {
     bottom: 7.5rem;
   }
+  .nav__user-menu{
+    bottom: 7rem;
+  }
 }

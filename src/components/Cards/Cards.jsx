@@ -9,12 +9,10 @@ import {
   ASC,
   DESC,
   ORDERBY,
-  ID,
   PRICE,
   DESCRIPTION,
   STOCK,
   RATING,
-  USER_ROL_ID,
   getCategories,
   selectCategories,
 } from "../../store/api";
@@ -42,9 +40,7 @@ const Cards = ({ products, dispatch }) => {
       internalDispatch(getCategories());
   }, [categoriesList]);
 
-  const [arrayPag, setArrayPag] = useState([]);
   const [change, setChange] = useState(false);
-  let buttons = [];
 
   const removeOfController = (key) => {
     let newController = structuredClone(controller);
