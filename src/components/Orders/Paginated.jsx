@@ -18,7 +18,6 @@ export default function Paginated(props) {
   let totalPages = 1;
 
   if (props.filteredOrders.length) {
-    console.log(Math.floor(props.filteredOrders.length / 10));
     totalPages =
       Math.floor(props.filteredOrders.length / 10) !== 0
         ? Math.floor(props.filteredOrders.length / 10)
