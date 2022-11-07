@@ -14,10 +14,13 @@ export default function Payment() {
   const total_price = new URLSearchParams(search).get("total_price");
   const userId = new URLSearchParams(search).get("userId");
   const [onlyOnce, setOnlyOnce] = useState(true);
+
+  useEffect(()=>{
+    setOnlyOnce(true)
+  },[])
   useEffect(() => {
     onlyOnce &&
-    dispatch(reset())
-    api.delete(endPoint.cart, {userId:userId})
+    api.delete(endPoint.cart, {data: {userId:userId}})
     setOnlyOnce(false)
   }, [dispatch])
   
