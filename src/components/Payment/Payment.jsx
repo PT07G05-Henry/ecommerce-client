@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./payment.css";
 import { useDispatch } from "react-redux";
 import { reset } from "../../store/cart";
+import api, { endPoint } from "../../lib/api";
 
 export default function Payment() {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function Payment() {
   useEffect(() => {
     onlyOnce &&
     dispatch(reset())
+    api.delete(endPoint.cart, {userId:userId})
     setOnlyOnce(false)
   }, [dispatch])
   
