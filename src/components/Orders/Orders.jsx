@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./orders.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useAuth0 } from "@auth0/auth0-react";
 import { getAllOrders, selectAllOrders } from "../../store/allOrders";
 import SortButton from "./SortButton";
 import Paginated from "./Paginated";
@@ -35,7 +34,7 @@ export default function Orders() {
   function handleChange(e) {
     const value = e.target.value;
 
-    if (value === "All") {
+    if (value === "ALL") {
       return setFilteredOrders(orders);
     }
     setFilteredOrders(orders.filter((order) => order.status === value));
@@ -43,25 +42,25 @@ export default function Orders() {
 
   function countOrders(orders) {
     let data = {
-      acceptedOrders: 0,
+      approvedOrders: 0,
       pendingdOrders: 0,
       rejectedOrders: 0,
-      billedOrders: 0,
-      dispatchedOrders: 0,
-    };
+      cancelledOrders: 0,
+      authorizedOrders: 0
+    }
 
     orders.map((o) => {
       switch (o.status) {
-        case "Accepted":
-          return data.acceptedOrders++;
-        case "Rejected":
-          return data.rejectedOrders++;
-        case "Pending":
-          return data.pendingdOrders++;
-        case "Billed":
-          return data.billedOrders++;
-        case "Dispatched":
-          return data.dispatchedOrders++;
+        case 'APPROVED':
+          return data.approvedOrders++
+        case 'REJECTED':
+          return data.rejectedOrders++
+        case 'PENDING':
+          return data.pendingdOrders++
+        case 'CANCELLED':
+          return data.cancelledOrders++
+        case 'AUTHORIZED':
+          return data.authorizedOrders++
         default:
           return "";
       }
@@ -70,12 +69,13 @@ export default function Orders() {
   }
 
   let valuesOrders = {
-    acceptedOrders: 0,
+    approvedOrders: 0,
     rejectedOrders: 0,
-    billedOrders: 0,
-    dispatchedOrders: 0,
-    pendingdOrders: 0,
-  };
+    cancelledOrders: 0,
+    authorizedOrders: 0,
+    pendingdOrders: 0
+  }
+
   let valuesUser = [
     { user: "", total: 0 },
     { user: "", total: 0 },
@@ -90,42 +90,40 @@ export default function Orders() {
   }
 
   let dataOrders = {
-    labels: ["Accepted", "Rejected", "Billed", "Dispatched", "Pending"],
-    datasets: [
-      {
-        label: "Total Orders",
-        data: [
-          valuesOrders.acceptedOrders,
-          valuesOrders.rejectedOrders,
-          valuesOrders.billedOrders,
-          valuesOrders.dispatchedOrders,
-          valuesOrders.pendingdOrders,
-        ],
-        backgroundColor: [
-          "rgba(75, 192, 192, 0.5)",
-          "rgba(255, 99, 132, 0.5)",
-          "rgba(255, 206, 86, 0.5)",
-          "rgba(54, 162, 235, 0.5)",
-          "rgba(153, 102, 255, 0.5)",
-        ],
-        borderColor: [
-          "rgba(75, 192, 192, 1)",
-          "rgba(255, 99, 132, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(153, 102, 255, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+    labels: ['APPROVED', 'PENDING', 'REJECTED', 'CANCELLED', 'AUTHORIZED'],
+    datasets: [{
+      label: 'Total Orders',
+      data: [
+        valuesOrders.approvedOrders,
+        valuesOrders.rejectedOrders,
+        valuesOrders.cancelledOrders,
+        valuesOrders.authorizedOrders,
+        valuesOrders.pendingdOrders
+      ],
+      backgroundColor: [
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+      ],
+      borderColor: [
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(153, 102, 255, 1)',
+      ],
+      borderWidth: 1
+    }]
+  }
 
   function countUsers(orders) {
     let data = [];
     orders.map((o) => {
-      let user = o.user.email;
-      let userId = o.user.id;
-      if (o.status === "Accepted") {
+      let user = o.user.email
+      let userId = o.user.id
+      if (o.status === 'APPROVED') {
         if (Object.hasOwn(data, userId)) {
           data[userId].total = data[userId].total + o.total_price;
         } else {
@@ -193,12 +191,12 @@ export default function Orders() {
           setFilteredOrders={setFilteredOrders}
         />
         <select onChange={handleChange}>
-          <option value="All">All</option>
-          <option value="Pending">Pending</option>
-          <option value="Accepted">Accepted</option>
-          <option value="Billed">Billed</option>
-          <option value="Dispatched">Dispatched</option>
-          <option value="Rejected">Rejected</option>
+          <option value="ALL">ALL</option>
+          <option value="CANCELLED">CANCELLED</option>
+          <option value="REJECTED">REJECTED</option>
+          <option value="PENDING">PENDING</option>
+          <option value="APPROVED">APPROVED</option>
+          <option value="AUTHORIZED">AUTHORIZED</option>
         </select>
       </div>
       <Paginated
