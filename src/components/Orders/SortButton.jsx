@@ -39,5 +39,5 @@ export default function SortButton(props) {
     }
   }
 
-  return <button onClick={handleClick}>Date</button>;
+  return <button className="btn" onClick={handleClick}>Date</button>;
 }

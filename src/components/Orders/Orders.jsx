@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import "./orders.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders, selectAllOrders } from "../../store/allOrders";
 import SortButton from "./SortButton";
 import Paginated from "./Paginated";
-import { Doughnut, Bar } from "react-chartjs-2"
+import { Doughnut, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -13,7 +14,7 @@ import {
   LinearScale,
   BarElement,
   Title,
-} from 'chart.js';
+} from "chart.js";
 
 ChartJS.register(
   ArcElement,
@@ -61,9 +62,9 @@ export default function Orders() {
         case 'AUTHORIZED':
           return data.authorizedOrders++
         default:
-          return ''
+          return "";
       }
-    })
+    });
     return data;
   }
 
@@ -74,17 +75,18 @@ export default function Orders() {
     authorizedOrders: 0,
     pendingdOrders: 0
   }
+
   let valuesUser = [
-    { user: '', total: 0 },
-    { user: '', total: 0 },
-    { user: '', total: 0 },
-    { user: '', total: 0 },
-    { user: '', total: 0 }
+    { user: "", total: 0 },
+    { user: "", total: 0 },
+    { user: "", total: 0 },
+    { user: "", total: 0 },
+    { user: "", total: 0 },
   ];
 
   if (orders && orders[0].id) {
-    valuesOrders = countOrders(orders)
-    valuesUser = countUsers(orders)
+    valuesOrders = countOrders(orders);
+    valuesUser = countUsers(orders);
   }
 
   let dataOrders = {
@@ -117,31 +119,30 @@ export default function Orders() {
   }
 
   function countUsers(orders) {
-    let data = []
+    let data = [];
     orders.map((o) => {
       let user = o.user.email
       let userId = o.user.id
       if (o.status === 'APPROVED') {
         if (Object.hasOwn(data, userId)) {
-          data[userId].total = data[userId].total + o.total_price
-        }
-        else {
+          data[userId].total = data[userId].total + o.total_price;
+        } else {
           data[userId] = {
             user: user,
-            total: o.total_price
-          }
+            total: o.total_price,
+          };
         }
       }
-    })
-    data.sort(((a, b) => b.total - a.total));
+    });
+    data.sort((a, b) => b.total - a.total);
     //For en caso de que no se completen los 5 necesarios para el grafico se completa con 0 para que no rompa
     for (let i = 0; i < 5; i++) {
-      if(!data[i]) {
+      if (!data[i]) {
         data[i] = {
-          user: 'No information',
-          total: 0
-        }
-      }   
+          user: "No information",
+          total: 0,
+        };
+      }
     }
     return data;
   }
@@ -152,39 +153,39 @@ export default function Orders() {
       valuesUser[1].user,
       valuesUser[2].user,
       valuesUser[3].user,
-      valuesUser[4].user
+      valuesUser[4].user,
     ],
     datasets: [
       {
-        label: 'Total Orders Price',
+        label: "Total Orders Price",
         data: [
           valuesUser[0].total,
           valuesUser[1].total,
           valuesUser[2].total,
           valuesUser[3].total,
-          valuesUser[4].total
+          valuesUser[4].total,
         ],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgba(54, 162, 235, 1)'
+        backgroundColor: "rgba(54, 162, 235, 0.5)",
+        borderColor: "rgba(54, 162, 235, 1)",
       },
     ],
   };
 
   let options = {
-    responsive: true
-  }
+    responsive: true,
+  };
 
   useEffect(() => {
     dispatch(getAllOrders());
   }, [dispatch]);
 
   useEffect(() => {
-    setFilteredOrders(orders)
-  },[orders])
+    setFilteredOrders(orders);
+  }, [orders]);
 
   return (
     <>
-      <div>
+      <div className="orders__filters">
         <SortButton
           filteredOrders={filteredOrders}
           setFilteredOrders={setFilteredOrders}
@@ -197,25 +198,19 @@ export default function Orders() {
           <option value="APPROVED">APPROVED</option>
           <option value="AUTHORIZED">AUTHORIZED</option>
         </select>
-        <Paginated
-          filteredOrders={filteredOrders}
-          setFilteredOrders={setFilteredOrders}
-          orders={orders}
-        />
-        <div>
-          Total Orders: {orders.length}
-          <Doughnut
-            data={dataOrders}
-            options={options}
-          />
-        </div>
-        <div>
-          Top 5 Buyers
-          <Bar
-            data={dataUsers}
-            options={options}
-          />
-        </div>
+      </div>
+      <Paginated
+        filteredOrders={filteredOrders}
+        setFilteredOrders={setFilteredOrders}
+        orders={orders}
+      />
+      <h1 className="orders__title">Total Orders: {orders.length}</h1>
+      <div className="canvas">
+        <Doughnut data={dataOrders} options={options} />
+      </div>
+      <h1 className="orders__title">Top 5 Buyers</h1>
+      <div className="canvas">
+        <Bar data={dataUsers} options={options} />
       </div>
     </>
   );

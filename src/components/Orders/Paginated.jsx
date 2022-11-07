@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Paginated(props) {
   const [currentPage, setCurrentPage] = useState(0);
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   function awaitOrders() {
     if (props.filteredOrders.length && props.filteredOrders[0].id) {
@@ -17,7 +18,7 @@ export default function Paginated(props) {
   let totalPages = 1;
 
   if (props.filteredOrders.length) {
-    console.log(Math.floor(props.filteredOrders.length / 10))
+    console.log(Math.floor(props.filteredOrders.length / 10));
     totalPages =
       Math.floor(props.filteredOrders.length / 10) !== 0
         ? Math.floor(props.filteredOrders.length / 10)
@@ -53,43 +54,43 @@ export default function Paginated(props) {
   }, [props.filteredOrders, props.orders]);
 
   return (
-    <div>
-      <table>
-        <tbody>
-          <tr>
-            <th>Order number</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Date</th>
-          </tr>
-          </tbody>
-        {items &&
-          items.map((order, index) => (
-            <tbody key={index}>
-              <tr>
-                <td>{order.id}</td>
-                <td>${order.total_price}</td>
-                <td>{order.status}</td>
-                <td>{order.createdAt && order.createdAt.slice(0, 10)}</td>
-                <td>
-                  <Link to={`/orDetail/${order.id}`}>Go to detail</Link> {/*Aca irira la ruta del detalle*/}
-                </td>
-              </tr>
-            </tbody>
-          ))}
-      </table>
-      {!items.length &&
-        <h1>No Orders to Show</h1>
-      }
-      {items.length &&
-        <div>
-          <h1>
-            Page {current} of {totalPages}
-          </h1>
-          <button onClick={prevHandler}>Previous</button>
-          <button onClick={nextHandler}>Next</button>
-        </div>
-      }   
-    </div>
+    <>
+      {items &&
+        (items.length ? (
+          <>
+            <ul className="products__list">
+              {items.map(({ id, total_price, status, createdAt }) => (
+                <li key={`Order_${id}`} className="products__list-item">
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      navigate(`/orDetail/${id}`);
+                    }}
+                  >
+                    Go to detail
+                  </button>
+                  <p>{`Date: ${createdAt && createdAt.slice(0, 10)}`}</p>
+                  <p>{`Total: $${total_price}`}</p>
+                  <p>{`Status: ${status}`}</p>
+                  <p>{`ID: ${id}`}</p>
+                </li>
+              ))}
+            <li className="orders__pagination">
+              <button className="btn" onClick={prevHandler}>
+                {"<"}
+              </button>
+              <p>
+                Page {current} of {totalPages}
+              </p>
+              <button className="btn" onClick={nextHandler}>
+                {">"}
+              </button>
+            </li>
+            </ul>
+          </>
+        ) : (
+          <h1 style={{ textAlign: "center" }}>No Orders to Show</h1>
+        ))}
+    </>
   );
-};
+}

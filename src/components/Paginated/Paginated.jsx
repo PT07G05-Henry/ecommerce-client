@@ -6,11 +6,12 @@ const Paginated = ({ data, dispatch }) => {
   const [change, setChange] = useState(false);
   const addToController = (flag) => {
     setController({ ...controller, ...flag });
-    setChange(!change);
+    setChange(true);
   };
 
   useEffect(() => {
     change && dispatch(controller);
+    setChange(false);
   }, [controller]);
 
   const NEXT = true;
