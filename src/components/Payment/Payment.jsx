@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./payment.css";
 import { useDispatch } from "react-redux";
@@ -12,11 +12,12 @@ export default function Payment() {
   const status = new URLSearchParams(search).get("status");
   const total_price = new URLSearchParams(search).get("total_price");
   const userId = new URLSearchParams(search).get("userId");
-
+  const [onlyOnce, setOnlyOnce] = useState(true);
   useEffect(() => {
+    onlyOnce &&
     dispatch(reset())
-    localStorage.setItem(`User${userId}`, JSON.stringify([]))
-  }, [])
+    setOnlyOnce(false)
+  }, [dispatch])
   
 
   return (
