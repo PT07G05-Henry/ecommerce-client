@@ -52,9 +52,9 @@ export default function Orders() {
       switch (o.status) {
         case 'APPROVED':
           return data.approvedOrders++
-        case 'PENDING':
-          return data.rejectedOrders++
         case 'REJECTED':
+          return data.rejectedOrders++
+        case 'PENDING':
           return data.pendingdOrders++
         case 'CANCELLED':
           return data.cancelledOrders++
