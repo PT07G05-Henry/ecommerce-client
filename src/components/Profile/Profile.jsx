@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser } from "../../store/thisUser";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from 'axios';
+import axios from "axios";
 import validate from "./validate";
 import "./Profile.css";
 import api, { endPoint } from "../../lib/api";
@@ -29,7 +29,6 @@ export default function Profile({ userId }) {
     submit: "hidden",
   });
 
-  console.log(user)
 
   const handleHidden = (e) => {
     e.preventDefault();
@@ -65,16 +64,29 @@ export default function Profile({ userId }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     let formData = new FormData();
-    Object.keys(input).forEach((key) => { formData.append(key, input[key])});
-    console.log(Object.keys(input), "keys")
-    formData.append("profile_picture", ref.current.files[0], ref.current.files[0].name);
-    console.log("form ", formData.values)
-    console.log(ref.current.files)
-    api.put(endPoint.users, {
-      data: formData, headers: { "content-type": "multipart/form-data"}
-    })
-    .then(response => console.log(response))
-    .catch(error => console.error(error))
+    Object.keys(input).forEach((key) => {
+      formData.append(key, input[key]);
+    });
+    console.log(Object.keys(input), "keys");
+    formData.append(
+      "profile_picture",
+      ref.current.files[0],
+      ref.current.files[0].name
+    );
+    console.log("form ", formData.entries());
+    console.log(ref.current.files);
+    api
+      .put(endPoint.users, {
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        console.log(response);
+        setTimeout(() => {
+          dispatch(getUsersById(userId));
+        }, 2000);
+      })
+      .catch((error) => console.error(error));
 
     // getIdTokenClaims()
     //   .then((r) => r.sid)
@@ -83,15 +95,15 @@ export default function Profile({ userId }) {
     //       !input.first_name &&
     //       !input.last_name &&
     //       !input.birth_date &&
-    //       !input.profile_picture 
+    //       !input.profile_picture
     //     )
     //       return alert("No values ​​to update");
     //     if(
     //       error.first_name ||
     //       error.last_name ||
     //       error.birth_date ||
-    //       error.profile_picture 
-    //     ) 
+    //       error.profile_picture
+    //     )
     //       return alert("Error in any of the fields")
     //     try {
     //       let formData = new FormData();
@@ -133,7 +145,13 @@ export default function Profile({ userId }) {
     !userData && dispatch(getUsersById(userId));
   }, []);
 
-  useEffect(() => {console.log(input)}, [input]);
+  useEffect(() => {
+    console.log(input);
+  }, [input]);
+
+  useEffect(() => {
+    console.log("user", user);
+  }, [user]);
 
   return (
     <>
