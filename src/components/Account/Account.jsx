@@ -4,14 +4,24 @@ import ButtonLogOut from "./ButtonLogOut";
 import "./account.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getThisUser, selectThisUserRoles } from "../../store/thisUser";
+import {
+  getThisUser,
+  selectThisUserRoles,
+  selectThisUserRolesWithoutFake,
+  selectFakeRol,
+  setFakeRol,
+  fakeRoles,
+} from "../../store/thisUser";
 
 const Account = () => {
   const navigate = useNavigate();
   const { user, getIdTokenClaims } = useAuth0();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
+  const trueRol = useSelector(selectThisUserRolesWithoutFake);
   const roles = useSelector(selectThisUserRoles);
+  const fakeRol = useSelector(selectFakeRol);
+  const [showSelectFakeRol, setShowSelectFakeRol] = useState(false);
   const { pathname } = useLocation();
   useEffect(() => {
     roles[0] === "Guest" &&
@@ -24,7 +34,7 @@ const Account = () => {
           console.error(error);
         });
   }, [dispatch]);
-
+  console.log(process.env.REACT_APP_ROL_WITH_FAKE_ROL);
   return (
     <>
       <div
@@ -64,6 +74,35 @@ const Account = () => {
           </button>
         )}
         <ButtonLogOut />
+      </div>
+      <div
+        className="fakeRol__point"
+        style={
+          process.env.REACT_APP_ROL_WITH_FAKE_ROL &&
+          process.env.REACT_APP_ROL_WITH_FAKE_ROL === trueRol
+            ? undefined
+            : { display: "none" }
+        }
+        onClick={() => {
+          setShowSelectFakeRol(!showSelectFakeRol);
+        }}
+      />
+      <div
+        className="box-dry fakeRol__modal"
+        style={showSelectFakeRol ? undefined : { display: "none" }}
+      >
+        <select
+          value={fakeRol}
+          onChange={({ target }) => {
+            dispatch(setFakeRol(target.value));
+            setShowSelectFakeRol(false);
+          }}
+          id=""
+        >
+          {Object.keys(fakeRoles).map((key) => (
+            <option value={fakeRoles[key]}>{fakeRoles[key]}</option>
+          ))}
+        </select>
       </div>
     </>
   );
