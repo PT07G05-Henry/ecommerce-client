@@ -55,7 +55,7 @@ const Account = () => {
         <img
           src={
             thisUser.userDb.profile_picture
-              ? JSON.parse(thisUser.userDb.profile_picture).secure_url
+              ? thisUser.userDb.profile_picture
               : user.picture
           }
           alt={user.name}
