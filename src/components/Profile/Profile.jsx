@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
-import { selectThisUser , updateThisUser } from "../../store/thisUser";
+import { selectThisUser, updateThisUser } from "../../store/thisUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import validate from "./validate";
@@ -29,7 +29,6 @@ export default function Profile({ userId }) {
     submit: "hidden",
   });
 
-
   const handleHidden = (e) => {
     e.preventDefault();
     if (e.target.value === "edit") {
@@ -52,7 +51,7 @@ export default function Profile({ userId }) {
       ...input,
       [e.target.name]: e.target.value,
     });
-  
+
     setError(
       validate({
         ...input,
@@ -80,11 +79,8 @@ export default function Profile({ userId }) {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
-      .then((response) => {
-        console.log(response);
-        setTimeout(() => {
-          dispatch(updateThisUser());
-        }, 2000);
+      .then(({ data }) => {
+        dispatch(updateThisUser(data));
       })
       .catch((error) => console.error(error));
 

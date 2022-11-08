@@ -59,21 +59,6 @@ export const getThisUser = createAsyncThunk(
   }
 );
 
-export const updateThisUser = createAsyncThunk(
-  "thisUser/updateThisUser",
-  async ({ user, sid }) => {
-    let userToPost = makeUserObject(user);
-    userToPost.sid = sid;
-    try {
-      const response = await api.post(endPoint.thisUser, { data: userToPost });
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return error.message;
-    }
-  }
-);
-
 export const thisUserSlice = createSlice({
   name: "thisUser",
   initialState,
@@ -81,7 +66,8 @@ export const thisUserSlice = createSlice({
     start: (state) => {
       state.user = { toBeField: true };
     },
-    setFakeRol: (state, action) => { state.fakeRol = action.payload }
+    setFakeRol: (state, action) => { state.fakeRol = action.payload },
+    updateThisUser: (state, action) => { state.user = action.payload }
   },
   extraReducers: (builder) => {
     builder
@@ -92,9 +78,6 @@ export const thisUserSlice = createSlice({
         state.user = [{ error: "Something went wrong" }];
       })
       .addCase(getThisUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      })
-      .addCase(updateThisUser.fulfilled, (state, action) => {
         state.user = action.payload;
       });
   },
@@ -115,6 +98,6 @@ export const selectThisUserSid = (state) => {
   return (state.thisUser.user && state.thisUser.user.userDb && state.thisUser.user.userDb.sid) ? state.thisUser.user.userDb.sid : undefined;
 }
 
-export const { start, setFakeRol } = thisUserSlice.actions;
+export const { start, setFakeRol, updateThisUser } = thisUserSlice.actions;
 
 export default thisUserSlice.reducer;
