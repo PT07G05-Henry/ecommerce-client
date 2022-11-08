@@ -66,7 +66,8 @@ export const thisUserSlice = createSlice({
     start: (state) => {
       state.user = { toBeField: true };
     },
-    setFakeRol: (state, action) => { state.fakeRol = action.payload }
+    setFakeRol: (state, action) => { state.fakeRol = action.payload },
+    updateThisUser: (state, action) => { state.user.userDb = action.payload }
   },
   extraReducers: (builder) => {
     builder
@@ -97,6 +98,6 @@ export const selectThisUserSid = (state) => {
   return (state.thisUser.user && state.thisUser.user.userDb && state.thisUser.user.userDb.sid) ? state.thisUser.user.userDb.sid : undefined;
 }
 
-export const { start, setFakeRol } = thisUserSlice.actions;
+export const { start, setFakeRol, updateThisUser } = thisUserSlice.actions;
 
 export default thisUserSlice.reducer;
