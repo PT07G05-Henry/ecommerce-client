@@ -162,7 +162,7 @@ export default function Profile({ userId }) {
             className="profPic"
             src={
               user.profile_picture
-                ? user.profile_picture.secure_url
+                ? user.profile_picture
                 : userData.userDb.profile_picture
             }
             alt="Profile"
