@@ -67,7 +67,7 @@ export const thisUserSlice = createSlice({
       state.user = { toBeField: true };
     },
     setFakeRol: (state, action) => { state.fakeRol = action.payload },
-    updateThisUser: (state, action) => { state.user = action.payload }
+    updateThisUser: (state, action) => { state.user.userDb = action.payload }
   },
   extraReducers: (builder) => {
     builder
