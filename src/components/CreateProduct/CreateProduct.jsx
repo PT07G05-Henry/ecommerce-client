@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories, selectCategories, postProducts } from "../../store/api";
 import { selectThisUser } from "../../store/thisUser";
 import validate from "./validate";
-import { useAuth0 } from "@auth0/auth0-react";
 import Card from "../Card/Card";
 import "./createProduct.css";
 
@@ -29,38 +28,37 @@ const CreateProduct = () => {
     dispatch(getCategories());
   }, [dispatch]);
 
-  const {getIdTokenClaims} = useAuth0()
-
   const handleImageSubmit = () => {
-    const image = ref.current.value;
-    setInput({ ...input, images: [...input.images, { image: image }] });
+    //const image = ref.current.value;
+    setInput({ ...input, images: [...input.images, ref.current.files] });
+    alert("Entered Image")
     setValue("");
   };
 
-  const handleImageCheck = () => {
-    function testImage(URL) {
-      var tester = new Image();
-      tester.onload = imageFound;
-      tester.onerror = imageNotFound;
-      tester.src = URL;
-    }
-    function imageFound() {
-      alert("That image is found and loaded");
-      handleImageSubmit();
-      return setError((err) => ({ ...err }));
-    }
-    function imageNotFound() {
-      alert('That image was not found.');
-      setValue("");
-      if(!input.images){
-        return setError((err) => ({
-          ...err,
-          images: "That image was not found.",
-        }));
-      }
-    }
-    testImage(value);
-  };
+  // const handleImageCheck = () => {
+  //   function testImage(URL) {
+  //     var tester = new Image();
+  //     tester.onload = imageFound;
+  //     tester.onerror = imageNotFound;
+  //     tester.src = URL;
+  //   }
+  //   function imageFound() {
+  //     alert("That image is found and loaded");
+  //     handleImageSubmit();
+  //     return setError((err) => ({ ...err }));
+  //   }
+  //   function imageNotFound() {
+  //     alert('That image was not found.');
+  //     setValue("");
+  //     if(!input.images){
+  //       return setError((err) => ({
+  //         ...err,
+  //         images: "That image was not found.",
+  //       }));
+  //     }
+  //   }
+  //   testImage(value);
+  // };
 
   const handleDelete = (e) => {
     const nombre = e.target.value;
@@ -95,7 +93,7 @@ const CreateProduct = () => {
         ...input,
         [e.target.name]: e.target.value,
       })
-    );
+    ); 
   };
   const handleImageChange = (e) => {
     setValue(e.target.value);
@@ -103,7 +101,14 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getIdTokenClaims().then(r=>r.sid).then((sid)=>dispatch(postProducts({input, sid})))
+    let formData = new FormData();
+    Object.keys(input).forEach((key) => {
+      formData.append(key, input[key]);
+    });
+    if (ref.current) {
+        input.images.forEach((file) => { formData.append( "images", file[0], file[0].name )})
+    }
+    dispatch(postProducts(formData));
     setInput({
       images: [],
       name: "",
@@ -112,9 +117,11 @@ const CreateProduct = () => {
       stock: "",
       categories: [],
     });
+    ref.current.value = "";
     setValue("");
     setCat([]);
   };
+
   return (
     <>
       <div className="formControled__centeredForm">
@@ -122,15 +129,14 @@ const CreateProduct = () => {
           <h1>Create Product</h1>
           <label htmlFor="images"> Images: </label>
           <input
-            type="text"
+            type="file"
             name="images"
             id="images"
             ref={ref}
-            value={value}
             onChange={handleImageChange}
           />
-          <button onClick={handleImageCheck} type="button">
-            check image
+          <button onClick={handleImageSubmit} type="button">
+            enter image
           </button>
           <p className="errorAlert__errorMessage">
             {error.images === "error" ? "" : error.images}
