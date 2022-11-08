@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser } from "../../store/thisUser";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from 'axios';
+import axios from "axios";
 import validate from "./validate";
 import "./Profile.css";
+import api, { endPoint } from "../../lib/api";
+import users from "../../store/users";
 
 export default function Profile({ userId }) {
+  const ref = React.useRef();
   const dispatch = useDispatch();
   let userData = useSelector(selectThisUser);
   const { getIdTokenClaims } = useAuth0();
@@ -25,6 +28,7 @@ export default function Profile({ userId }) {
     button: "show",
     submit: "hidden",
   });
+
 
   const handleHidden = (e) => {
     e.preventDefault();
@@ -48,6 +52,7 @@ export default function Profile({ userId }) {
       ...input,
       [e.target.name]: e.target.value,
     });
+  
     setError(
       validate({
         ...input,
@@ -58,62 +63,95 @@ export default function Profile({ userId }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) => {
-        if (
-          !input.first_name &&
-          !input.last_name &&
-          !input.birth_date &&
-          !input.profile_picture 
-        )
-          return alert("No values ​​to update");
-        if(
-          error.first_name ||
-          error.last_name ||
-          error.birth_date ||
-          error.profile_picture 
-        ) 
-          return alert("Error in any of the fields")
-        try {
-          axios
-            .put(
-              `https://${
-                process.env.REACT_APP_DEV_API || document.domain
-              }/users?sid=${sid}`,
-              input
-            )
-            .then(() => {
-              alert("Your profile was updated successfully");
-            });
-        } catch (error) {
-          alert("Error: " + error.message);
-          console.error(error);
-        }
-        setInputHidden({
-          first_name: "hidden",
-          last_name: "hidden",
-          birth_date: "hidden",
-          profile_picture: "hidden",
-          password: "hidden",
-          edit: "hidden",
-          button: "show",
-          submit: "hidden",
-        });
-      });
-    setInput({
-      id: userData.userDb.id,
+    let formData = new FormData();
+    Object.keys(input).forEach((key) => {
+      formData.append(key, input[key]);
     });
-    setTimeout(() => {
-      dispatch(getUsersById(userId));
-    }, 2000);
+    console.log(Object.keys(input), "keys");
+    formData.append(
+      "profile_picture",
+      ref.current.files[0],
+      ref.current.files[0].name
+    );
+    console.log("form ", formData.entries());
+    console.log(ref.current.files);
+    api
+      .put(endPoint.users, {
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        console.log(response);
+        setTimeout(() => {
+          dispatch(getUsersById(userId));
+        }, 2000);
+      })
+      .catch((error) => console.error(error));
+
+    // getIdTokenClaims()
+    //   .then((r) => r.sid)
+    //   .then((sid) => {
+    //     if (
+    //       !input.first_name &&
+    //       !input.last_name &&
+    //       !input.birth_date &&
+    //       !input.profile_picture
+    //     )
+    //       return alert("No values ​​to update");
+    //     if(
+    //       error.first_name ||
+    //       error.last_name ||
+    //       error.birth_date ||
+    //       error.profile_picture
+    //     )
+    //       return alert("Error in any of the fields")
+    //     try {
+    //       let formData = new FormData();
+    //       formData.apend("profile_picture", input.profile_picture)
+    //       axios
+    //         .put(
+    //           `https://${
+    //             process.env.REACT_APP_DEV_API || document.domain
+    //           }/users?sid=${sid}`,
+    //           input, formData
+    //         )
+    //         .then(() => {
+    //           alert("Your profile was updated successfully");
+    //         });
+    //     } catch (error) {
+    //       alert("Error: " + error.message);
+    //       console.error(error);
+    //     }
+    //     setInputHidden({
+    //       first_name: "hidden",
+    //       last_name: "hidden",
+    //       birth_date: "hidden",
+    //       profile_picture: "hidden",
+    //       password: "hidden",
+    //       edit: "hidden",
+    //       button: "show",
+    //       submit: "hidden",
+    //     });
+    //   });
+    // setInput({
+    //   id: userData.userDb.id,
+    // });
+    // setTimeout(() => {
+    //   dispatch(getUsersById(userId));
+    // }, 2000);
   };
 
   useEffect(() => {
     !userData && dispatch(getUsersById(userId));
   }, []);
 
-  useEffect(() => {}, [userData]);
+  useEffect(() => {
+    console.log(input);
+  }, [input]);
+
+  useEffect(() => {
+    console.log("user", user);
+  }, [user]);
 
   return (
     <>
@@ -124,7 +162,7 @@ export default function Profile({ userId }) {
             className="profPic"
             src={
               user.profile_picture
-                ? user.profile_picture
+                ? user.profile_picture.secure_url
                 : userData.userDb.profile_picture
             }
             alt="Profile"
@@ -132,11 +170,12 @@ export default function Profile({ userId }) {
           <div className={inputHidden.edit}>
             <input
               className={inputHidden.profile_picture}
-              type="text"
+              type="file"
               name="profile_picture"
               id="pic"
               value={input.profile_picture}
-              onChange={handleInputChange}
+              ref={ref}
+              // onChange={handleInputChange}
             />
             <button value="profile_picture" onClick={handleHidden}>
               Change
