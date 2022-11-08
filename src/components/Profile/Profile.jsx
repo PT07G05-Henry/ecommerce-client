@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser } from "../../store/thisUser";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from 'axios';
 import validate from "./validate";
 import "./Profile.css";
+import api, { endPoint } from "../../lib/api";
 
 export default function Profile({ userId }) {
+  const ref = React.useRef();
   const dispatch = useDispatch();
   let userData = useSelector(selectThisUser);
-  const { getIdTokenClaims } = useAuth0();
   const user = useSelector(selectUserById);
   const [error, setError] = useState({});
   const [input, setInput] = useState({
@@ -48,6 +48,7 @@ export default function Profile({ userId }) {
       ...input,
       [e.target.name]: e.target.value,
     });
+
     setError(
       validate({
         ...input,
@@ -58,49 +59,54 @@ export default function Profile({ userId }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) => {
-        if (
-          !input.first_name &&
-          !input.last_name &&
-          !input.birth_date &&
-          !input.profile_picture 
-        )
-          return alert("No values ​​to update");
-        if(
-          error.first_name ||
-          error.last_name ||
-          error.birth_date ||
-          error.profile_picture 
-        ) 
-          return alert("Error in any of the fields")
-        try {
-          axios
-            .put(
-              `https://${
-                process.env.REACT_APP_DEV_API || document.domain
-              }/users?sid=${sid}`,
-              input
-            )
-            .then(() => {
-              alert("Your profile was updated successfully");
-            });
-        } catch (error) {
-          alert("Error: " + error.message);
-          console.error(error);
-        }
-        setInputHidden({
-          first_name: "hidden",
-          last_name: "hidden",
-          birth_date: "hidden",
-          profile_picture: "hidden",
-          password: "hidden",
-          edit: "hidden",
-          button: "show",
-          submit: "hidden",
-        });
+    if (
+      !input.first_name &&
+      !input.last_name &&
+      !input.birth_date &&
+      !input.profile_picture
+    )
+      return alert("No values ​​to update");
+    if (
+      error.first_name ||
+      error.last_name ||    
+      error.birth_date ||
+      error.profile_picture
+    )
+      return alert("Error in any of the fields");
+    try {
+      let formData = new FormData();
+      Object.keys(input).forEach((key) => {
+        formData.append(key, input[key]);
       });
+      if (ref.current.files[0]) {
+        formData.append(
+          "profile_picture",
+          ref.current.files[0],
+          ref.current.files[0].name
+        );
+      }
+      api
+        .put(endPoint.users, {
+          data: formData,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then(() => {
+          alert("Your profile was updated successfully");
+        });
+    } catch (error) {
+      alert("Error: " + error.message);
+      console.error(error);
+    }
+    setInputHidden({
+      first_name: "hidden",
+      last_name: "hidden",
+      birth_date: "hidden",
+      profile_picture: "hidden",
+      password: "hidden",
+      edit: "hidden",
+      button: "show",
+      submit: "hidden",
+    });
     setInput({
       id: userData.userDb.id,
     });
@@ -113,7 +119,10 @@ export default function Profile({ userId }) {
     !userData && dispatch(getUsersById(userId));
   }, []);
 
-  useEffect(() => {}, [userData]);
+  useEffect(() => {
+    console.log(input);
+    console.log(user.profile_picture, userData.userDb.profile_picture)
+  }, [input]);
 
   return (
     <>
@@ -132,10 +141,11 @@ export default function Profile({ userId }) {
           <div className={inputHidden.edit}>
             <input
               className={inputHidden.profile_picture}
-              type="text"
+              type="file"
               name="profile_picture"
               id="pic"
               value={input.profile_picture}
+              ref={ref}
               onChange={handleInputChange}
             />
             <button value="profile_picture" onClick={handleHidden}>

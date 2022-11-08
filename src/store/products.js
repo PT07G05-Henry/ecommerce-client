@@ -38,9 +38,12 @@ export const getProducts = createAsyncThunk(
 
 export const postProducts = createAsyncThunk(
   "products/postProducts",
-  async ({ input }) => {
+  async (formData) => {
     try {
-      const response = await api.post(postProducts, { data: input });
+      const response = await api.post(endPoint.postProducts, {
+        data: formData, 
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       alert('Product created successfully');
       return response.data;
     } catch (error) {
