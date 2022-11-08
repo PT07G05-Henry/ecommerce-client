@@ -123,7 +123,7 @@ function App() {
           <Route
             path="orDetail/:id"
             element={
-              <ProtectedFrom Guest User Admin>
+              <ProtectedFrom Guest>
                 <OrderDetail />
               </ProtectedFrom>
             }
