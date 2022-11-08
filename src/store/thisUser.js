@@ -59,6 +59,21 @@ export const getThisUser = createAsyncThunk(
   }
 );
 
+export const updateThisUser = createAsyncThunk(
+  "thisUser/updateThisUser",
+  async ({ user, sid }) => {
+    let userToPost = makeUserObject(user);
+    userToPost.sid = sid;
+    try {
+      const response = await api.post(endPoint.thisUser, { data: userToPost });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return error.message;
+    }
+  }
+);
+
 export const thisUserSlice = createSlice({
   name: "thisUser",
   initialState,
@@ -77,6 +92,9 @@ export const thisUserSlice = createSlice({
         state.user = [{ error: "Something went wrong" }];
       })
       .addCase(getThisUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(updateThisUser.fulfilled, (state, action) => {
         state.user = action.payload;
       });
   },

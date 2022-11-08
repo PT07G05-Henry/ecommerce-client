@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
-import { selectThisUser } from "../../store/thisUser";
+import { selectThisUser , updateThisUser } from "../../store/thisUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import validate from "./validate";
@@ -83,7 +83,7 @@ export default function Profile({ userId }) {
       .then((response) => {
         console.log(response);
         setTimeout(() => {
-          dispatch(getUsersById(userId));
+          dispatch(updateThisUser());
         }, 2000);
       })
       .catch((error) => console.error(error));
