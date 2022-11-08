@@ -69,48 +69,51 @@ const nos = [
 
 const About = () => {
   return (
-    <div className="container">
-        <div>
+    <div>
+      <div className="container">
+        <h2 className="h5">
+          We are a group dedicated to developing and integrating technology in
+          order to provide solutions to various industries and private and
+          public organizations in different parts of Argentina. Our competitive
+          advantage is to provide added value to our clients through a
+          professional service, we offer complete solutions tailored to the
+          needs of our clients.{" "}
+        </h2>
+      </div>
 
-      <h5 className="container h5">
-        We are a group dedicated to developing and integrating technology in
-        order to provide solutions to various industries and private and public
-        organizations in different parts of Argentina. Our competitive advantage
-        is to provide added value to our clients through a professional service,
-        we offer complete solutions tailored to the needs of our clients.{" "}
-      </h5>
-        </div>
+      <div className="container">
+        <h2 className="dat">About Us </h2>
+        {nos.map((e, i) => (
+          <section key={`about ${i}`}>
+            <div className=" about">
+              <div className="main">
+               
+                  <img className="main__img" src={e.image} alt={e.name}/>
+                
 
-      <h2 className="container dat">About Us </h2>
-
-      {nos.map((e, i) => (
-        <section key={i}>
-          <div className="container about">
-            <div className="main">
-              <img className="image" src={e.image} />
-
-              <div className="about">
-                <div>
-                  <h1 className="container about-texth1">{e.name}</h1>
-                </div>
-                <div>
-                  <h5 className="about-texth5">
-                    Developer <span className="span">& Desingner </span>{" "}
-                  </h5>
-                </div>
-                <div>
-                  <p className="p"> {e.profession} </p>
-                </div>
-                <div className="btn_selec">
-                  <button type="button" className="btn" href={e.mail}>
-                    {e.mail}{" "}
-                  </button>
+                <div className="about_display">
+                  <div>
+                    <h1 className="about-texth1">{e.name}</h1>
+                  </div>
+                  <div>
+                    <h5 className="about-texth5">
+                      Developer <span className="span"> & Desingner</span>
+                    </h5>
+                  </div>
+                  <div>
+                    <p className="p"> {e.profession} </p>
+                  </div>
+                  <div className="btn_selec">
+                    <button type="button" className="btn" href={e.mail}>
+                      {e.mail}{" "}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      ))}
+          </section>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,25 +1,27 @@
 .h5 {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
+  text-align: center;
   padding: 10px;
   height: 100%;
-  font-size: xx-large;
+  margin: 10px 10px;
+  
 }
 .dat {
-  height: 50px;
+  height: 50px; 
   background: var(--color-secondary);
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  text-align: center;
+  text-align: center;  
 }
 
 .about {
   width: 100%;
   padding: 40px 0px;
-  background-color: var(--color-black);
+  background-color: rgba(var(--color-black-rgb),.5);
+  backdrop-filter: blur(3px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,34 +34,41 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  margin: 35px 35px;
 }
 
 .main {
-  width: 100%;
-  
+  width: 100%;  
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin: 45px 45px;
 }
 
 .about-texth1 {
+  text-align: center;
   color: var(--color--white);
   font-size: 60px;
   text-transform: capitalize;
   margin-bottom: 20px;
 }
 
-.about-texth5 {
+.about-texth5 {  
   color: var(--color--white);
   font-size: 20px;
   text-transform: capitalize;
-  margin-bottom: 25px;
+  text-align: center;
+  margin: 25px;
   letter-spacing: 2px;
 }
-.image {
+.main__img { 
   margin: 0 45px;
-  width: 300px;
-  height: 500px;
+  width: 350px;
+  height: 350px;
+  border-radius: 9999px;
+  border:solid rgba(var(--color-secondary-rgb),.25);
+  backdrop-filter: blur(5px);
 }
 
 .span {
@@ -77,11 +86,15 @@
 }
 
 .p {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   color: var(--color-attention-secondary);
   letter-spacing: 1px;
   line-height: 28px;
   font-size: 18px;
-  margin-bottom: 45px;
+  margin: 45px 45px;
 }
 
 .img {
