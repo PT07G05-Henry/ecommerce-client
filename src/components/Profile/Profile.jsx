@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser, updateThisUser } from "../../store/thisUser";
 import validate from "./validate";
-
+import api, { endPoint } from "../../lib/api";
 import "./Profile.css";
 
 export default function Profile({ userId }) {
   const dispatch = useDispatch();
-
+  const ref = React.useRef();
   let userData = useSelector(selectThisUser);
 
   const user = useSelector(selectUserById);
@@ -102,6 +102,19 @@ export default function Profile({ userId }) {
               }
               alt="Profile"
             />
+            <div className={inputHidden.edit}>
+            <input
+              className={inputHidden.profile_picture}
+              type="file"
+              name="profile_picture"
+              id="pic"
+              value={input.profile_picture}
+              ref={ref}
+              // onChange={handleInputChange}
+
+            />
+            
+          </div>
           </div>
 
           <div className={inputHidden.edit}>
