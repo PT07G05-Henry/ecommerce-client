@@ -11,6 +11,7 @@ import {
   selectFakeRol,
   setFakeRol,
   fakeRoles,
+  selectThisUser,
 } from "../../store/thisUser";
 
 const Account = () => {
@@ -21,6 +22,7 @@ const Account = () => {
   const trueRol = useSelector(selectThisUserRolesWithoutFake);
   const roles = useSelector(selectThisUserRoles);
   const fakeRol = useSelector(selectFakeRol);
+  const thisUser = useSelector(selectThisUser);
   const [showSelectFakeRol, setShowSelectFakeRol] = useState(false);
   const { pathname } = useLocation();
   useEffect(() => {
@@ -51,7 +53,11 @@ const Account = () => {
         }
       >
         <img
-          src={user.picture}
+          src={
+            thisUser.userDb.profile_picture
+              ? JSON.parse(thisUser.userDb.profile_picture).secure_url
+              : user.picture
+          }
           alt={user.name}
           onClick={() => {
             setShow(!show);
