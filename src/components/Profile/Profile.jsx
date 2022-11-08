@@ -2,11 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser, updateThisUser } from "../../store/thisUser";
+
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+
 import validate from "./validate";
 import api, { endPoint } from "../../lib/api";
 import "./Profile.css";
+import api, { endPoint } from "../../lib/api";
+import users from "../../store/users";
 
 export default function Profile({ userId }) {
+  const ref = React.useRef();
   const dispatch = useDispatch();
   const ref = React.useRef();
   let userData = useSelector(selectThisUser);
@@ -48,6 +55,7 @@ export default function Profile({ userId }) {
       ...input,
       [e.target.name]: e.target.value,
     });
+
     setError(
       validate({
         ...input,
@@ -79,13 +87,20 @@ export default function Profile({ userId }) {
         dispatch(updateThisUser(data));
       })
       .catch((error) => console.error(error));
+
   };
 
   useEffect(() => {
     !userData && dispatch(getUsersById(userId));
   }, []);
 
-  useEffect(() => {}, [userData]);
+  useEffect(() => {
+    console.log(input);
+  }, [input]);
+
+  useEffect(() => {
+    console.log("user", user);
+  }, [user]);
 
   return (
     <div>
@@ -111,6 +126,7 @@ export default function Profile({ userId }) {
               value={input.profile_picture}
               ref={ref}
               // onChange={handleInputChange}
+
 
             />
             

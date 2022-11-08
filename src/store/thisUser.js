@@ -1,6 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { endPoint } from "../lib/api";
 
+export const fakeRoles = {
+  none: "None",
+  guest: "Guest",
+  user: "User",
+  admin: "Admin",
+  superadmin: "Superadmin"
+}
+
 const makeUserObject = (user) => {
   const social = user.sub.split("|");
   if (social[0].includes("google")) {
@@ -33,6 +41,7 @@ const makeUserObject = (user) => {
 
 const initialState = {
   user: { toBeField: true },
+  fakeRol: fakeRoles.none
 };
 
 export const getThisUser = createAsyncThunk(
@@ -57,6 +66,8 @@ export const thisUserSlice = createSlice({
     start: (state) => {
       state.user = { toBeField: true };
     },
+    setFakeRol: (state, action) => { state.fakeRol = action.payload },
+    updateThisUser: (state, action) => { state.user.userDb = action.payload }
   },
   extraReducers: (builder) => {
     builder
@@ -73,8 +84,12 @@ export const thisUserSlice = createSlice({
 });
 
 export const selectThisUser = (state) => state.thisUser.user;
+export const selectFakeRol = (state) => state.thisUser.fakeRol;
 export const selectThisUserRoles = (state) => {
-  return state.thisUser.user.roles ? state.thisUser.user.roles : ["Guest"];
+  return state.thisUser.fakeRol === fakeRoles.none ? state.thisUser.user.roles ? state.thisUser.user.roles.length ? state.thisUser.user.roles : ["User"] : ["Guest"] : [state.thisUser.fakeRol];
+};
+export const selectThisUserRolesWithoutFake = (state) => {
+  return state.thisUser.user.roles ? state.thisUser.user.roles.length ? state.thisUser.user.roles[0] : "User" : "Guest";
 };
 export const selectThisUserId = (state) => {
   return state.thisUser.user.userDb && state.thisUser.user.userDb.id ? state.thisUser.user.userDb.id : -1;
@@ -83,6 +98,6 @@ export const selectThisUserSid = (state) => {
   return (state.thisUser.user && state.thisUser.user.userDb && state.thisUser.user.userDb.sid) ? state.thisUser.user.userDb.sid : undefined;
 }
 
-export const { start } = thisUserSlice.actions;
+export const { start, setFakeRol, updateThisUser } = thisUserSlice.actions;
 
 export default thisUserSlice.reducer;

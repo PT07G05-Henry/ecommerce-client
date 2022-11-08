@@ -7,6 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getThisUser,
   selectThisUserRoles,
+  selectThisUserRolesWithoutFake,
+  selectFakeRol,
+  setFakeRol,
+  fakeRoles,
   selectThisUser,
 } from "../../store/thisUser";
 
@@ -15,7 +19,11 @@ const Account = () => {
   const { user, getIdTokenClaims } = useAuth0();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
+  const trueRol = useSelector(selectThisUserRolesWithoutFake);
   const roles = useSelector(selectThisUserRoles);
+  const fakeRol = useSelector(selectFakeRol);
+  const thisUser = useSelector(selectThisUser);
+  const [showSelectFakeRol, setShowSelectFakeRol] = useState(false);
   const { pathname } = useLocation();
   useEffect(() => {
     roles[0] === "Guest" &&
@@ -28,7 +36,6 @@ const Account = () => {
           console.error(error);
         });
   }, [dispatch]);
-
   return (
     <>
       <div
@@ -45,7 +52,11 @@ const Account = () => {
         }
       >
         <img
-          src={user.picture}
+          src={
+            thisUser && thisUser.userDb && thisUser.userDb.profile_picture
+              ? thisUser.userDb.profile_picture
+              : user.picture
+          }
           alt={user.name}
           onClick={() => {
             setShow(!show);
@@ -59,26 +70,47 @@ const Account = () => {
         {!(roles.find((r) => r === "Guest") === "Guest") && (
           <button
             className="btn btn-primary"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => {
+              navigate("/dashboard");
+              setShow(false);
+            }}
           >
             Dashboard
           </button>
         )}
         <ButtonLogOut />
       </div>
+      <div
+        className="fakeRol__point"
+        style={
+          process.env.REACT_APP_ROL_WITH_FAKE_ROL &&
+          process.env.REACT_APP_ROL_WITH_FAKE_ROL === trueRol
+            ? undefined
+            : { display: "none" }
+        }
+        onClick={() => {
+          setShowSelectFakeRol(!showSelectFakeRol);
+        }}
+      />
+      <div
+        className="box-dry fakeRol__modal"
+        style={showSelectFakeRol ? undefined : { display: "none" }}
+      >
+        <select
+          value={fakeRol}
+          onChange={({ target }) => {
+            dispatch(setFakeRol(target.value));
+            setShowSelectFakeRol(false);
+          }}
+          id=""
+        >
+          {Object.keys(fakeRoles).map((key) => (
+            <option value={fakeRoles[key]}>{fakeRoles[key]}</option>
+          ))}
+        </select>
+      </div>
     </>
   );
 };
 
 export default Account;
-
-{
-  /* {(roles.find((r)=>r === "Admin") === "Admin" || roles.find((r)=>r==="Superadmin") === "Superadmin") && (
-  <button
-    className="btn btn-primary"
-    onClick={() => navigate("/create/product")}
-  >
-    Create Product
-  </button>
-)} */
-}

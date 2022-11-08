@@ -1,254 +1,106 @@
 import React, { useState, useEffect } from "react";
 import { PAGE } from "../../store/api";
-import { useAuth0 } from "@auth0/auth0-react";
-import "./paginated.css";
 
-const Paginated = ({ data, dispatch, setFilteredUsers, filteredUsers }) => {
+const Paginated = ({ data, dispatch }) => {
   const [controller, setController] = useState(data.query);
   const [change, setChange] = useState(false);
-  const { getIdTokenClaims } = useAuth0();
   const addToController = (flag) => {
     setController({ ...controller, ...flag });
-    setChange(!change);
+    setChange(true);
   };
 
   useEffect(() => {
     change && dispatch(controller);
-    const array = [];
-    for (let i = 1; i <= data.totalPage; i++) {
-      array.push(i);
-    }
-    arrayLeftSM(data.page);
-    arrayLeftMD(data.page);
-    arrayLeftLG(data.page);
-    arrayRightSM(data.page);
-    arrayRightMD(data.page);
-    arrayRightLG(data.page);
+    setChange(false);
   }, [controller]);
 
-  function arrayLeftSM(page) {
-    if (page <= 2) {
-      if (page <= 1) {
-        return [];
-      }
-      return [1];
+  const NEXT = true;
+  const BACK = false;
+  const pageButtons = (direction) => {
+    const DEFAULT = "pager__btn btn-rounded";
+    const SM = "pager__btn-sm pager__btn btn-rounded";
+    const MD = "pager__btn-md pager__btn btn-rounded";
+    const LG = "pager__btn-lg pager__btn btn-rounded";
+    const currentPage = parseInt(controller.page);
+    let pages = [
+      {
+        class: DEFAULT,
+        page: (direction ? 1 : -1) + currentPage,
+      },
+      {
+        class: SM,
+        page: (direction ? 2 : -2) + currentPage,
+      },
+      {
+        class: MD,
+        page: (direction ? 3 : -3) + currentPage,
+      },
+      {
+        class: MD,
+        page: direction
+          ? Math.ceil((currentPage + 10) / 10) * 10
+          : Math.floor((currentPage - 10) / 10) * 10,
+      },
+      {
+        class: LG,
+        page: direction
+          ? Math.ceil((currentPage + 20) / 10) * 10
+          : Math.floor((currentPage - 20) / 10) * 10,
+      },
+    ];
+    if (direction) {
+      let button = {
+        class: LG,
+        page:
+          Math.ceil(
+            (currentPage + (data.totalPage - currentPage) / 2) / 10
+          ) * 10,
+      };
+      button.page > pages[4].page && pages.push(button);
+    } else {
+      let button = {
+        class: LG,
+        page: Math.floor((currentPage - currentPage / 2) / 10) * 10,
+      };
+      button.page < pages[4].page && pages.push(button);
     }
-    const array = [];
-    page = Number(page);
-    for (let i = page - 1; i > page - 3; i--) {
-      array.unshift(i);
-    }
-    return array;
-  }
-
-  function arrayLeftMD(page) {
-    if (page <= 4) {
-      if (page <= 3) {
-        return [];
-      }
-      return [1];
-    }
-    const array = [];
-    page = Number(page);
-    for (let i = page - 3; i > page - 5; i--) {
-      array.unshift(i);
-    }
-    return array;
-  }
-  function arrayLeftLG(page) {
-    if (page <= 6) {
-      if (page <= 5) {
-        return [];
-      }
-      return [1];
-    }
-    const array = [];
-    page = Number(page);
-    for (let i = page - 5; i > page - 7; i--) {
-      array.unshift(i);
-    }
-    return array;
-  }
-
-  function arrayRightSM(page) {
-    if (data.totalPage - page < 2) {
-      if (data.totalPage - page < 1) {
-        return [];
-      }
-      return [data.totalPage];
-    }
-    const array = [];
-    page = Number(page);
-    for (let i = page + 1; i < page + 3; i++) {
-      array.push(i);
-    }
-    return array;
-  }
-
-  function arrayRightMD(page) {
-    if (data.totalPage - page < 4) {
-      if (data.totalPage - page < 3) {
-        return [];
-      }
-      return [data.totalPage];
-    }
-    const array = [];
-    page = Number(page);
-    for (let i = page + 3; i < page + 5; i++) {
-      array.push(i);
-    }
-    return array;
-  }
-  function arrayRightLG(page) {
-    if (data.totalPage - page < 6) {
-      if (data.totalPage - page < 5) {
-        return [];
-      }
-      return [data.totalPage];
-    }
-    page = Number(page);
-    const array = [];
-    for (let i = page + 5; i < page + 7; i++) {
-      array.push(i);
-    }
-    return array;
-  }
-
-  function pag(a) {
-    return (
-      <input
-        key={a}
-        id={"paginadoNum" + a}
-        className={`${Number(data.page) === Number(a) ? "active" : ""} btn`}
-        type="button"
-        onClick={(e) => todo(e)}
-        value={a}
-        disabled={data.page === a.toString()}
-      />
+    pages = pages.filter((button) =>
+      direction ? button.page < data.totalPage : button.page > 1
     );
-  }
+    direction
+      ? currentPage !== data.totalPage &&
+        pages.push({ class: DEFAULT, page: data.totalPage })
+      : currentPage !== 1 && pages.push({ class: DEFAULT, page: 1 });
+    return pages.map((button) => ({ ...button, page: `${button.page}` }));
+  };
+  const PageButton = ({ page }) => (
+    <button
+      className={page.class}
+      onClick={() => {
+        addToController({ [PAGE]: page.page });
+      }}
+    >
+      {page.page}
+    </button>
+  );
 
-  function todo(e) {
-    if (e.target.value === "PrevPag") {
-      window.location.hash = `#${data.page}`;
-      dispatch(data.prev);
-      return;
-    }
-    if (e.target.value === "NextPag") {
-      window.location.hash = `#${data.page}`;
-      dispatch(data.next);
-      return;
-    }
-    window.location.hash = `#${e.target.value}`;
-    getIdTokenClaims()
-      .then((r) => r.sid)
-      .then((sid) =>
-        dispatch({
-          ...controller,
-          [PAGE]: e.target.value.toString(),
-          rol: filteredUsers,
-          sid: sid,
-        })
-      );
-  }
   return (
-    <>
-      <div className="divCenter">
-        <div className="cards__controller">
-          <div className="cards__controller-pagerL">
-            <div className="pager___button-lg">
-              {arrayLeftLG(data.page).map((a) => {
-                return pag(a);
-              })}
-            </div>
-            <div className="pager___button-md">
-              {arrayLeftMD(data.page).map((a) => {
-                return pag(a);
-              })}
-            </div>
-            <div className="pager___button-sm">
-              {arrayLeftSM(data.page).map((a) => {
-                return pag(a);
-              })}
-            </div>
-            {/* botton prev */}
-            <div className="pager___button-prev">
-              <button
-                className="btn"
-                value="PrevPag"
-                onClick={(e) => {
-                  todo(e);
-                }}
-                style={!data.prev ? { display: "none" } : undefined}
-              >
-                {"<<"}
-              </button>
-            </div>
-          </div>
-          <div className="pager___button-page">
-            {data.page + "/" + data.totalPage}
-          </div>
-          <div className="cards__controller-pagerR">
-            {/* botton next */}
-            <div className="pager___button-next">
-              <button
-                className="btn"
-                value="NextPag"
-                onClick={(e) => {
-                  todo(e);
-                }}
-                style={!data.next ? { display: "none" } : undefined}
-              >
-                {">>"}
-              </button>
-            </div>
-            <div className="pager___button-sm">
-              {arrayRightSM(data.page).map((a) => {
-                return pag(a);
-              })}
-            </div>
-            <div className="pager___button-md">
-              {arrayRightMD(data.page).map((a) => {
-                return pag(a);
-              })}
-            </div>
-            <div className="pager___button-lg">
-              {arrayRightLG(data.page).map((a) => {
-                return pag(a);
-              })}
-            </div>
-          </div>
-        </div>
+    <div className="pager">
+      <div className="pager__back">
+        {pageButtons(BACK).map((page) => (
+          <PageButton page={page} />
+        ))}
       </div>
-    </>
+      <div className="pager__current">
+        <div className="pager__current-page btn-rounded">{controller.page}</div>
+      </div>
+      <div className="pager__next">
+        {pageButtons(NEXT).map((page) => (
+          <PageButton page={page} />
+        ))}
+      </div>
+    </div>
   );
 };
 
 export default Paginated;
-
-// import React, { useEffect }  from "react";
-// import "./home.css";
-// import { useDispatch, useSelector } from "react-redux";
-// import Paginated from "../../components/Paginated/Paginated"
-// import { getProducts, selectProducts } from "../../store/api";
-// import Loading from "../../components/loading/Loading";
-
-// const Home = () => {
-//   const dispatch = useDispatch();
-//   const products = useSelector(selectProducts);
-//   useEffect(() => {
-//     products &&
-//       (products.toBeField || products.error) &&
-//       dispatch(getProducts());
-//   }, [products]);
-//   return (
-//     <section className="container home__container">
-//       <h1>Home!</h1>
-//       {products.results ? <Paginated data={products} dispatch={(flags) => {
-//             dispatch(getProducts(flags));}}/>: <Loading />}
-
-//     </section>
-//   );
-// };
-
-// export default Home;

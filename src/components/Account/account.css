@@ -75,4 +75,29 @@
   .nav__user-image {
     bottom: 7.5rem;
   }
+  .nav__user-menu {
+    bottom: 7rem;
+  }
+}
+
+.fakeRol__point {
+  display:flex;
+  position: fixed;
+  --box:2rem;
+  width: var(--box);
+  height: var(--box);
+  border-radius: 9999px;
+  bottom: -1rem;
+  left: -1rem;
+  background-color: var(--color-primary);
+  border: var(--border);
+}
+
+.fakeRol__modal{
+  position: fixed;
+  top: calc( 50% - 1rem );
+  left: calc( 50% - 5.25rem ) ;
+  padding: 1rem;
+  width: fit-content;
+  height: fit-content;
 }
