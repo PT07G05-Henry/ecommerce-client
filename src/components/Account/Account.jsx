@@ -36,7 +36,6 @@ const Account = () => {
           console.error(error);
         });
   }, [dispatch]);
-  console.log(process.env.REACT_APP_ROL_WITH_FAKE_ROL);
   return (
     <>
       <div
@@ -54,7 +53,7 @@ const Account = () => {
       >
         <img
           src={
-            thisUser.userDb.profile_picture
+            thisUser && thisUser.userDb && thisUser.userDb.profile_picture
               ? thisUser.userDb.profile_picture
               : user.picture
           }
