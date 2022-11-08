@@ -13,6 +13,7 @@ export default function Profile({ userId }) {
   const ref = React.useRef();
   const dispatch = useDispatch();
   let userData = useSelector(selectThisUser);
+
   const user = useSelector(selectUserById);
   const [error, setError] = useState({});
   const [input, setInput] = useState({
