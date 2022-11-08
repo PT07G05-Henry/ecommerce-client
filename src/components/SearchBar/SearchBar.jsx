@@ -11,19 +11,21 @@ export default function SearchBar() {
   function handleSubmit(e) {
     setProduct(e.target.value);
   }
+  console.log(window.location.href)
   return (
     <>
       <div className="searchBar__container">
         <div className="container searchBar__flex">
           <div className="searchBar__buttonPlace">
-            <div
+            
+            {window.location.href === 'https://localhost:3000/' ? null : <div
               className="btn-rounded searchBar__button searchBar__backButton"
               onClick={() => {
                 window.history.back();
               }}
             >
               <MdArrowBackIosNew size={24} />
-            </div>
+            </div> }
           </div>
           <div className="searchBar__buttonPlace">
             <form
