@@ -7,7 +7,7 @@ export default function Paginated(props) {
 
   function awaitOrders() {
     if (props.filteredOrders.length && props.filteredOrders[0].id) {
-      setItems([...props.filteredOrders].splice(currentPage, 5));
+      setItems([...props.filteredOrders].slice(currentPage, 5));
     } else {
       setItems([])
     }
@@ -26,7 +26,7 @@ export default function Paginated(props) {
     const nextPage = currentPage + 1;
     const firstIndex = nextPage * 5;
     if (firstIndex >= total) return;
-    setItems([...props.filteredOrders].splice(firstIndex, 5));
+    setItems([...props.filteredOrders].slice(firstIndex, 5));
     console.log(items)
     setCurrentPage(nextPage);
   }
@@ -35,7 +35,7 @@ export default function Paginated(props) {
     const prevPage = currentPage - 1;
     if (prevPage < 0) return;
     const firstIndex = prevPage * 5;
-    setItems([...props.filteredOrders].splice(firstIndex, 5));
+    setItems([...props.filteredOrders].slice(firstIndex, 5));
     console.log(items)
     setCurrentPage(prevPage);
   }
@@ -60,7 +60,7 @@ export default function Paginated(props) {
               <th>Detail</th>
             </tr>
           </tbody>
-          {items.length
+          {items[0]?.id > 0
             ? items.map((order, index) => (
               <tbody key={index}>
                 <tr>
@@ -75,9 +75,9 @@ export default function Paginated(props) {
                       : <p>No Products Info</p>
                     }
                   </td>
-                  <td>{order.delivery.status}</td>
-                  <td>{order.payment.type}</td>
-                  <td>{order.payment.status}</td>
+                  <td>{order.delivery?.id}</td>
+                  <td>{order.payment?.type}</td>
+                  <td>{order.payment?.status}</td>
                   <td>{order.total_price}</td>
                   <td>{order.status}</td>
                   <td>
