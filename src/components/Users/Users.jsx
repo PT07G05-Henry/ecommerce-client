@@ -90,44 +90,59 @@ export default function Users() {
       />
       <div className="users__filters">
         <select value={filteredUsers} onChange={handleChange}>
-          <option className="users__filter-option" value="All">All</option>
-          <option className="users__filter-option" value="Superadmin">Superadmin</option>
-          <option className="users__filter-option" value="Admin">Admin</option>
-          <option className="users__filter-option" value="User">User</option>
+          <option className="users__filter-option" value="All">
+            All
+          </option>
+          <option className="users__filter-option" value="Superadmin">
+            Superadmin
+          </option>
+          <option className="users__filter-option" value="Admin">
+            Admin
+          </option>
+          <option className="users__filter-option" value="User">
+            User
+          </option>
         </select>
       </div>
       <ul className="products__list">
-        {users.results?.map(({ id, first_name, email, last_name, rols }) => (
-          <li key={`User_${id}`} className="products__list-item">
-            <button className="btn" value={id} onClick={handleClick}>
-              Delete
-            </button>
-            <ProtectedFrom Guest User Admin noRender>
-              <button
-                className="btn"
-                onClick={() => {
-                  handlerSuperadminSwitch(id, rols[0].type);
-                }}
-              >
-                {`Switch to ${rols[0].id < 3 ? "Superadmin" : "Admin"}`}
+        {users.results?.map((user) => {
+          console.log(user);
+          return (
+            <li key={`User_${user.id}`} className="products__list-item">
+              <button className="btn" value={user.id} onClick={handleClick}>
+                Delete
               </button>
-            </ProtectedFrom>
-            {rols[0].id < 3 && (
-              <button
-                className="btn"
-                onClick={() => {
-                  handlerRolSwitch(id, rols[0].type);
-                }}
-              >
-                {`Switch to ${rols[0].id === 1 ? "User" : "Admin"}`}
-              </button>
-            )}
-            <p>{`Rol: ${rols[0].type}`}</p>
-            <p>{`Email: ${email}`}</p>
-            <p>{`Name: ${first_name} ${last_name}`}</p>
-            <p>{`ID:${id}`}</p>
-          </li>
-        ))}
+              {user.rols.length && (
+                <ProtectedFrom Guest User Admin noRender>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      handlerSuperadminSwitch(user.id, user.rols[0].type);
+                    }}
+                  >
+                    {`Switch to ${
+                      user.rols[0].id < 3 ? "Superadmin" : "Admin"
+                    }`}
+                  </button>
+                </ProtectedFrom>
+              )}
+              {user.rols.length && user.rols[0].id < 3 && (
+                <button
+                  className="btn"
+                  onClick={() => {
+                    handlerRolSwitch(user.id, user.rols[0].type);
+                  }}
+                >
+                  {`Switch to ${user.rols[0].id === 1 ? "User" : "Admin"}`}
+                </button>
+              )}
+              {user.rols.length && <p>{`Rol: ${user.rols[0].type}`}</p>}
+              <p>{`Email: ${user.email}`}</p>
+              <p>{`Name: ${user.first_name} ${user.last_name}`}</p>
+              <p>{`ID:${user.id}`}</p>
+            </li>
+          );
+        })}
       </ul>
     </>
   ) : (
