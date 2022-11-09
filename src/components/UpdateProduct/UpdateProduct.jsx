@@ -110,37 +110,38 @@ const UpdateProduct = () => {
   };
 
   const handleImageSubmit = () => {
-    const image = ref.current.value;
-    setInput({ ...input, images: [...input.images, { image: image }] });
+    //const image = ref.current.value;
+    setInput({ ...input, images: [...input.images, ref.current.files] });
+    alert("Entered image");
     setValue("");
   };
 
-  const handleImageCheck = () => {
-    function testImage(URL) {
-      var tester = new Image();
-      tester.onload = imageFound;
-      tester.onerror = imageNotFound;
-      tester.src = URL;
-    }
+  // const handleImageCheck = () => {
+  //   function testImage(URL) {
+  //     var tester = new Image();
+  //     tester.onload = imageFound;
+  //     tester.onerror = imageNotFound;
+  //     tester.src = URL;
+  //   }
 
-    function imageFound() {
-      alert("That image is found and loaded");
-      handleImageSubmit();
-      return setError((err) => ({ ...err }));
-    }
+  //   function imageFound() {
+  //     alert("That image is found and loaded");
+  //     handleImageSubmit();
+  //     return setError((err) => ({ ...err }));
+  //   }
 
-    function imageNotFound() {
-      alert("That image was not found.");
-      setValue("");
-      if (!input.images) {
-        return setError((err) => ({
-          ...err,
-          images: "That image was not found.",
-        }));
-      }
-    }
-    testImage(value);
-  };
+  //   function imageNotFound() {
+  //     alert("That image was not found.");
+  //     setValue("");
+  //     if (!input.images) {
+  //       return setError((err) => ({
+  //         ...err,
+  //         images: "That image was not found.",
+  //       }));
+  //     }
+  //   }
+  //   testImage(value);
+  // };
 
   const handleCategories = (e) => {
     const newCategorie = e.target.value;
@@ -199,18 +200,27 @@ const UpdateProduct = () => {
               ? [...product.categories.map((c) => c.id)]
               : [],
           });
-          setCat([...product.categories.map(c => c.name)]);
+          setCat([...product.categories.map((c) => c.name)]);
           return alert("Select at least one category");
         }
         try {
+          let formData = new FormData();
+          Object.keys(input).forEach((key) => {
+            formData.append(key, input[key]);
+          });
+          input.images &&
+            input.images.length &&
+            input.images.forEach((file) => {
+              formData.append("images", file[0], file[0].name);
+            });
           axios
             .put(
               `https://${
                 process.env.REACT_APP_DEV_API || document.domain
               }/products?sid=${sid}`,
-              input
+              formData
             )
-          //api.put(endPoint.products, {input})
+            //api.put(endPoint.products, {input})
             .then((res) => {
               setUpdate({
                 name: res.data.name,
@@ -295,15 +305,14 @@ const UpdateProduct = () => {
           <div className={inputHidden.images}>
             <label htmlFor="images"> images: </label>
             <input
-              type="text"
+              type="file"
               name="images"
               id="images"
               ref={ref}
-              value={value}
               onChange={handleImageChange}
             />
-            <button onClick={handleImageCheck} type="button">
-              check image
+            <button onClick={handleImageSubmit} type="button">
+              enter image
             </button>
             <p className="errorAlert__errorMessage">
               {error.images === "error" ? "" : error.images}

@@ -50,9 +50,16 @@ export default function Payment() {
         <input
             className="btn"
             type="button"
-            value="Go Back"
+            value="See More Details"
+            onClick={() => navigate(`/orDetail/${orderId}`)}
+        ></input>
+        <input
+            className="btn"
+            type="button"
+            value="Go Home"
             onClick={() => navigate("/")}
         ></input>
+        
       </div>
     </div>
   );
