@@ -17,35 +17,36 @@ export const cartSlice = createSlice({
       if (state.cart.length === 0) {
         return { ...state, cart: [...state.cart, action.payload] };
       }
-      if (state.cart.findIndex((a) => a.id === action.payload.id) === -1) {
-        return { ...state, cart: [...state.cart, action.payload] };
+      else {
+        return { ...state, cart: [...state.cart.filter(({ id }) => id !== action.payload.id), action.payload] }
       }
     },
     updateItemQty: (state, action) => {
-      const update = state.cart.map((a)=>{
-        if(Number(a.id) === Number(action.payload.id)){
-          return {...a, qty:action.payload.qty}          
-        }else{
-          return {...a}
+      const update = state.cart.map((a) => {
+        if (Number(a.id) === Number(action.payload.id)) {
+          return { ...a, qty: action.payload.qty }
+        } else {
+          return { ...a }
         }
       })
 
-      return {...state, cart: update};
+      return { ...state, cart: update };
     },
     deleteItem: (state, action) => {
       const filter = state.cart.filter((e) => e.id !== action.payload.id);
       return { ...state, cart: filter };
     },
-    reset: (state) =>{
-      return {...state, cart:[]}
+    reset: (state) => {
+      return { ...state, cart: [] }
     },
-    dataBaseValue: (state, action)=>{
-      return {...state, cart:action.payload}
+    dataBaseValue: (state, action) => {
+      return { ...state, cart: action.payload }
     },
   },
 });
 
 export const selectCarts = (state) => state.cart.cart;
+export const selectItemsInCart = (state) => state.cart.cart.length ? state.cart.cart.reduce((prev, item) => parseInt(prev) + parseInt(item.qty), 0) : 0;
 
 export const { setItem, deleteItem, updateItemQty, reset, dataBaseValue } = cartSlice.actions;
 

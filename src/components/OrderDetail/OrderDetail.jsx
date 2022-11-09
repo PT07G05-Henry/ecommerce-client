@@ -12,9 +12,9 @@ const OrderDetail = (props) => {
   const [status, setStatus] = React.useState("")
 
   async function getOrder(id) {
-    console.log('orderdetail')
+    console.log("orderdetail");
     try {
-      const orderDetail = await api.get(`${endPoint.orders}/${id}`)
+      const orderDetail = await api.get(`${endPoint.orders}/${id}`);
       setOrder(orderDetail.data);
     } catch (err) {
       console.log(err.message);
@@ -43,12 +43,16 @@ const OrderDetail = (props) => {
   }, [order]);
 
   return (
-    <div className="orderContainer">
+    <div className="container oderDetails__container">
       <h1>PURCHASE ORDER</h1>
       <div className="initialData">
-        <div>
+          <h2>Customer's information</h2>
+          <div className="data_information">
+
+        <div className="information">
           <h4>
-            Date of issue: {order.createdAt && order.createdAt.slice(0, 10)}
+            Name:  {` ${order.user && order.user.first_name},
+             ${order.user && order.user.last_name}`}
           </h4>
           <h4>Order number: {order.id}</h4>
           <h4>Order Status: {status}</h4>
@@ -62,56 +66,56 @@ const OrderDetail = (props) => {
               <option value="AUTHORIZED">AUTHORIZED</option>
             </select>
           </ProtectedFrom>
-        </div>
-      </div>
-      <div>
-        <div>
-          <h3>Customer's information</h3>
-          <h4>
-            Name: {order.user && order.user.first_name},{" "}
-            {order.user && order.user.last_name}
-          </h4>
           <h4>Email: {order.user && order.user.email}</h4>
           <h4>Phone number: {order.delivery && order.delivery.phone_number}</h4>
         </div>
-        <div>
-          <h3>Ship info</h3>
-          <h4>Type: {order.delivery && order.delivery.type}</h4>
-          <h4>Shipping address: {order.delivery && order.delivery.shipping_address}</h4>
-          <h4>Status: {order.delivery && order.delivery.status}</h4>
-        </div> 
+        <div className="information">
+          <h4>
+            Date of issue: 
+          </h4>
+          <p>{order.createdAt && order.createdAt.slice(0, 10)}</p>
+          <h4>Order number: </h4>
+          <p>{order.id}</p>
+        </div>
+             </div>
       </div>
-      <table>
-        <tbody>
-          <tr>
-            <th>Product id</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Unit price</th>
-            <th>Total</th>
-          </tr>
-        </tbody>
+
+      <div className="shiping">
+        <h2>Ship info</h2>
+        <div className="shipping_info">
+
+        <h4>Type: {order.delivery && order.delivery.type}</h4>
+        <h4>
+          Shipping address: {order.delivery && order.delivery.shipping_address}
+        </h4>
+        <h4>Status: {order.delivery && order.delivery.status}</h4>
+        </div>
+      </div>
+      <ul className="products__list">
         {order.products &&
           order.products.map((product, index) => (
-            <tbody key={index}>
-              <tr key={index}>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.orders_products.product_quantity}</td>
-                <td>${product.price}</td>
-                <td>
-                  ${(product.price * product.orders_products.product_quantity).toFixed(2)}{" "}
-                </td>
-              </tr>
-            </tbody>
+            <li key={index} className="products__list-item">
+              <p>
+                {`Total Price: $${(
+                  product.price * product.orders_products.product_quantity
+                ).toFixed(2)}`}
+              </p>
+              <p>{`Unitary Price: $${product.price}`}</p>
+              <p>{`Qty: ${product.orders_products.product_quantity}`}</p>
+              <p>{`Name: ${product.name}`}</p>
+              <p>{`ID: ${product.id}`}</p>
+            </li>
           ))}
-      </table>
-      <h4>Subtotal: ${order.total_price}</h4>
-      <div>
-        <h3>Payment</h3>
+      <div className="payment">
+        <h2>Payment</h2>
+        <div className="payment_total">
+
         <h4>Payment Method: {order.payment && order.payment.type}</h4>
-        <h4>Payment Status: {order.payment && order.payment.status}</h4>
+        <h4>Status: {order.payment && order.payment.status}</h4>
+      <h4>Subtotal: ${order.total_price}</h4>
+        </div>
       </div>
+      </ul>
     </div>
   );
 };

@@ -28,10 +28,10 @@ const nos = [
   {
     name: "Fede",
     profession:
-      "I am a front end developer. I provide clean code and perfect design. I also make the website more and more interactive. I apply different technologies to improve the site. Support and inquiries.",
+      "I am an electronic engineer and software developer. Always tryng to put my best and handle the back side better than front. Prepare for new challanges in the IT world!",
     mail: "ing.finterlandi@gmail.com",
     image: fede,
-    age: 26,
+    age: 29,
   },
   {
     name: "Chris",
@@ -87,9 +87,7 @@ const About = () => {
           <section key={`about ${i}`}>
             <div className=" about">
               <div className="main">
-               
-                  <img className="main__img" src={e.image} alt={e.name}/>
-                
+                <img className="main__img" src={e.image} alt={e.name} />
 
                 <div className="about_display">
                   <div>

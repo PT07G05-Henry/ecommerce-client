@@ -22,14 +22,14 @@ export default function Orders() {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         await api.delete("products", {
-          params: { id: id },
+          data: { id: id },
         });
         alert("Product deleted successfully");
         setTimeout(() => {
           dispatch(getProductsByName());
         }, 1000);
       } catch (e) {
-        alert("Error " + e.message);
+        alert("Error " + e.message); 
       }
     }
   };
@@ -87,7 +87,7 @@ export default function Orders() {
           <ul className="products__list">
             {products.results.map(({ id, name, price, stock }) => (
               <li key={`Product_${id}`} className="products__list-item">
-                <button className="btn btn-warning" onClick={handleDelete}>
+                <button className="btn btn-warning" value={id} onClick={handleDelete}>
                   Delete
                 </button>
                 <button

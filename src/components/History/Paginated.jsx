@@ -41,6 +41,7 @@ export default function Paginated(props) {
   }
 
   useEffect(() => {
+    console.log(items)
     awaitOrders();
   }, [props.filteredOrders, props.orders]);
 
@@ -75,7 +76,7 @@ export default function Paginated(props) {
                       : <p>No Products Info</p>
                     }
                   </td>
-                  <td>{order.delivery?.id}</td>
+                  <td>{order.delivery?.status}</td>
                   <td>{order.payment?.type}</td>
                   <td>{order.payment?.status}</td>
                   <td>{order.total_price}</td>
