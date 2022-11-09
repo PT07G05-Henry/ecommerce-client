@@ -139,7 +139,7 @@ function App() {
           <Route
             path="update/product/:id"
             element={
-              <ProtectedFrom Guest User Admin>
+              <ProtectedFrom Guest User >
                 <UpdateProduct />
               </ProtectedFrom>
             }
