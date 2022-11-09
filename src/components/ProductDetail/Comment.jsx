@@ -3,17 +3,19 @@ import { useState } from "react";
 import api, { endPoint } from "../../lib/api";
 import { useEffect } from "react";
 import { selectThisUser } from "../../store/thisUser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectThisUserId } from "../../store/thisUser";
+import { getProductById } from "../../store/productById";
 
 
-export default function Comments({ productId, setCondition }) {
+
+export default function Comments({ productId, setCondition , orders, setOrders}) {
   const user = useSelector(selectThisUser);
   const [checkProductID, setCheckProductID] = useState([]);
   const userId = useSelector(selectThisUserId);
   const [commentValue, setCommentValue] = useState();
   const [star, setStar] = useState(5);
-  const [orders, setOrders] = useState();
+  const dispatch = useDispatch()
 
   function rating(e) {
     const elClass = e.target.classList;
@@ -47,7 +49,23 @@ export default function Comments({ productId, setCondition }) {
       : star > 0
       ? alert("Please Select Your Rating ")
       : alert("Please Insert Comment");
+
+      setTimeout(()=>{
+        dispatch(getProductById(productId));
+        setCondition(false);
+      },2000)
   }
+
+  useEffect(()=>{
+    if(typeof orders === "object"){
+        const ordenes = orders.map((o)=>o.products.filter((p)=>p.id === productId))
+        if(ordenes.length > 0){
+            setCondition(true)
+        }else{
+            setCondition(false)
+        }
+    }
+  },[orders])
 
   useEffect(() => {
     userId &&
