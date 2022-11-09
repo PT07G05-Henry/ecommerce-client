@@ -7,12 +7,12 @@ import Account from "../Account/Account";
 import { SlHome, SlBookOpen } from "react-icons/sl";
 import { AiOutlineShoppingCart, AiOutlineMessage } from "react-icons/ai";
 import { MdRemoveShoppingCart } from "react-icons/md";
-import { selectCarts } from "../../store/cart";
+import { selectItemsInCart } from "../../store/cart";
 import { useSelector } from "react-redux";
 import { selectThisUserRoles } from "../../store/thisUser";
 
 export default function NavBar() {
-  const cart = useSelector(selectCarts);
+  const cart = useSelector(selectItemsInCart);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const rol = useSelector(selectThisUserRoles);
@@ -49,9 +49,13 @@ export default function NavBar() {
             <SlBookOpen size={buttonSize} />
           </button>
           <div className="nav__middleSpace">
-            {cart.length >= 1 && (
-              <span title={`${cart.length} items in the cart`} class="nav__cart-counter" onClick={navigateToCart}>
-                {cart.length}
+            {cart > 0 && (
+              <span
+                title={`${cart} items in the cart`}
+                class="nav__cart-counter"
+                onClick={navigateToCart}
+              >
+                {cart}
               </span>
             )}
           </div>
