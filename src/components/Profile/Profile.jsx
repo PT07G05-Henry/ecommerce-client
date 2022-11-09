@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser, updateThisUser } from "../../store/thisUser";
-import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
 import validate from "./validate";
 import api, { endPoint } from "../../lib/api";
 import "./Profile.css";
@@ -62,18 +60,31 @@ export default function Profile({ userId }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (
+      !input.first_name &&
+      !input.last_name &&
+      !input.birth_date &&
+      !input.profile_picture
+    )
+      return alert("No values ​​to update");
+    if (
+      error.first_name ||
+      error.last_name ||
+      error.birth_date ||
+      error.profile_picture
+    )
+      return alert("Error in any of the fields");
     let formData = new FormData();
     Object.keys(input).forEach((key) => {
       formData.append(key, input[key]);
     });
-    console.log(Object.keys(input), "keys");
-    formData.append(
-      "profile_picture",
-      ref.current.files[0],
-      ref.current.files[0].name
-    );
-    console.log("form ", formData.entries());
-    console.log(ref.current.files);
+    if (ref.current.files[0]) {
+      formData.append(
+        "profile_picture",
+        ref.current.files[0],
+        ref.current.files[0].name
+      );
+    }
     api
       .put(endPoint.users, {
         data: formData,
@@ -81,21 +92,30 @@ export default function Profile({ userId }) {
       })
       .then(({ data }) => {
         dispatch(updateThisUser(data));
+        alert("Profile updated successfully");
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        alert("Error: " + error.message);
+      });
+    setInputHidden({
+      first_name: "hidden",
+      last_name: "hidden",
+      birth_date: "hidden",
+      profile_picture: "hidden",
+      password: "hidden",
+      edit: "hidden",
+      button: "show",
+      submit: "hidden",
+    });
+    setInput({
+      id: userData.userDb.id,
+    });
   };
 
   useEffect(() => {
     !userData && dispatch(getUsersById(userId));
   }, []);
-
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
-
-  useEffect(() => {
-    console.log("user", user);
-  }, [user]);
 
   return (
     <div>
@@ -120,19 +140,6 @@ export default function Profile({ userId }) {
                 id="pic"
                 value={input.profile_picture}
                 ref={ref}
-                // onChange={handleInputChange}
-              />
-            </div>
-          </div>
-
-          <div className={inputHidden.edit}>
-            <div className="pi">
-              <input
-                className={inputHidden.profile_picture}
-                type="text"
-                name="profile_picture"
-                id="input"
-                value={input.profile_picture}
                 onChange={handleInputChange}
               />
               <button
