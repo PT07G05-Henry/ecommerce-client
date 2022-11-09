@@ -217,7 +217,7 @@ const ProductDetail = () => {
               );
             })}
         </div>
-        {condition && <Comment productId={id} setCondition={setCondition} condition={condition} userId={userId}/>}
+        {condition && <Comment productId={id} setCondition={setCondition} condition={condition} userId={userId} orders={orders} setOrders={setOrders}/>}
       </div>
     </section>
   );
