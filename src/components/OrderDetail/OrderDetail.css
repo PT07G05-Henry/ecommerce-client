@@ -1,5 +1,58 @@
-.orderContainer {
+.oderDetails__container {
     display: flex;
+    flex-direction: column;    
+    justify-content: center;
+    text-align: center;
+}
+.initialData{
+    display: flex;
+    flex-direction: column;    
+    justify-content: center;
+    border: solid rgba(var(--color-primary-rgb), 0.30);
+    background-color: rgba(var(--color-primary-rgb), 0.10);
+    margin: .5rem;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+.data_information{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.information{
+    text-align: start;
+    margin: 1rem;
+}
+.shiping{
+    
+    display: flex;
+    flex-direction: column;    
+    justify-content: center;
+    padding: 1rem;
+    border: solid rgba(var(--color-primary-rgb), 0.30);
+    background-color: rgba(var(--color-primary-rgb), 0.10);
+    margin: .75rem;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+.shipping_info{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.payment{
+    display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
-    align-items: center;
+    padding: 1rem;
+    border: solid rgba(var(--color-primary-rgb), 0.30);
+    background-color: rgba(var(--color-primary-rgb), 0.10);
+    margin: 1.5rem .75rem ;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+.payment_total{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-evenly ;
 }
