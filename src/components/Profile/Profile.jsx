@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersById, selectUserById } from "../../store/userById";
 import { selectThisUser, updateThisUser } from "../../store/thisUser";
-import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
 import validate from "./validate";
 import api, { endPoint } from "../../lib/api";
 import "./Profile.css";
-import users from "../../store/users";
 
 export default function Profile({ userId }) {
   const ref = React.useRef();
@@ -27,6 +24,7 @@ export default function Profile({ userId }) {
     edit: "hidden",
     button: "show",
     submit: "hidden",
+    direction: "hidden",
   });
 
   const handleHidden = (e) => {
@@ -67,7 +65,7 @@ export default function Profile({ userId }) {
       formData.append(key, input[key]);
     });
     console.log(Object.keys(input), "keys");
-    formData.append(
+    ref.current.files.length && formData.append(
       "profile_picture",
       ref.current.files[0],
       ref.current.files[0].name
@@ -232,6 +230,128 @@ export default function Profile({ userId }) {
             <label>Email: </label>
             <p className="resource">{userData.userDb.email}</p>
           </div>
+          {/* Inicio Diretion */}
+          <div className="pi">
+            <label>Direction Address:</label>
+            <br />
+            <label>Direction:</label>
+            {user.direction ? (
+              <p className="resource">{user.direction}</p>
+            ) : (
+              <p className="resource">{userData.userDb.direction}</p>
+            )}
+          </div>
+          <div className={inputHidden.edit}>
+            <div className="pi">
+              <input
+                type="text"
+                name="direction"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+              <button className="btn" value="direction" onClick={handleHidden}>
+                Edit
+            </button>
+            </div>
+          </div>
+          {/* Inicio Between Street1 */}
+          <div className="pi">
+            <label>Between Streets:</label>
+            <br />
+            <label>Streets 1:</label>
+            {user.street1 ? (
+              <p className="resource">{user.street1}</p>
+            ) : (
+              <p className="resource">{userData.userDb.street1}</p>
+            )}
+          </div>
+          <div className={inputHidden.edit}>
+            <div className="pi">
+              <input
+                type="text"
+                name="street1"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+              <button className="btn" value="street1" onClick={handleHidden}>
+                Edit
+            </button>
+            </div>            
+          </div>
+          {/* Inicio Between Street 2 */}
+          <div className="pi">
+            <label>Streets 2:</label>
+            {user.street2 ? (
+              <p className="resource">{user.street2}</p>
+            ) : (
+              <p className="resource">{userData.userDb.street2}</p>
+            )}
+          </div>
+          <div className={inputHidden.edit}>
+            <div className="pi">
+              <input
+                type="text"
+                name="street2"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+              <button className="btn" value="street2" onClick={handleHidden}>
+                Edit
+            </button>
+            </div>            
+          </div>
+          {/* inicio city  */}
+          <div className="pi">
+            <label>City:</label>
+            {user.city ? (
+              <p className="resource">{user.city}</p>
+            ) : (
+              <p className="resource">{userData.userDb.city}</p>
+            )}
+          </div>
+          <div className={inputHidden.edit}>
+            <div className="pi">
+              <input
+                type="text"
+                name="city"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+            <button className="btn" value="city" onClick={handleHidden}>
+                Edit
+            </button>
+            </div>
+          </div>
+          {/* Inicio Postal */}
+          <div className="pi">
+            <label>Postal Code:</label>
+            {user.postalCode ? (
+              <p className="resource">{user.postalCode}</p>
+            ) : (
+              <p className="resource">{userData.userDb.postalCode}</p>
+            )}
+          </div>
+          <div className={inputHidden.edit}>
+            <div className="pi">
+              <input
+                type="text"
+                name="postalCode"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+            <button className="btn" value="postalCode" onClick={handleHidden}>
+                Edit
+            </button>
+            </div>
+          </div>
+          {/* editable */}
+          {/* fin editable */}
+          {/* fin direction */}
           <button
             className={`btn ${inputHidden.button}`}
             value="edit"
