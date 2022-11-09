@@ -9,6 +9,7 @@ import {selectThisUserRoles} from "../../store/thisUser";
 import { ratingArray, ratingArrayEmpty } from "./numberToArray";
 import { IconContext } from "react-icons";
 import "./ProductDetail.css";
+import Loading from "../loading/Loading";
 
 const ProductDetail = () => {
   const rol = useSelector(selectThisUserRoles)
@@ -51,12 +52,12 @@ const ProductDetail = () => {
       })
     );
   }
-
+  console.log(product)
   function removeFromChart() {
     dispatch(deleteItem({ id: product.id }));
   }
 
-  return (
+  return product.id ? (
     <section className="container productDetail">
       <div className="box-dry productDetail__box">
         {image && image.length && (
@@ -197,7 +198,9 @@ const ProductDetail = () => {
         </div>
       </div>
     </section>
-  );
+  ) : (
+    <Loading/>
+  ) 
 };
 
 export default ProductDetail;
