@@ -40,6 +40,7 @@ export default function SearchBar() {
     dispatch(getProducts())
   }, [])
 
+
   return (
     <>
       <div className="searchBar__container">

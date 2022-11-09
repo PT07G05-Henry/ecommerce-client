@@ -1,42 +1,98 @@
 .card {
-  justify-content: space-between;
-  align-items: center;
-  height: 20rem;
-  width: 15rem;
-  padding-bottom: .5rem;
+  --height: 20rem;
+  --width: 15rem;
+  --popUp: 8.9rem;
   margin: 1rem;
   text-align: center;
+  height: var(--height);
+  width: var(--width);
+}
+
+.card__static {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  min-height: var(--height);
+  min-width: var(--width);
+}
+
+.card__cartModifier {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  justify-items: center;
+  align-content: center;
+  position: relative;
+  min-width: var(--width);
+  min-height: var(--popUp);
+  backdrop-filter: blur(10px);
+  background-color: rgba(var(--color-black-rgb), 0.90);
+}
+
+.card__cartModifier-active {
+  animation-name: card__cartModifier-active;
+  animation-duration: 0.3s;
+  animation-iteration-count: 1;
+  bottom: var(--popUp);
+}
+
+@keyframes card__cartModifier-active {
+  0% {
+    bottom: 0;
+  }
+  100% {
+    bottom: var(--popUp);
+  }
+}
+
+.card__cartModifier-inactive {
+  animation-name: card__cartModifier-inactive;
+  animation-duration: 0.3s;
+  animation-iteration-count: 1;
+  bottom: 0;
+}
+
+@keyframes card__cartModifier-inactive {
+  0% {
+    bottom: var(--popUp);
+  }
+  100% {
+    bottom: 0;
+  }
 }
 
 .card__imageViewer {
-    display: flex;
-    max-height: 11.15rem;
-    width: 100%;
+  display: flex;
+  max-height: 11.15rem;
+  width: 100%;
 }
 
 .card__imageViewer > img {
-    object-fit: cover;
+  object-fit: cover;
 }
 
-.card__imageViewer-controller{
-    display: flex;
+.card__imageViewer-controller {
+  display: flex;
 }
 
-.card__imageViewer-controller > button{
-    width: 100%;
+.card__imageViewer-controller > button {
+  width: 100%;
 }
 
-.btn-remove{
-    --radius: 0.75rem;
-    width: max-content;
-    color: var(--color-white);
-    background: var(--color-warning-primary);
-    padding: 0.25rem 1.2rem;
-    margin: 1px 2px;
-    overflow: hidden;
-    cursor: pointer;
-    border-top-left-radius: var(--radius);
-    border-bottom-right-radius: var(--radius);
-    border: 1px solid transparent;
-    transition: var(--transition);
+.btn-remove {
+  --radius: 0.75rem;
+  width: max-content;
+  color: var(--color-white);
+  background: var(--color-warning-primary);
+  padding: 0.25rem 1.2rem;
+  margin: 1px 2px;
+  overflow: hidden;
+  cursor: pointer;
+  border-top-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  border: 1px solid transparent;
+  transition: var(--transition);
 }
