@@ -5,18 +5,24 @@ import { selectCarts } from "../../store/cart";
 import { useParams } from "react-router-dom";
 import { setItem, deleteItem } from "../../store/cart";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
-import {selectThisUserRoles} from "../../store/thisUser";
+import {selectThisUserRoles, selectThisUserId} from "../../store/thisUser";
 import { ratingArray, ratingArrayEmpty } from "./numberToArray";
 import { IconContext } from "react-icons";
+import {selectComments} from "../../store/comments"
+import Comment from "./Comment";
 import "./ProductDetail.css";
+import api, { endPoint } from "../../lib/api";
 
 const ProductDetail = () => {
   const rol = useSelector(selectThisUserRoles)
   const { id } = useParams();
   const cart = useSelector(selectCarts);
+  const [condition, setCondition] = useState(true)
   const dispatch = useDispatch();
+  const userId = useSelector(selectThisUserId);
   const product = useSelector(selectProductsById);
   const [imgIndex, setImgIndex] = useState(0);
+  const [orders, setOrders] = useState();
 
   const image = product.images
     ?.filter((e) => e.image !== null)
@@ -55,6 +61,22 @@ const ProductDetail = () => {
   function removeFromChart() {
     dispatch(deleteItem({ id: product.id }));
   }
+
+  useEffect(()=>{
+    if(typeof orders === "object"){
+        const ordenes = orders.map((o)=>o.products.filter((p)=>p.id === product.id))
+        if(ordenes.length > 0){
+            setCondition(true)
+        }else{
+            setCondition(false)
+        }
+    }
+  },[orders])
+
+  useEffect(()=>{
+    userId && 
+    api.get(endPoint.orders).then(r=>{setOrders(r.data)})
+  },[userId])
 
   return (
     <section className="container productDetail">
@@ -195,6 +217,7 @@ const ProductDetail = () => {
               );
             })}
         </div>
+        {condition && <Comment productId={id} setCondition={setCondition} condition={condition} userId={userId}/>}
       </div>
     </section>
   );
