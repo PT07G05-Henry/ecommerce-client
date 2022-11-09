@@ -113,6 +113,7 @@
   display: flex;
   flex-direction: column;
   border-left: 2px solid var(--color-primary);
+  width: 100%;
 }
 
 .productDetail__comment-value{
@@ -128,4 +129,49 @@
 .container__productDetail-box{
   display: flex;
   flex-direction: row;
+}
+
+.rating {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  }
+  
+.rating li {
+list-style-type: none
+}
+
+.rating-item {
+cursor: pointer;
+font-size:1.44em;
+color: var(--color-primary);
+}
+
+/* initial: make all stars full */
+.rating-item::before {
+content: "\2605";
+}
+
+/* make until the clicked star (the rest) empty */
+.rating-item.active ~ .rating-item::before {
+content: "\2606";
+}
+
+/* on hover make all full */
+.rating:hover .rating-item::before {
+content: "\2605";
+}
+
+/* make until the hovered (the rest) empty */
+.rating-item:hover ~ .rating-item::before {
+content: "\2606";
+}
+
+textarea {
+  font-size:20px;
+  width:100%;
+  height: -webkit-fill-available;
+}
+.div_full{
+  width: 100%;
 }
