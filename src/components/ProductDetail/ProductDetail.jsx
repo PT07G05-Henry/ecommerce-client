@@ -58,7 +58,6 @@ const ProductDetail = () => {
       })
     );
   }
-  console.log(product)
   function removeFromChart() {
     dispatch(deleteItem({ id: product.id }));
   }
