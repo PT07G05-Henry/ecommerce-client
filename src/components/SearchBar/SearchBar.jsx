@@ -11,7 +11,7 @@ export default function SearchBar() {
   function handleSubmit(e) {
     setProduct(e.target.value);
   }
-  console.log(window.location.href)
+  
   return (
     <>
       <div className="searchBar__container">
