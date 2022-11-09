@@ -1,18 +1,49 @@
-.createdProduct__exampleCard > article{
-    height: fit-content;
-    margin: 10px auto 50px auto;
+.form {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.form_left label {
+  color: var(--color-primary);
+}
+.area {
+  border-top: var(--border);
+  border-left: var(--border);
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: rgba(var(--color-secondary-rgb), 0.25);
+  backdrop-filter: blur(3px);
+  color: var(--color-white);
+  margin-left: 0.5rem;
+}
+.form_left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 17rem;
+  margin: 1rem 2rem;
+}
+.form_rigth {
+  width: 17rem;
+  margin: 1rem 2rem;
+}
+.container__form {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .formControled__centeredForm {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-    border: 5px solid red;
-    width: fit-content;
-    padding: 0px 20px 20px 20px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  width: fit-content;
+  padding: 0px 20px 20px 20px;
 }
 
-.errorAlert__errorMessage{
-    color: red;
+.errorAlert__errorMessage {
+  color: var(--color-warning-primary);
 }
