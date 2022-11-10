@@ -10,6 +10,7 @@ const OrderDetail = (props) => {
   const { id } = useParams();
   const [order, setOrder] = React.useState({});
   const [status, setStatus] = React.useState("");
+  const [statusDelivery, setStatusDelivery] = React.useState("")
 
   async function getOrder(id) {
     console.log("orderdetail");
@@ -28,9 +29,24 @@ const OrderDetail = (props) => {
     } else {
       api.put(endPoint.orders, { params: { id: id }, data: {status: status} })
       .then(()=>{
-        api.post(endPoint.emailSend, {data: {type:"orderStatus", justSend:true, orderId:id,orderStatus:status, email:order.user.email, subject:`Your Order ${id} have change his status`, message:`${order.user.first_name} your status in Order ${id} is now ${status}`}});
+        api.post(endPoint.emailSend, {data: {type:"orderStatus", statusDelivery:statusDelivery, justSend:true, orderId:id,orderStatus:status, email:order.user.email, subject:`Your Order ${id} have change his status`, message:`${order.user.first_name} your status in Order ${id} is now ${status}`}});
         alert("Order Status Changed");
         setStatus(status)
+      }
+      )
+    }
+  }
+
+  function handleChangeDelivery(e) {
+    let statusDelivery = e.target.value
+    if(statusDelivery === "") {
+      return
+    } else {
+      api.put(endPoint.deliveries, { data: {status: statusDelivery, id:id} })
+      .then(()=>{
+        api.post(endPoint.emailSend, {data: {type:"orderStatus", statusDelivery:statusDelivery, justSend:true, orderId:id, orderStatus:status, email:order.user.email, subject:`Your Order ${id} have change his status`, message:`${order.user.first_name} your status in Order ${id} is now ${status}`}});
+        alert("Delivery Status Changed");
+        setStatusDelivery(statusDelivery)
       }
       )
     }
@@ -41,6 +57,8 @@ const OrderDetail = (props) => {
   }, []);
 
   React.useEffect(() => {
+    console.log(order)
+    setStatusDelivery(order.delivery ? order.delivery.status: "")
     setStatus(order.status)
   }, [order]);
 
@@ -90,7 +108,14 @@ const OrderDetail = (props) => {
         <h4>
           Shipping address: {order.delivery && order.delivery.shipping_address}
         </h4>
-        <h4>Status: {order.delivery && order.delivery.status}</h4>
+        <h4>Status: {statusDelivery}</h4>
+        <ProtectedFrom User noRender>
+            <select onChange={handleChangeDelivery}>
+              <option value="">Change Status</option>
+              <option value="On the way">On the way</option>
+              <option value="Pre-admission">Pre-admission</option>
+            </select>
+          </ProtectedFrom>
         </div>
       </div>
       <ul className="products__list">

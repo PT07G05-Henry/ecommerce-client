@@ -64,14 +64,24 @@ export default function Profile({ userId }) {
       !input.first_name &&
       !input.last_name &&
       !input.birth_date &&
-      !input.profile_picture
+      !input.profile_picture &&
+      !input.direction &&
+      !input.street1 &&
+      !input.street2 &&
+      !input.city &&
+      !input.postalCode
     )
       return alert("No values ​​to update");
     if (
       error.first_name ||
       error.last_name ||
       error.birth_date ||
-      error.profile_picture
+      error.profile_picture ||
+      error.direction ||
+      error.street1 ||
+      error.street2 ||
+      error.city ||
+      error.postalCode
     )
       return alert("Error in any of the fields");
     let formData = new FormData();
