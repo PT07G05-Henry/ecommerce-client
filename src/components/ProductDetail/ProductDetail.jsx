@@ -11,6 +11,7 @@ import { IconContext } from "react-icons";
 import {selectComments} from "../../store/comments"
 import Comment from "./Comment";
 import "./ProductDetail.css";
+import Loading from "../loading/Loading";
 import api, { endPoint } from "../../lib/api";
 
 const ProductDetail = () => {
@@ -57,10 +58,10 @@ const ProductDetail = () => {
       })
     );
   }
-
   function removeFromChart() {
     dispatch(deleteItem({ id: product.id }));
   }
+
 
   useEffect(()=>{
     if(typeof orders === "object"){
@@ -78,7 +79,8 @@ const ProductDetail = () => {
     api.get(endPoint.orders).then(r=>{setOrders(r.data)})
   },[userId])
 
-  return (
+  return product.id ? (
+
     <section className="container productDetail">
       <div className="box-dry productDetail__box">
         {image && image.length && (
@@ -220,7 +222,9 @@ const ProductDetail = () => {
         {condition && <Comment productId={id} setCondition={setCondition} condition={condition} userId={userId} orders={orders} setOrders={setOrders}/>}
       </div>
     </section>
-  );
+  ) : (
+    <Loading/>
+  ) 
 };
 
 export default ProductDetail;
