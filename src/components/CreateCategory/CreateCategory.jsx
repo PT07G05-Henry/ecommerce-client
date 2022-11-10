@@ -117,34 +117,13 @@ const CreateCategory = () => {
   }
   return (
     <>
-      <div className="box-dry cartItem__box-dry">
-        <form onSubmit={handleSubmit}>
+      <div className="create_category">
+        <form className="category" onSubmit={handleSubmit}>
+          <div className="title">
           <h1>Create Category</h1>
-          <div className="ContainerImgInput">
-            <label htmlFor="images"> Image: </label>
-            <input
-              type="text"
-              name="images"
-              id="images"
-              ref={ref}
-              value={value}
-              onChange={handleImageChange}
-            />
-            <button className={"btn"} onClick={handleImageCheck} type="button">
-              check image
-            </button>
-            {input.image && (
-              <img
-                className="ImgCheck"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Yes_Check_Circle.svg/1200px-Yes_Check_Circle.svg.png"
-                alt="check"
-              ></img>
-            )}
+           
+            
           </div>
-          <p className="errorAlert__errorMessage">
-            {error.images === "error" ? "" : error.images}
-          </p>
-
           <label htmlFor="name"> Name: </label>
           <input
             type="text"
@@ -153,26 +132,17 @@ const CreateCategory = () => {
             value={input.name}
             onChange={handleInputChange}
           />
-          <p className="errorAlert__errorMessage">{error.name}</p>
-          {Object.keys(error).length === 0 && input.name && input.image ? (
-            <input type="submit" value="Create" />
-          ) : (
-            <input type="submit" value="Create" disabled={true} />
-          )}
+          {error.name && <p className="errorMessage">{error.name}</p>}
+          {Object.keys(error).length === 0 && input.name ? (
+            <button type="submit" className="btn" id="btn" > Create </button>
+          ) : null}
 
-          {(input.image || input.name) && (
+          
             <div className="InfoCategory">
-              <h2>You are creating this category</h2>
-              {input.image && (
-                <img
-                  className="CategoryImg"
-                  src={input.image}
-                  alt="CategoryImage"
-                ></img>
-              )}
-              {input.name && <h3 className="CategoryName">{input.name}</h3>}
+              <h4>You are creating this category</h4>              
+              {input.name && <h2 className="CategoryName">{input.name}</h2>}
             </div>
-          )}
+          
         </form>
       </div>
     </>
