@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsers, selectUser } from "../../store/users";
 import Paginated from "../Paginated/Paginated.jsx";
 import "./users.css";
-import api, { endPoint } from "../../lib/api";
+import api, { endPoint, query } from "../../lib/api";
 import Loading from "../loading/Loading";
 import ProtectedFrom from "../protectedFrom/ProtectedFrom";
+import { NAME } from "../../store/api";
 
 export default function Users() {
   const dispatch = useDispatch();
   const users = useSelector(selectUser);
   const [filteredUsers, setFilteredUsers] = useState("All");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     users &&
@@ -26,13 +28,14 @@ export default function Users() {
   const handleChange = ({ target }) => setFilteredUsers(target.value);
 
   useEffect(() => {
-    console.log(users);
-    dispatch(
-      getUsers({
-        rol: filteredUsers,
-        page: 1,
-      })
-    );
+    let query = {
+      rol: filteredUsers,
+      page: 1,
+    };
+    name.length && (query[NAME] = name);
+    console.log(name);
+    console.log(query);
+    dispatch(getUsers(query));
   }, [filteredUsers]);
 
   function changeRol(id, rol) {
@@ -81,14 +84,46 @@ export default function Users() {
 
   return users.results ? (
     <>
-      <Paginated
-        data={users}
-        dispatch={(flags) => {
-          console.log(flags);
-          dispatch(getUsers(flags));
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          let query = {
+            rol: filteredUsers,
+            page: 1,
+          };
+          name.length && (query[NAME] = name);
+          dispatch(getUsers(query));
+          setName("");
         }}
-      />
-      <div className="users__filters">
+        className="products__searchByName"
+      >
+        <div className="products__searchByName-search">
+          <input
+            value={name}
+            onChange={({ target }) => {
+              setName(target.value);
+            }}
+            type="text"
+            className="products__searchByName"
+            placeholder="Filter by name"
+          />
+          <button type="submit" className="btn">
+            Search
+          </button>
+        </div>
+        {users.query.name && (
+          <div className="products__searchByName-active">
+            <label>{`Filtering by "${users.query.name}" on name`}</label>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                dispatch(getUsers());
+              }}
+            >
+              Back to view all
+            </button>
+          </div>
+        )}
         <select value={filteredUsers} onChange={handleChange}>
           <option className="users__filter-option" value="All">
             All
@@ -103,46 +138,59 @@ export default function Users() {
             User
           </option>
         </select>
-      </div>
-      <ul className="products__list">
-        {users.results?.map((user) => {
-          return (
-            <li key={`User_${user.id}`} className="products__list-item">
-              <button className="btn" value={user.id} onClick={handleClick}>
-                Delete
-              </button>
-              {user.rols.length && (
-                <ProtectedFrom Guest User Admin noRender>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      handlerSuperadminSwitch(user.id, user.rols[0].type);
-                    }}
-                  >
-                    {`Switch to ${
-                      user.rols[0].id < 3 ? "Superadmin" : "Admin"
-                    }`}
+      </form>
+      {users.results.length ? (
+        <>
+          <Paginated
+            data={users}
+            dispatch={(flags) => {
+              console.log(flags);
+              dispatch(getUsers(flags));
+            }}
+          />
+          <ul className="products__list">
+            {users.results?.map((user) => {
+              return (
+                <li key={`User_${user.id}`} className="products__list-item">
+                  <button className="btn" value={user.id} onClick={handleClick}>
+                    Delete
                   </button>
-                </ProtectedFrom>
-              )}
-              {user.rols.length && user.rols[0].id < 3 && (
-                <button
-                  className="btn"
-                  onClick={() => {
-                    handlerRolSwitch(user.id, user.rols[0].type);
-                  }}
-                >
-                  {`Switch to ${user.rols[0].id === 1 ? "User" : "Admin"}`}
-                </button>
-              )}
-              {user.rols.length && <p>{`Rol: ${user.rols[0].type}`}</p>}
-              <p>{`Email: ${user.email}`}</p>
-              <p>{`Name: ${user.first_name} ${user.last_name}`}</p>
-              <p>{`ID:${user.id}`}</p>
-            </li>
-          );
-        })}
-      </ul>
+                  {user.rols.length && (
+                    <ProtectedFrom Guest User Admin noRender>
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          handlerSuperadminSwitch(user.id, user.rols[0].type);
+                        }}
+                      >
+                        {`Switch to ${
+                          user.rols[0].id < 3 ? "Superadmin" : "Admin"
+                        }`}
+                      </button>
+                    </ProtectedFrom>
+                  )}
+                  {user.rols.length && user.rols[0].id < 3 && (
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        handlerRolSwitch(user.id, user.rols[0].type);
+                      }}
+                    >
+                      {`Switch to ${user.rols[0].id === 1 ? "User" : "Admin"}`}
+                    </button>
+                  )}
+                  {user.rols.length && <p>{`Rol: ${user.rols[0].type}`}</p>}
+                  <p>{`Email: ${user.email}`}</p>
+                  <p>{`Name: ${user.first_name} ${user.last_name}`}</p>
+                  <p>{`ID:${user.id}`}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      ) : (
+        <h1 style={{ textAlign: "center" }}>{`No products found`}</h1>
+      )}
     </>
   ) : (
     <Loading />
