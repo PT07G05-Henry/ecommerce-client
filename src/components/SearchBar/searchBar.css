@@ -47,9 +47,9 @@
 
 .searchBar {
   position: relative;
-  bottom: 97vh;
+  bottom: 90vh;
   right: 3.25vw;
-  padding: .75rem;
+  padding: 0.75rem;
 }
 
 .searchBar > button {
@@ -62,3 +62,13 @@
   border-bottom: 2px solid rgba(var(--color-primary-rgb), .5);
 }
 
+div.scroll {
+  margin:4px, 4px;
+  padding:4px;
+  background-color: rgba(57, 57, 57, 0.848);
+  width: fit-content;
+  height: 8rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align:justify;
+}

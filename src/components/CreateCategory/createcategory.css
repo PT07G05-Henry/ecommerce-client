@@ -1,31 +1,46 @@
-.CategoryImg {
-    width: 100px;
-    display: flex;
-    margin: auto;
-}
-
-.CategoryName {
-    justify-content: center;
-    display: flex;
-}
-
 .InfoCategory {
-    border: 1px solid black;
-  display:flex;
-  justify-content: center;
+  display: flex;
   flex-direction: column;
-  min-width: fit-content;
-  padding: 0px 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: solid rgba(var(--color-primary-rgb), 0.3);
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  margin: 1.5rem 0.75rem;
+  padding: 1rem 1rem;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
-
-.ImgCheck {
-  width:15px
+.category{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+.create_category{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid rgba(var(--color-primary-rgb), 0.3);
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  margin: 1.5rem 0.75rem;
+  padding: 1rem 1rem;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 20px;
 
-.ContainerImgInput{
-display: flex;
 }
-
-.formControled__centeredForm{
-    border-radius: 25px 0px;
+.errorMessage {
+  border: solid rgba(var(--color-warning-primary-rgb), 0.5);
+  background-color: rgba(var(--color-warning-secondary-rgb), 0.3);
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 20px;
+  color: var(--color-white);
+  padding: 0.75rem;
+  text-align: center;
+  margin: 1rem;
+}
+#btn{
+  margin: 1rem;
 }

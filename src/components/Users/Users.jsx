@@ -106,7 +106,6 @@ export default function Users() {
       </div>
       <ul className="products__list">
         {users.results?.map((user) => {
-          console.log(user);
           return (
             <li key={`User_${user.id}`} className="products__list-item">
               <button className="btn" value={user.id} onClick={handleClick}>

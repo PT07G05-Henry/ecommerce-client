@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { selectThisUserRoles, selectThisUser } from "../../store/thisUser";
 import ButtonGenerateMPLink from "../MercadoPago/ButtonGenerateMPLink";
-import { selectCarts } from "../../store/cart";
+import { selectCarts , selectItemsInCart } from "../../store/cart";
 import OrderResum from "../MercadoPago/OrderResum";
 
 import ButtonGenerateOrder from "../MercadoPago/ButtonGenerateOrder";
@@ -17,10 +17,10 @@ import ButtonCancelOrder from "../MercadoPago/ButtonCancelOrder";
 export default function CartTest() {
 
   const cart = useSelector(selectCarts);
+  const itemsInCart = useSelector(selectItemsInCart);
   const rol = useSelector(selectThisUserRoles);
   const user = useSelector(selectThisUser);
   const [totalPrice, setTotalPrice] = useState();
-  const [totalItems, setTotalItems] = useState();
   const [button, setButton] = useState(false);
   const [urlMP, setUrlMP] = useState("");
 
@@ -32,7 +32,6 @@ export default function CartTest() {
     }, 0);
     const numItems = cart.length;
     setTotalPrice(value);
-    setTotalItems(numItems);
   }, [cart]);
 
   return (
@@ -42,7 +41,7 @@ export default function CartTest() {
         {cart.length > 0 ? (
           <>
             <h2>
-              Total Items: <span className="totalText">{totalItems}</span>
+              Total Items: <span className="totalText">{itemsInCart}</span>
             </h2>
             <h2>
               Total Price:{" "}

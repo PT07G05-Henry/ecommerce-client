@@ -12,6 +12,7 @@ import usersReducer from "./users"
 import cartReducer from "./cart"
 import thisUserReducer from "./thisUser"
 import allOrdersReducer from './allOrders'
+import allProductsReducer from './allProducts'
 import windowReducer from "./window"
 
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
     cart: cartReducer,
     thisUser: thisUserReducer,
     allOrders: allOrdersReducer,
+    allProducts: allProductsReducer,
     window: windowReducer,
   },
 });
