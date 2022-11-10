@@ -9,7 +9,7 @@ import productsReducer from "./products"
 import productsByNameReducer from "./productsByName"
 import userByIdReducer from "./userById"
 import usersReducer from "./users"
-import cartReducer, { selectCarts, selectCartLoadedFromDb } from "./cart"
+import cartReducer, { selectCarts } from "./cart"
 import thisUserReducer, { selectThisUserRoles, selectThisUser } from "./thisUser"
 import allOrdersReducer from './allOrders'
 import allProductsReducer from './allProducts'
@@ -41,5 +41,5 @@ store.subscribe(() => {
   ((selectThisUserRoles(store.getState())[0]) === "Guest") ?
     (selectCarts(store.getState()).length ?
       window.localStorage.setItem("cart", JSON.stringify(selectCarts(store.getState()))) : window.localStorage.clear()) :
-    (selectCartLoadedFromDb(store.getState()) && (api.put(endPoint.cart, { data: { userId: selectThisUser(store.getState()).userDb.id, products: selectCarts(store.getState()) } })))
+    api.put(endPoint.cart, { data: { userId: selectThisUser(store.getState()).userDb.id, products: selectCarts(store.getState()) } })
 })
