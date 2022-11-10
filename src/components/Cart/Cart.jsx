@@ -70,6 +70,7 @@ export default function CartTest() {
                 <ButtonGenerateMPLink
                   totalPrice={Number(totalPrice).toFixed(2)}
                   cart={cart}
+                  userId={user.userDb.id}
                 />{" "}
                 <ButtonCancelOrder userId={user.userDb.id}/>
               </div>
