@@ -10,7 +10,7 @@ export const initialState = {
 export const getCart = createAsyncThunk("cart/getCart", async () => {
   try {
     const response = await api.get(`${endPoint.cart}/${selectThisUser(store.getState()).userDb.id}`);
-    return response.data[0].items;
+    return response.data.items;
   } catch (error) {
     console.error(error);
   }
