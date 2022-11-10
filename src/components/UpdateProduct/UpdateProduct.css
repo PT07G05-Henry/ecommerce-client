@@ -19,3 +19,44 @@
 .option {
     display: flex;
 }
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: solid rgba(var(--color-primary-rgb), 0.3);
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  margin: 1.5rem 0.75rem;
+  padding: 1rem 1rem;
+  border-bottom-right-radius: 5rem;
+  border-top-left-radius: 5rem;
+}
+.form *{
+    margin: 1rem;
+}
+.description{
+    border-top: var(--border);
+    border-left: var(--border);
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: rgba(var(--color-secondary-rgb), 0.25);
+    backdrop-filter: blur(3px);
+    color: var(--color-white);
+    margin-left: 0.5rem;
+}
+.arrow-back{
+    
+    padding: 0.5rem 0.75rem;
+}
+.arrow-next{
+    
+    padding: 0.5rem 0.75rem;
+}
+.image_arrow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
