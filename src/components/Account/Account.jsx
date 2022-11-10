@@ -13,6 +13,8 @@ import {
   fakeRoles,
   selectThisUser,
 } from "../../store/thisUser";
+import { postCart, getCart } from "../../store/cart";
+import { selectCartGot, setCartGot } from "../../store/window";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -25,29 +27,42 @@ const Account = () => {
   const thisUser = useSelector(selectThisUser);
   const [showSelectFakeRol, setShowSelectFakeRol] = useState(false);
   const { pathname } = useLocation();
+  const cartGot = useSelector(selectCartGot);
+
+  const evalCart = () => {
+    if (window.localStorage.length) {
+      dispatch(postCart(JSON.parse(window.localStorage.getItem("cart"))));
+      window.localStorage.clear();
+      console.log("Desde LS");
+    } else {
+      dispatch(getCart());
+      console.log("Desde DB");
+    }
+    dispatch(setCartGot(true));
+  };
+
+  const logInOnServer = () => {
+    return getIdTokenClaims()
+      .then((response) => {
+        const { sid } = response;
+        dispatch(getThisUser({ user: user, sid: sid }));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
-    roles[0] === "Guest" &&
-      getIdTokenClaims()
-        .then((response) => {
-          const { sid } = response;
-          dispatch(getThisUser({ user: user, sid: sid }));
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    roles[0] === "Guest" && logInOnServer();
   }, [dispatch]);
 
   useEffect(() => {
-    typeof thisUser === "string" &&
-      getIdTokenClaims()
-        .then((response) => {
-          const { sid } = response;
-          dispatch(getThisUser({ user: user, sid: sid }));
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    typeof thisUser === "string" && logInOnServer();
   }, [thisUser]);
+
+  useEffect(() => {
+    roles[0] !== "Guest" && !cartGot && evalCart();
+  }, [roles]);
 
   return (
     <>
