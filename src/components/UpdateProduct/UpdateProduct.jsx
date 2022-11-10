@@ -240,13 +240,13 @@ const UpdateProduct = () => {
 
   return (
     <>
-      <div className="formControled__centeredForm">
-        <form onSubmit={handleSubmit}>
+      <div className="container">
+        <form className="form" onSubmit={handleSubmit}>
           <h1>Update Product</h1>
           {image && image.length && (
-            <div className="card__imageViewer">
+            <div className="image_arrow">
               <button
-                className="card__imageViewer-arrow"
+                className="btn-rounded arrow-back"
                 style={imgIndex === 0 ? { display: "none" } : {}}
                 onClick={(e) => {
                   e.preventDefault();
@@ -257,7 +257,7 @@ const UpdateProduct = () => {
               </button>
               {image[imgIndex]}
               <button
-                className="card__imageViewer-arrow"
+                className="btn-rounded arrow-next"
                 style={imgIndex === image.length - 1 ? { display: "none" } : {}}
                 onClick={(e) => {
                   e.preventDefault();
@@ -268,13 +268,13 @@ const UpdateProduct = () => {
               </button>
             </div>
           )}
-          <button value="images" onClick={handleHidden}>
+          <button className="btn" value="images" onClick={handleHidden}>
             Edit
           </button>
           <div className={inputHidden.images}>
             <label htmlFor="images"> images: </label>
             <input type="file" name="images" id="images" ref={ref} />
-            <button onClick={handleImageSubmit} type="button">
+            <button className="btn" onClick={handleImageSubmit} type="button">
               enter image
             </button>
             <div>
@@ -283,7 +283,7 @@ const UpdateProduct = () => {
             </div>
           </div>
           {update.name ? <h2>{update.name}</h2> : <h2>{product.name}</h2>}
-          <button value="name" onClick={handleHidden}>
+          <button className="btn" value="name" onClick={handleHidden}>
             Edit
           </button>
           <div className={inputHidden.name}>
@@ -298,7 +298,7 @@ const UpdateProduct = () => {
             <p className="errorAlert__errorMessage">{error.name}</p>
           </div>
           {update.price ? <h3>${update.price}</h3> : <h3>${product.price}</h3>}
-          <button value="price" onClick={handleHidden}>
+          <button className="btn" value="price" onClick={handleHidden}>
             Edit
           </button>
           <div className={inputHidden.price}>
@@ -319,7 +319,7 @@ const UpdateProduct = () => {
           ) : (
             <h3>Stock: {product.stock}</h3>
           )}
-          <button value="stock" onClick={handleHidden}>
+          <button className="btn" value="stock" onClick={handleHidden}>
             Edit
           </button>
           <div className={inputHidden.stock}>
@@ -339,12 +339,15 @@ const UpdateProduct = () => {
           ) : (
             <p>{product.description}</p>
           )}
-          <button value="description" onClick={handleHidden}>
+          <button className="btn" value="description" onClick={handleHidden}>
             Edit
           </button>
           <div className={inputHidden.description}>
             <label htmlFor="description"> Description: </label>
-            <input
+            <textarea 
+            className="description"
+              cols="40"
+              rows="5"
               type="text"
               name="description"
               id="description"
@@ -354,12 +357,13 @@ const UpdateProduct = () => {
             <p className="errorAlert__errorMessage">{error.description}</p>
           </div>
           <h3>categories: {concatCat}</h3>
-          <button value="categories" onClick={handleHidden}>
+          <button className="btn" value="categories" onClick={handleHidden}>
             Edit
           </button>
           <div className={inputHidden.categories}>
             <label htmlFor="select_categories"> Category: </label>
             <select
+            className="select"
               id="selectId"
               name="select_categories"
               onChange={handleCategories}
@@ -379,14 +383,14 @@ const UpdateProduct = () => {
                 cat.map((c, index) => (
                   <div key={index} className="option">
                     <p>{c}</p>
-                    <button type="button" value={c} onClick={handleClick}>
+                    <button className="btn" type="button" value={c} onClick={handleClick}>
                       x
                     </button>
                   </div>
                 ))}
             </div>
           </div>
-          <input type="submit" value="Update" />
+          <input className="btn" type="submit" value="Update" />
         </form>
       </div>
     </>
