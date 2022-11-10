@@ -161,7 +161,7 @@ const Card = ({
               : "Disabled for Admin"
           }
           onClick={() => {
-            dispatch(activeCard(id));
+            rol[0] !== "Admin" && dispatch(activeCard(id));
           }}
           disabled={rol[0] === "Admin" ? true : false}
         ></input>
