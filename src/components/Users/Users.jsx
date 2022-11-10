@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, selectUser } from "../../store/users";
+import { selectThisUserId } from "../../store/thisUser";
 import Paginated from "../Paginated/Paginated.jsx";
 import "./users.css";
 import api, { endPoint, query } from "../../lib/api";
@@ -13,6 +14,7 @@ export default function Users() {
   const users = useSelector(selectUser);
   const [filteredUsers, setFilteredUsers] = useState("All");
   const [name, setName] = useState("");
+  const userId = useSelector(selectThisUserId);
 
   useEffect(() => {
     users &&
@@ -33,8 +35,6 @@ export default function Users() {
       page: 1,
     };
     name.length && (query[NAME] = name);
-    console.log(name);
-    console.log(query);
     dispatch(getUsers(query));
   }, [filteredUsers]);
 
@@ -74,12 +74,24 @@ export default function Users() {
   }
 
   function handleClick(e) {
-    const id = e.target.value;
-    api
+    const id = Number(e.target.value);
+    if(userId === id) {
+      return alert("Can't delete your own user")
+    }
+    if(window.confirm("Are you sure you want to delete this user?")) {
+      api
       .delete(endPoint.users, { params: { id: id } })
-      .then(alert("User deleted successfully"))
+      .then((res) => {
+        alert("User deleted successfully")
+        dispatch(
+          getUsers({
+            rol: filteredUsers,
+            page: 1,
+          })
+        )
+      })
       .catch((err) => err.message);
-    setFilteredUsers(filteredUsers.filter((user) => user.id !== parseInt(id)));
+      }
   }
 
   return users.results ? (
@@ -144,7 +156,6 @@ export default function Users() {
           <Paginated
             data={users}
             dispatch={(flags) => {
-              console.log(flags);
               dispatch(getUsers(flags));
             }}
           />
