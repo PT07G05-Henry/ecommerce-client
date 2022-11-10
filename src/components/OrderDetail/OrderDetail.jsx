@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./OrderDetail.css";
 import api, { endPoint } from "../../lib/api";
+import ProtectedFrom from "../protectedFrom/ProtectedFrom"
 
 const OrderDetail = (props) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [order, setOrder] = React.useState({});
+  const [status, setStatus] = React.useState("")
 
   async function getOrder(id) {
     console.log("orderdetail");
@@ -19,9 +21,26 @@ const OrderDetail = (props) => {
     }
   }
 
+  function handleChange(e) {
+    let status = e.target.value
+    if(status === "") {
+      return
+    } else {
+      api.put(endPoint.orders, { params: { id: id }, data: {status: status} })
+      .then(
+        alert("Order Status Changed"),
+        setStatus(status)
+      )
+    }
+  }
+
   React.useEffect(() => {
     getOrder(id);
   }, []);
+
+  React.useEffect(() => {
+    setStatus(order.status)
+  }, [order]);
 
   return (
     <div className="container oderDetails__container">
@@ -35,6 +54,18 @@ const OrderDetail = (props) => {
             Name:  {` ${order.user && order.user.first_name},
              ${order.user && order.user.last_name}`}
           </h4>
+          <h4>Order number: {order.id}</h4>
+          <h4>Order Status: {status}</h4>
+          <ProtectedFrom User noRender>
+            <select onChange={handleChange}>
+              <option value="">Change Status</option>
+              <option value="CANCELLED">CANCELLED</option>
+              <option value="REJECTED">REJECTED</option>
+              <option value="PENDING">PENDING</option>
+              <option value="APPROVED">APPROVED</option>
+              <option value="AUTHORIZED">AUTHORIZED</option>
+            </select>
+          </ProtectedFrom>
           <h4>Email: {order.user && order.user.email}</h4>
           <h4>Phone number: {order.delivery && order.delivery.phone_number}</h4>
         </div>
@@ -79,8 +110,8 @@ const OrderDetail = (props) => {
         <h2>Payment</h2>
         <div className="payment_total">
 
-        <h4>payment method: {order.payment && order.payment.type}</h4>
-        <h4>status: {order.payment && order.payment.status}</h4>
+        <h4>Payment Method: {order.payment && order.payment.type}</h4>
+        <h4>Status: {order.payment && order.payment.status}</h4>
       <h4>Subtotal: ${order.total_price}</h4>
         </div>
       </div>
