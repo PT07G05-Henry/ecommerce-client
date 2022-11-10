@@ -21,7 +21,7 @@ const UpdateProduct = () => {
   const categories = useSelector(selectCategories);
   const ref = React.createRef();
   const [error, setError] = useState({});
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState([]);
   const [cat, setCat] = useState([]);
   const [input, setInput] = useState({
     id: id,
@@ -105,43 +105,11 @@ const UpdateProduct = () => {
     });
   };
 
-  const handleImageChange = (e) => {
-    setValue(e.target.value);
-  };
-
   const handleImageSubmit = () => {
-    //const image = ref.current.value;
+    setValue([...value, ref.current.files[0].name]);
     setInput({ ...input, images: [...input.images, ref.current.files] });
     alert("Entered image");
-    setValue("");
   };
-
-  // const handleImageCheck = () => {
-  //   function testImage(URL) {
-  //     var tester = new Image();
-  //     tester.onload = imageFound;
-  //     tester.onerror = imageNotFound;
-  //     tester.src = URL;
-  //   }
-
-  //   function imageFound() {
-  //     alert("That image is found and loaded");
-  //     handleImageSubmit();
-  //     return setError((err) => ({ ...err }));
-  //   }
-
-  //   function imageNotFound() {
-  //     alert("That image was not found.");
-  //     setValue("");
-  //     if (!input.images) {
-  //       return setError((err) => ({
-  //         ...err,
-  //         images: "That image was not found.",
-  //       }));
-  //     }
-  //   }
-  //   testImage(value);
-  // };
 
   const handleCategories = (e) => {
     const newCategorie = e.target.value;
@@ -252,6 +220,7 @@ const UpdateProduct = () => {
       images: "hidden",
       categories: "hidden",
     });
+    setValue([]);
   };
 
   useEffect(() => {
@@ -304,19 +273,14 @@ const UpdateProduct = () => {
           </button>
           <div className={inputHidden.images}>
             <label htmlFor="images"> images: </label>
-            <input
-              type="file"
-              name="images"
-              id="images"
-              ref={ref}
-              onChange={handleImageChange}
-            />
+            <input type="file" name="images" id="images" ref={ref} />
             <button onClick={handleImageSubmit} type="button">
               enter image
             </button>
-            <p className="errorAlert__errorMessage">
-              {error.images === "error" ? "" : error.images}
-            </p>
+            <div>
+              <p>Selected images:</p>
+              {value.map((v, index) => <p key={index}>{v}</p>)}
+            </div>
           </div>
           {update.name ? <h2>{update.name}</h2> : <h2>{product.name}</h2>}
           <button value="name" onClick={handleHidden}>
