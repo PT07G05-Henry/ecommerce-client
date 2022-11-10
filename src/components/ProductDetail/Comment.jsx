@@ -6,16 +6,19 @@ import { selectThisUser } from "../../store/thisUser";
 import { useDispatch, useSelector } from "react-redux";
 import { selectThisUserId } from "../../store/thisUser";
 import { getProductById } from "../../store/productById";
-
-
-
-export default function Comments({ productId, setCondition , orders, setOrders}) {
+import './Comment.css'
+export default function Comments({
+  productId,
+  setCondition,
+  orders,
+  setOrders,
+}) {
   const user = useSelector(selectThisUser);
   const [checkProductID, setCheckProductID] = useState([]);
   const userId = useSelector(selectThisUserId);
   const [commentValue, setCommentValue] = useState();
   const [star, setStar] = useState(5);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   function rating(e) {
     const elClass = e.target.classList;
@@ -50,27 +53,33 @@ export default function Comments({ productId, setCondition , orders, setOrders})
       ? alert("Please Select Your Rating ")
       : alert("Please Insert Comment");
 
-      setTimeout(()=>{
-        dispatch(getProductById(productId));
-        setCondition(false);
-      },2000)
+    setTimeout(() => {
+      dispatch(getProductById(productId));
+      setCondition(false);
+    }, 2000);
   }
 
-  useEffect(()=>{
-    if(typeof orders === "object"){
-        const ordenes = orders.map((o)=>o.products.filter((p)=>p.id === productId))
-        if(ordenes.length > 0){
-            setCondition(true)
-        }else{
-            setCondition(false)
-        }
+  useEffect(() => {
+    if (typeof orders === "object") {
+      const ordenes = orders.map((o) =>
+        o.products?.filter((p) => p.id === productId)
+      );
+      if (ordenes.length > 0) {
+        setCondition(true);
+      } else {
+        setCondition(false);
+      }
     }
-  },[orders])
+  }, [orders]);
 
   useEffect(() => {
     userId &&
-    api.get(endPoint.comments+`/${userId}?relation=user`).then(r=>setCheckProductID(r.data));
-    api.get(endPoint.users).then((r) => {setOrders(r.data);});
+      api
+        .get(endPoint.comments + `/${userId}?relation=user`)
+        .then((r) => setCheckProductID(r.data));
+    api.get(endPoint.users).then((r) => {
+      setOrders(r.data);
+    });
   }, [userId]);
 
   useEffect(() => {
@@ -92,16 +101,16 @@ export default function Comments({ productId, setCondition , orders, setOrders})
   return (
     <>
       {user && user.userDb && user.userDb.id && (
-        <div className="productDetail__comment div_full">
-          <div>
-            <img
-              className="productDetail__comment-picture"
-              src={user.userDb.profile_picture}
-              alt={user.userDb.first_name + user.userDb.id}
-            ></img>
-          </div>
-          <div className="productDetail__comment-containerProfile">
-            <p className="productDetail__comment-name">
+        <div className="coment_box">
+          <div className="coment_box_left">
+            <div>
+              <img
+                className="coment_image"
+                src={user.userDb.profile_picture}
+                alt={user.userDb.first_name + user.userDb.id}
+              />
+            </div>
+            <p>
               {user.userDb.first_name +
                 (user.userDb.last_name && " " + user.userDb.last_name)}
             </p>
@@ -143,22 +152,30 @@ export default function Comments({ productId, setCondition , orders, setOrders})
               ></li>
             </ul>
           </div>
-          <div className="productDetail__comment-section">
+          <div className="coment_box_rigth">
+            <div>
+
             <textarea
               type="text"
-              className="productDetail__comment-value"
+              className="input_area"
               value={commentValue}
+              cols="80"
+              rows="5"
               onChange={(e) => {
                 handlerComment(e);
               }}
-            ></textarea>
+            />
+            </div>
+            <div>
             <input
+              className="btn"
               type="button"
               value="Comment"
               onClick={() => {
                 submit();
               }}
-            ></input>
+            />
+            </div>
           </div>
         </div>
       )}

@@ -24,10 +24,10 @@ const ProductDetail = () => {
   const product = useSelector(selectProductsById);
   const [imgIndex, setImgIndex] = useState(0);
   const [orders, setOrders] = useState();
-
+  const size = 32;
   const image = product.images
     ?.filter((e) => e.image !== null)
-    .map((e) => <img src={e.image} alt="image" />);
+    .map((e) => <img className="productDetail_image" src={e.image} alt="image" />);
 
   useEffect(() => {
     (product.noProduct || product.error || product.id !== id) &&
@@ -65,7 +65,7 @@ const ProductDetail = () => {
 
   useEffect(()=>{
     if(typeof orders === "object"){
-        const ordenes = orders.map((o)=>o.products.filter((p)=>p.id === product.id))
+        const ordenes = orders.map((o)=>o.products?.filter((p)=>p.id === product.id))
         if(ordenes.length > 0){
             setCondition(true)
         }else{
@@ -81,8 +81,8 @@ const ProductDetail = () => {
 
   return product.id ? (
 
-    <section className="container productDetail">
-      <div className="box-dry productDetail__box">
+    <section className="container">
+      <div className="productDetail__box">
         {image && image.length && (
           <div className="productDetail__img-place">
             <div className="productDetail__button">
@@ -106,38 +106,41 @@ const ProductDetail = () => {
             </div>
           </div>
         )}
-        <h1>{product.name}</h1>
         <div className="productDetail__info">
-          <h3>{`Price: ${product.price}`}</h3>
-          <h3>{`Stock: ${product.stock}`}</h3>
-          <div>
+        <h1>{product.name}</h1>
             <h3>Rating</h3>
+        <div className="star">
             {ratingArray(product.rating).length > 0 &&
               ratingArray(product.rating).map((r) => {
                 return (
+                  
                   <IconContext.Provider
                     value={{ className: "fillStar" }}
                   >
-                    <AiFillStar />
+                    <AiFillStar size={size}/>
                   </IconContext.Provider>
                 );
               })}
             {ratingArrayEmpty(product.rating).length > 0 &&
-              ratingArrayEmpty(product.rating).map((r) => {
+              ratingArrayEmpty(product.rating).map((r,i) => {
                 if (r === 0) {
                   return (
-                    <div>
-                      <AiOutlineStar />
-                      <AiOutlineStar />
-                      <AiOutlineStar />
-                      <AiOutlineStar />
-                      <AiOutlineStar />
+                    <div className="star" key={`this${i}`}>
+                      <AiOutlineStar  />
+                      <AiOutlineStar  />
+                      <AiOutlineStar  />
+                      <AiOutlineStar  />
+                      <AiOutlineStar  />
                     </div>
                   );
                 } else {
-                  return <AiOutlineStar />;
+                  return <div className="star"><AiOutlineStar /></div>;
                 }
               })}
+              </div>
+          <h3>{`Price: ${product.price}`}</h3>
+          <h3>{`Stock: ${product.stock}`}</h3>
+          <div>
           </div>
           <input
             type="button"
@@ -155,34 +158,38 @@ const ProductDetail = () => {
               handlerButtonCart(e);
             }}
             disabled={rol[0] === "Admin" ? true : false}
-          ></input>
+          />
         </div>
         <div className="productDetails__description">
-          <h3>Description</h3>
+          <h2>Description</h2>
           <p>{product.description}</p>
         </div>
 
-        <div>
+        
           {product.id && product.comments.length > 0 && <h3>Comments</h3>}
 
           {product.id &&
             product.comments.length > 0 &&
-            product.comments.map((c) => {
+            product.comments.map((c) => {              
               return (
                 <div className="productDetail__comment">
+                    <div className="productDetail__comment-containerProfile">
                   <div>
                     <img
                       className="productDetail__comment-picture"
-                      src={c.user.profile_picture}
+                      src={c.user.profile_picture.secure_url
+                      }
                       alt={c.user.first_name + c.user.id}
-                    ></img>
+                    />
                   </div>
-                  <div className="productDetail__comment-containerProfile">
+                  <div>
                     <p className="productDetail__comment-name">
                       {c.user.first_name +
                         (c.user.last_name && " " + c.user.last_name)}
                     </p>
+                    </div>
                     {/* <p className="productDetail__comment-ratingText">Rating:</p> */}
+                    <div>
                     <p className="productDetail__comment-ratingStar">
                       {ratingArray(c.rating).length > 0 &&
                         ratingArray(c.rating).map((r) => {
@@ -211,6 +218,7 @@ const ProductDetail = () => {
                           }
                         })}
                     </p>
+                    </div>
                   </div>
                   <div className="productDetail__comment-section">
                     <p className="productDetail__comment-value">{c.value}</p>
@@ -218,8 +226,10 @@ const ProductDetail = () => {
                 </div>
               );
             })}
-        </div>
-        {condition && <Comment productId={id} setCondition={setCondition} condition={condition} userId={userId} orders={orders} setOrders={setOrders}/>}
+        
+        {rol[0] === 'User' && condition && <Comment productId={id} setCondition={setCondition} condition={condition} userId={userId} orders={orders} setOrders={setOrders}/>}
+      
+        
       </div>
     </section>
   ) : (
