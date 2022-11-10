@@ -5,6 +5,7 @@ import { selectThisUser } from "./thisUser";
 
 export const initialState = {
   cart: [],
+  loadedFromDb: false,
 };
 
 export const getCart = createAsyncThunk("cart/getCart", async () => {
@@ -85,6 +86,7 @@ export const cartSlice = createSlice({
     builder
       .addCase(getCart.fulfilled, (state, action) => {
         state.cart = action.payload;
+        state.loadedFromDb = true;
       })
       .addCase(deleteCart.fulfilled, (state) => {
         state.cart = [];
@@ -99,6 +101,7 @@ export const cartSlice = createSlice({
 });
 
 export const selectCarts = (state) => state.cart.cart;
+export const selectCartLoadedFromDb = (state) => state.cart.loadedFromDb;
 export const selectItemsInCart = (state) => state.cart.cart.length ? state.cart.cart.reduce((prev, item) => parseInt(prev) + parseInt(item.qty), 0) : 0;
 
 export const { setCart, loadCart, setItem, deleteItem, updateItemQty, reset, dataBaseValue } = cartSlice.actions;
