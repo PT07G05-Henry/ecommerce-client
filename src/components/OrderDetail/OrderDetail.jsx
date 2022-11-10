@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./OrderDetail.css";
 import api, { endPoint } from "../../lib/api";
-import ProtectedFrom from "../protectedFrom/ProtectedFrom"
+import ProtectedFrom from "../protectedFrom/ProtectedFrom";
 
 const OrderDetail = (props) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [order, setOrder] = React.useState({});
-  const [status, setStatus] = React.useState("")
+  const [status, setStatus] = React.useState("");
 
   async function getOrder(id) {
     console.log("orderdetail");
@@ -27,9 +27,11 @@ const OrderDetail = (props) => {
       return
     } else {
       api.put(endPoint.orders, { params: { id: id }, data: {status: status} })
-      .then(
-        alert("Order Status Changed"),
+      .then(()=>{
+        api.post(endPoint.emailSend, {data: {type:"orderStatus", justSend:true, orderId:id,orderStatus:status, email:order.user.email, subject:`Your Order ${id} have change his status`, message:`${order.user.first_name} your status in Order ${id} is now ${status}`}});
+        alert("Order Status Changed");
         setStatus(status)
+      }
       )
     }
   }

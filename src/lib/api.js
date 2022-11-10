@@ -3,7 +3,7 @@ import { selectThisUserSid } from "../store/thisUser"
 import { store } from "../store/store"
 
 export const endPoint = {
-    categories: "categories", comments: "comments", deliveries: "deliveries", orders: "orders", allOrders: "orders/all", payments: "payments", products: "products", postProducts: "products", thisUser: "users/auth0", users: "users", mercado:"mercado", cart:"cart", allProducts:"products/all"
+    categories: "categories", comments: "comments", deliveries: "deliveries", orders: "orders", allOrders: "orders/all", payments: "payments", products: "products", postProducts: "products", thisUser: "users/auth0", users: "users", mercado:"mercado", cart:"cart", allProducts:"products/all", emailSend:"email/send"
 }
 
 export const query = {
