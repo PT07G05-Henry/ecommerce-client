@@ -11,12 +11,9 @@ import DashBoard from "./containers/DashBoard/DashBoard";
 import Cart from "../src/components/Cart/Cart";
 import Orders from "../src/components/Orders/Orders";
 import Payment from "../src/components/Payment/Payment";
-import { selectThisUserRoles, selectThisUser } from "./store/thisUser";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Redirect from "./components/Redirect/Redirect";
 import About from "./components/AboutUs/Aboutus";
-import api, { endPoint } from "./lib/api";
-import { selectCarts, dataBaseValue, reset } from "./store/cart";
 
 import ProtectedFrom from "./components/protectedFrom/ProtectedFrom";
 import Profile from "./components/Profile/Profile";
@@ -27,82 +24,11 @@ import CreateCategory from "./components/CreateCategory/CreateCategory";
 import Users from "./components/Users/Users";
 import { selectThisUserId } from "./store/thisUser";
 import access from "./lib/access";
+
+
 function App() {
-  // const navigate = useNavigate();
   const userId = useSelector(selectThisUserId);
-  const cart = useSelector(selectCarts);
-  const rol = useSelector(selectThisUserRoles);
-  const user = useSelector(selectThisUser);
-  const dispatch = useDispatch();
-  const [onlyOnce, setOnlyOnce] = useState(true)
-
-  useEffect(() => {
-    if (rol[0] === "Guest") {
-        const cartStore = JSON.parse(window.localStorage.getItem("cart"));
-        onlyOnce &&
-        cartStore?.length > 0 && dispatch(dataBaseValue(cartStore)) ;
-        setOnlyOnce(false);
-    }
-
-    if (rol[0] === "User") {
-      window.localStorage.setItem("cart", JSON.stringify([]))
-      cart.length > 0
-        ? api
-            .post(endPoint.cart, {
-              data: { userId: user.userDb.id, products: cart },
-            })
-            .then((r) => {
-              if (!areEqual(cart, r.data.items)) {
-                //hacer dispatch a cart con los valores de la Data Base
-                dispatch(dataBaseValue(r.data.items));
-              }
-            })
-        : api
-            .post(endPoint.cart, { data: { userId: user.userDb.id } })
-            .then((r) => {
-              if (!areEqual(cart, r.data.items)) {
-                //hacer dispatch a cart con los valores de la Data Base
-                dispatch(dataBaseValue(r.data.items));
-              }
-            });
-      return;
-    }
-  }, [rol]);
-
-  useEffect(() => {
-    if(rol[0] === "Guest"){
-      window.localStorage.setItem("cart", JSON.stringify(cart))
-    }
-
-    if (rol[0] === "User") {
-      if (cart.length > 0) {
-        api
-          .post(endPoint.cart, { data: { userId: user.userDb.id } })
-          .then((r) => {
-            if (!areEqual(cart, r.data.items))
-              return api
-                .put(endPoint.cart, {
-                  data: { userId: user.userDb.id, products: cart },
-                })
-          });
-      } else {
-        api.delete(endPoint.cart, { data: { userId: user.userDb.id } });
-      }
-    }
-  }, [cart]);
-
-  function areEqual(array1, array2) {
-    if (array1.length === array2.length) {
-      return array1.every((element, index) => {
-        if (element === array2[index]) {
-          return true;
-        }
-        return false;
-      });
-    }
-    return false;
-  }
-
+  
   return (
     <>
       <Routes>
