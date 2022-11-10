@@ -36,6 +36,19 @@ const Account = () => {
           console.error(error);
         });
   }, [dispatch]);
+
+  useEffect(() => {
+    typeof thisUser === "string" &&
+      getIdTokenClaims()
+        .then((response) => {
+          const { sid } = response;
+          dispatch(getThisUser({ user: user, sid: sid }));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  }, [thisUser]);
+
   return (
     <>
       <div
