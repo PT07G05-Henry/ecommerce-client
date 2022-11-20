@@ -2,8 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories, postCategories, selectCategories } from "../../store/api";
-
+import {
+  getCategories,
+  postCategories,
+  selectCategories,
+} from "../../store/api";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import "./createcategory.css";
@@ -12,7 +15,7 @@ const CreateCategory = () => {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
   const ref = React.createRef();
-  const {getIdTokenClaims} = useAuth0()
+  const { getIdTokenClaims } = useAuth0();
   const [cat, setCat] = useState([]);
   const [error, setError] = useState({});
   const [value, setValue] = useState("");
@@ -23,8 +26,10 @@ const CreateCategory = () => {
   const internalDispatch = useDispatch();
   const categoriesList = useSelector(selectCategories);
   useEffect(() => {
-    (categoriesList[0].toBeField || categoriesList[0].error) &&
-      internalDispatch(getCategories());
+    if (categoriesList) {
+      (categoriesList[0].toBeField || categoriesList[0].error) &&
+        internalDispatch(getCategories());
+    }
   }, [categoriesList]);
   useEffect(() => {
     dispatch(getCategories());
@@ -73,11 +78,19 @@ const CreateCategory = () => {
       })
     );
 
-    const result = categories.filter((a) => a.name.toLowerCase() === e.target.value.toLowerCase())
-    if (result.length > 0){
-        setError((err) => ({...err,name:`Category name "${e.target.value}" already exist`}));
+    if (categories) {
+      const result = categories.filter(
+        (a) => a.name && a.name.toLowerCase() === e.target.value.toLowerCase()
+      );
+      if (result.length > 0) {
+        setError((err) => ({
+          ...err,
+          name: `Category name "${e.target.value}" already exist`,
+        }));
+      }
     }
   };
+
   const handleImageChange = (e) => {
     setValue(e.target.value);
     // setError(validateImage(e.target.value));
@@ -85,7 +98,15 @@ const CreateCategory = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getIdTokenClaims().then(r=>r.sid).then((sid)=>dispatch(postCategories({input, sid}))).then(()=>{alert(`Category ${input.name} was created`)}).catch(()=>{alert(`Error creating the Category`)})
+    getIdTokenClaims()
+      .then((r) => r.sid)
+      .then((sid) => dispatch(postCategories({ input, sid })))
+      .then(() => {
+        alert(`Category ${input.name} was created`);
+      })
+      .catch(() => {
+        alert(`Error creating the Category`);
+      });
 
     setInput({
       images: [],
@@ -100,7 +121,6 @@ const CreateCategory = () => {
   };
 
   function validate(input) {
-    
     const error = {};
     const regexName =
       /^[A-Z]+[^\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]*$/; //^[a-zA-Zñáéíóúü]*$
@@ -120,9 +140,7 @@ const CreateCategory = () => {
       <div className="create_category">
         <form className="category" onSubmit={handleSubmit}>
           <div className="title">
-          <h1>Create Category</h1>
-           
-            
+            <h1>Create Category</h1>
           </div>
           <label htmlFor="name"> Name: </label>
           <input
@@ -134,15 +152,16 @@ const CreateCategory = () => {
           />
           {error.name && <p className="errorMessage">{error.name}</p>}
           {Object.keys(error).length === 0 && input.name ? (
-            <button type="submit" className="btn" id="btn" > Create </button>
+            <button type="submit" className="btn" id="btn">
+              {" "}
+              Create{" "}
+            </button>
           ) : null}
 
-          
-            <div className="InfoCategory">
-              <h4>You are creating this category</h4>              
-              {input.name && <h2 className="CategoryName">{input.name}</h2>}
-            </div>
-          
+          <div className="InfoCategory">
+            <h4>You are creating this category</h4>
+            {input.name && <h2 className="CategoryName">{input.name}</h2>}
+          </div>
         </form>
       </div>
     </>
